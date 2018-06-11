@@ -1,0 +1,13 @@
+{
+  "name": "tlm",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">= 10.2.1 <= 11.0.0",
+    "npm": ">= 5.6.0 <= 6.0.0",
+    "yarn": ">= 1.7.0 <= 2.0.0"
+  },
+  "devDependencies": {
+    "lerna": "^2.11.0"
+  }
+}
