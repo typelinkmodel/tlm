@@ -1,2 +1,7 @@
 node_modules/
-yarn-error.log
+coverage/
+dist/
+*.log
+packages/*/node_modules/
+packages/*/coverage/
+packages/*/lib/
