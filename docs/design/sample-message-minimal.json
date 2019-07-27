@@ -1,0 +1,34 @@
+{
+  "namespaces": {
+    "default": "https://type.link.model.tools/ns/tlm/",
+    "tlm": "https://type.link.model.tools/ns/tlm/",
+    "message": "https://type.link.model.tools/ns/message/",
+    "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+  },
+  "type": "Message",
+  "id": "uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",
+  "message:subject": {
+    "type": "Fact",
+    "id": "mailto:leo@example.com",
+    "hr:coachedBy": { "id": "mailto:simon@example.com" }
+  },
+  "message:body": {
+    "type": "Set",
+    "value": [
+      { "type": "hr:Person", "id": "mailto:leo@example.com" },
+      { "type": "hr:Person", "id": "mailto:simon@example.com" },
+      { "type": "hr:Person", "id": "mailto:dirkx@example.com" },
+      { "type": "hr:Department", "id": "mailto:engineering@example.com" }
+    ]
+  },
+  "message:deliveries": {
+    "type": "Set",
+    "value": {
+      "type": "Delivery",
+      "message:from": { "id": "mailto:dirkx@example.com" },
+      "message:to": { "id": "mailto:hr-dept@example.com" },
+      "message:sent": { "type": "Instant", "value": "20180611T20:09:01Z" },
+      "message:received": { "type": "Instant", "value": "20180611T20:09:27Z" }
+    }
+  }
+}
