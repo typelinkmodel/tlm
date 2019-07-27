@@ -3,9 +3,10 @@ Type Link Model (TLM) Monorepo
 https://type.link.model.tools/
 
 Use
-    https://nodejs.org/
-    https://github.com/nodenv/nodenv
-    https://github.com/lerna/lerna
+    bash script/bootstrap.sh
+    bash script/setup.sh
+    bash script/server.sh
+    bash script/test.sh
 
 Follow
     https://conventionalcommits.org/

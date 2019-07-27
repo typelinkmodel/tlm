@@ -8,11 +8,9 @@
     "yarn": ">= 1.9.4 <= 2.0.0"
   },
   "devDependencies": {
-    "lerna": "^3.3.0"
+    "lerna": "^3.16.4"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }
