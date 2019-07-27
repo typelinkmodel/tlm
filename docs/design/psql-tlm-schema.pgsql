@@ -1,5 +1,3 @@
--- TODO: PSQL functions/procedures to make this file less copy/pasty
-
 -- basic table for managing schema migration
 CREATE TABLE schema_history (
   version       SERIAL PRIMARY KEY,
@@ -23,7 +21,7 @@ CREATE FUNCTION current_oid()
       SELECT currval(pg_get_serial_sequence('objects', 'oid'))
 $$;
 
-CREATE PROCEDURE create_object(object_type INTEGER)
+CREATE PROCEDURE insert_object(object_type INTEGER)
   LANGUAGE sql
   AS $$
     INSERT INTO objects (type) values (object_type);
@@ -45,7 +43,7 @@ CREATE TYPE namespace AS (
   description TEXT
 );
 
-CREATE FUNCTION select_ns_oid(ns_prefix VARCHAR)
+CREATE FUNCTION select_namespace_oid(ns_prefix VARCHAR)
   RETURNS INTEGER
   LANGUAGE sql
   STABLE
@@ -95,11 +93,11 @@ CREATE FUNCTION select_type_oid(type_ns VARCHAR, type_name VARCHAR)
   AS $$
       SELECT oid FROM types
         WHERE name = type_name
-        AND namespace = select_ns_oid(type_ns)
+        AND namespace = select_namespace_oid(type_ns)
         LIMIT 1
 $$;
 
-CREATE PROCEDURE create_object(type_ns VARCHAR, type_name VARCHAR)
+CREATE PROCEDURE insert_object(type_ns VARCHAR, type_name VARCHAR)
   LANGUAGE sql
   AS $$
     INSERT INTO objects (type) values (select_type_oid(type_ns, type_name));
@@ -130,23 +128,23 @@ INSERT INTO objects DEFAULT VALUES;
 INSERT INTO types (oid, namespace, name, description) VALUES
   (
     current_oid(),
-    select_ns_oid('tlm'),
+    select_namespace_oid('tlm'),
     'Namespace',
     'The special Type for Namespaces.'
   );
 -- update the objects for the namespaces to be of type Namespace
 UPDATE objects
     SET type = select_type_oid('Namespace')
-    WHERE oid = select_ns_oid('tlm');
+    WHERE oid = select_namespace_oid('tlm');
 UPDATE objects
     SET type = select_type_oid('Namespace')
-    WHERE oid = select_ns_oid('xdt');
+    WHERE oid = select_namespace_oid('xdt');
 
 INSERT INTO objects DEFAULT VALUES;
 INSERT INTO types (oid, namespace, name, description) VALUES
   (
     current_oid(),
-    select_ns_oid('tlm'),
+    select_namespace_oid('tlm'),
     'Type',
     'The special Type for Types (the meta-Type).'
   );
@@ -177,18 +175,18 @@ ALTER TABLE objects
 ALTER TABLE types
   ALTER COLUMN "super" SET NOT NULL;
 
-CREATE PROCEDURE register_type (
+CREATE PROCEDURE insert_type (
   ns           VARCHAR,
   name         VARCHAR,
   super_ns     VARCHAR,
   super        VARCHAR,
   description  VARCHAR
 ) LANGUAGE SQL AS $$
-    CALL create_object('tlm', 'Type');
+    CALL insert_object('tlm', 'Type');
     INSERT INTO types (oid, namespace, name, super, description) VALUES
       (
         current_oid(),
-        select_ns_oid(ns),
+        select_namespace_oid(ns),
         name,
         select_type_oid(super_ns, super),
         description
@@ -198,41 +196,41 @@ $$;
 CREATE PROCEDURE create_namespace(prefix VARCHAR, uri VARCHAR, description TEXT)
   LANGUAGE sql
   AS $$
-    CALL create_object('tlm', 'Namespace');
+    CALL insert_object('tlm', 'Namespace');
     INSERT INTO namespaces (oid, prefix, uri, description) VALUES
       (current_oid(), prefix, uri, description);
 $$;
 
 -- a ValueType is a simple Object that's just a value.
 -- It is represented as a column value or a value table.
-CALL register_type('tlm', 'ValueType', 'tlm', 'Type',
+CALL insert_type('tlm', 'ValueType', 'tlm', 'Type',
   'Simple kind of Object that is a simple primitive value.');
 
 -- a DataType is a ValueType from XML Schema.
-CALL register_type('xdt', 'DataType', 'tlm', 'ValueType',
+CALL insert_type('xdt', 'DataType', 'tlm', 'ValueType',
   'An XML Schema DataType compatible value.');
 
 -- a String is a DataType that's a primitive text value.
-CALL register_type('xdt', 'string', 'xdt', 'DataType',
+CALL insert_type('xdt', 'string', 'xdt', 'DataType',
   'A primitive text value.');
 
 -- an Integer is a kind of decimal number that doesn't allow fractions.
-CALL register_type('xdt', 'integer', 'xdt', 'DataType',
+CALL insert_type('xdt', 'integer', 'xdt', 'DataType',
   'A primitive integer value.');
 
 -- a Boolean is either True or False.
-CALL register_type('xdt', 'boolean', 'xdt', 'DataType',
+CALL insert_type('xdt', 'boolean', 'xdt', 'DataType',
   'A primitive boolean value.');
 
 -- a ID is a String that's used as an identifier.
 -- TODO should inherit NCName
-CALL register_type('xdt', 'ID', 'xdt', 'DataType',
+CALL insert_type('xdt', 'ID', 'xdt', 'DataType',
   'A string identifier.');
 
 -- TODO: should add all XML ValueTypes here
 
 -- a UUID is an ID that's a globally unique identifier following RFC 4122.
-CALL register_type('tlm', 'UUID', 'xdt', 'ID',
+CALL insert_type('tlm', 'UUID', 'xdt', 'ID',
   'A universally unique string identifier.');
 
 ---
@@ -261,10 +259,10 @@ CREATE TABLE links (
   -- todo check is_toggle means is_mandatory
 );
 
-CALL register_type('tlm', 'Link', 'tlm', 'Type',
+CALL insert_type('tlm', 'Link', 'tlm', 'Type',
   'A relation between types.');
 
-CREATE PROCEDURE create_link (
+CREATE PROCEDURE insert_link (
   from_type_name  VARCHAR,
   from_type_ns    VARCHAR,
   link_name       VARCHAR,
@@ -308,7 +306,7 @@ CREATE PROCEDURE create_link (
       );
 $$;
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Namespace',
   link_name      => 'prefix',
@@ -320,7 +318,7 @@ CALL create_link(
   description    => 'Shorthand identifier for the Namespace. Must be valid XML namespace prefix, i.e. match [a-z0-9]+.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Namespace',
   link_name      => 'description',
@@ -331,7 +329,7 @@ CALL create_link(
   description    => 'Friendly human-readable description of the Namespace.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Type',
   link_name      => 'type',
@@ -342,7 +340,7 @@ CALL create_link(
   description    => 'The Type of the Object itself.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Type',
   link_name      => 'namespace',
@@ -353,7 +351,7 @@ CALL create_link(
   description    => 'The namespace this Type belongs to.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Type',
   link_name      => 'super',
@@ -364,7 +362,7 @@ CALL create_link(
   description    => 'The supertype of this Type. It inherits all possible Links from its supertype.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Type',
   link_name      => 'name',
@@ -375,7 +373,7 @@ CALL create_link(
   description    => 'The name of the Type. Should be unique within a namespace.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Type',
   link_name      => 'description',
@@ -402,10 +400,10 @@ CREATE TYPE resolver AS (
   url VARCHAR
 );
 
-CALL register_type('tlm', 'Resolver', 'tlm', 'Type',
+CALL insert_type('tlm', 'Resolver', 'tlm', 'Type',
   'Can map URIs to URLs. Should implement I2Ls from RFC2483.');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Resolver',
   link_name      => 'prefix',
@@ -417,7 +415,7 @@ CALL create_link(
   description    => 'Shorthand identifier for the Namespace this resolver Resolves. Must be valid XML namespace prefix, i.e. match [a-z0-9]+.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Resolver',
   link_name      => 'url',
@@ -478,10 +476,10 @@ CREATE TABLE sets ( -- extends facts
 );
 
 
-CALL register_type('tlm', 'Fact', 'tlm', 'Type',
+CALL insert_type('tlm', 'Fact', 'tlm', 'Type',
   'A statement about an identified Object in the world considered to be true.');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Fact',
   link_name      => 'subject',
@@ -492,7 +490,7 @@ CALL create_link(
   description    => 'The object this fact is about.'
 );
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Fact',
   link_name      => 'link',
@@ -503,10 +501,10 @@ CALL create_link(
   description    => 'The kind of fact this is, defined by the kind of Link.'
 );
 
-CALL register_type('tlm', 'LinkFact', 'tlm', 'Fact',
+CALL insert_type('tlm', 'LinkFact', 'tlm', 'Fact',
   'A fact about an object its relation to another object.');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'LinkFact',
   link_name      => 'target',
@@ -517,10 +515,10 @@ CALL create_link(
   description    => 'The target object of this link fact.'
 );
 
-CALL register_type('tlm', 'ToggleFact', 'tlm', 'Fact',
+CALL insert_type('tlm', 'ToggleFact', 'tlm', 'Fact',
   'A fact about an object that is either true (defined) or false (absent).');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'ToggleFact',
   link_name      => 'toggle',
@@ -532,10 +530,10 @@ CALL create_link(
   description    => 'Whether the specific toggle is set or not for this Object.'
 );
 
-CALL register_type('tlm', 'ValueFact', 'tlm', 'Fact',
+CALL insert_type('tlm', 'ValueFact', 'tlm', 'Fact',
   'A fact about an object that relates to a primitive value.');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'ValueFact',
   link_name      => 'value',
@@ -547,10 +545,10 @@ CALL create_link(
   description    => 'The value for this Object.'
 );
 
-CALL register_type('tlm', 'Set', 'tlm', 'Fact',
+CALL insert_type('tlm', 'Set', 'tlm', 'Fact',
   'A collection of facts for an object for a particular kind of Link.');
 
-CALL create_link(
+CALL insert_link(
   from_type_ns   => 'tlm',
   from_type_name => 'Set',
   link_name      => 'target',
@@ -563,7 +561,7 @@ CALL create_link(
 INSERT INTO schema_history (description) VALUES ('TLM Core Schema');
 
 -- looking at the result...
-CREATE FUNCTION select_tlm_schema(max_description INTEGER DEFAULT 20)
+CREATE FUNCTION report_tlm_schema(max_description INTEGER DEFAULT 20)
   RETURNS TABLE (
     oid INTEGER,
     object_type VARCHAR,
@@ -632,4 +630,4 @@ CREATE FUNCTION select_tlm_schema(max_description INTEGER DEFAULT 20)
 
       ORDER BY o.oid ASC;
 $$;
-SELECT * FROM select_tlm_schema(40);
+SELECT * FROM report_tlm_schema(max_description => 40);
