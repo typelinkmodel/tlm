@@ -1,23 +1,24 @@
--- define the message namespace
-INSERT INTO objects (type) values
-  ((SELECT oid FROM types WHERE name = 'Namespace' LIMIT 1));
-INSERT INTO namespaces (oid, prefix, uri, description) VALUES
-  (
-    (SELECT currval(pg_get_serial_sequence('objects', 'oid'))),
-    'message',
-    'https://type.link.model.tools/ns/message/',
-    'Namespaces defining how to pass messages between systems.'
-  );
-
--- a Message is an Object which is about another object
-CREATE TABLE messages (
-  oid          INTEGER PRIMARY KEY
-      REFERENCES objects (oid)
-      ON DELETE CASCADE,
-  id           VARCHAR NOT NULL UNIQUE,
-  subject      INTEGER NOT NULL
-      REFERENCES facts (oid),
+CALL insert_namespace(
+   prefix      => 'hr',
+   uri         => 'https://type.link.model.tools/ns/tlm-sample-hr/',
+   description => 'Example namespace for a Human Resources model.'
 );
 
-INSERT INTO schema_history (description) VALUES
-    ('TLM Message Schema');
+CALL insert_type('tlm', 'Fact', 'tlm', 'Type',
+  'A statement about an identified Object in the world considered to be true.');
+
+CALL insert_link(
+  from_type_ns   => 'tlm',
+  from_type_name => 'Fact',
+  link_name      => 'subject',
+  to_type_ns     => 'tlm',
+  to_type_name   => 'Type',
+  is_singular    => TRUE,
+  is_mandatory   => TRUE,
+  description    => 'The object this fact is about.'
+);
+
+
+
+-- done with core schema
+INSERT INTO schema_history (description) VALUES ('TLM Core Schema');

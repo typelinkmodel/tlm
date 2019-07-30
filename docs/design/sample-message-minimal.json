@@ -1,9 +1,10 @@
 {
   "namespaces": {
     "default": "https://type.link.model.tools/ns/tlm/",
-    "tlm": "https://type.link.model.tools/ns/tlm/",
+    "xdt":     "https://www.w3.org/TR/xmlschema-2/",
+    "tlm":     "https://type.link.model.tools/ns/tlm/",
     "message": "https://type.link.model.tools/ns/message/",
-    "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+    "hr":      "https://type.link.model.tools/ns/tlm-sample-hr/"
   },
   "type": "Message",
   "id": "uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",

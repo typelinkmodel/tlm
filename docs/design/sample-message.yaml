@@ -1,0 +1,79 @@
+message:Message:
+  id:          uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e
+  namespaces:
+  - default:   https://type.link.model.tools/ns/tlm/
+  - xdt:       https://www.w3.org/TR/xmlschema-2/
+  - tlm:       https://type.link.model.tools/ns/tlm/
+  - message:   https://type.link.model.tools/ns/message/
+  - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
+  message:resolvers:
+  - mailto:    https://directory.example.com/person/
+  - mailto:    https://directory.example.com/department/
+  - mailto:    https://directory.example.com/team/
+  message:subject:
+    id:        mailto:leo@example.com
+    link:      hr:coachedBy
+    target:    mailto:simon@example.com
+  message:body:
+  - id:        mailto:leo@example.com
+    type:      hr:Person
+    facts:
+    - link:      tlm:name
+      value:     Leo Simons
+      valueType: xdt:string
+    - link:      hr:Department
+      target:    mailto:engineering@example.com
+    - link:      hr:teams
+      targets:
+        -        mailto:content-management-eng@example.com
+        -        mailto:transcoding-eng@example.com
+        -        mailto:eng-management@example.com
+  - id:        mailto:simon@example.com
+    type:      hr:Person
+    facts:
+    - link:      tlm:name
+      value:     Simon Lucy
+      valueType: xdt:string
+    - link:      hr:coachedBy
+      target:    mailto:dirkx@example.com
+    - link:      hr:teams
+      targets:
+      -          mailto:content-management-eng@example.com
+      -          mailto:transcoding-eng@example.com
+      -          mailto:eng-management@example.com
+    - link:      hr:coaches
+      value:     true
+      valuetype: xdt:boolean
+  - id:        mailto:dirkx@example.com
+    type:      hr:Person
+    facts:
+    - link:      tlm:name
+      value:     Dirk van Gulik
+      valueType: xdt:string
+  - id:        mailto:engineering@example.com
+    type:      hr:Department
+    facts:
+    - link:      tlm:name
+      value:     Engineering
+      valueType: xdt:string
+    - link:      hr:manager
+      target:    mailto:dirkx@example.com
+  - id:        mailto:hr@example.com
+    type:      hr:Department
+    facts:
+    - link:      tlm:name
+      value:     HR
+      valueType: xdt:string
+  message:deliveries:
+  - type:      message::Delivery
+    facts:
+    - link:      tlm:from
+      target:    mailto:simon@example.com
+    - link:      tlm:to
+      target:    mailto:hr-dept@example.com
+    - link:      tlm:sent
+      value:     20180611T20:09:01Z
+      valueType: xdt:timestamp
+    - link:      tlm:received
+      value:     20180611T20:09:27Z
+      valueType: xdt:timestamp

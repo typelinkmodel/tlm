@@ -1,9 +1,10 @@
 {
     "namespaces": {
         "default": "https://type.link.model.tools/ns/tlm/",
-        "tlm": "https://type.link.model.tools/ns/tlm/",
+        "xdt":     "https://www.w3.org/TR/xmlschema-2/",
+        "tlm":     "https://type.link.model.tools/ns/tlm/",
         "message": "https://type.link.model.tools/ns/message/",
-        "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+        "hr":      "https://type.link.model.tools/ns/tlm-sample-hr/"
     },
     "resolvers": {
         "mailto": [
@@ -12,80 +13,72 @@
             "https://directory.example.com/team/"
          ]
     },
-    "type": "Message",
+    "type": "message:Message",
     "id": "uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",
     "message:subject": {
-        "type": "Fact",
         "id": "mailto:leo@example.com",
-        "hr:coachedBy": { "id": "mailto:simon@example.com" }
+        "hr:coachedBy": "mailto:simon@example.com"
     },
-    "message:body": {
-        "type": "Set",
-        "value": [
-            {
-                "type": "hr:Person",
-                "id": "mailto:leo@example.com",
-                "name": { "type": "String", "value": "Leo Simons" },
-                "hr:department": { "id": "mailto:engineering@example.com" },
-                "hr:coachedBy": { "id": "mailto:simon@example.com" },
-                "hr:teams": {
-                    "type": "Set",
-                    "value": [
-                        { "type": "hr:Team", "id": "mailto:content-management-eng@example.com" },
-                        { "type": "hr:Team", "id": "mailto:transcoding-eng@example.com" },
-                        { "type": "hr:Team", "id": "mailto:eng-management@example.com" }
-                    ]
-                }
-            },
-            {
-                "type": "hr:Person",
-                "id": "mailto:simon@example.com",
-                "name": { "type": "String", "value": "Simon Lucy" },
-                "hr:department": { "id": "mailto:engineering@example.com" },
-                "hr:coachedBy": { "id": "mailto:dirkx@example.com" },
-                "hr:coaches": true
-            },
-            {
-                "type": "hr:Person",
-                "id": "mailto:dirkx@example.com",
-                "name": { "type": "String", "value": "Dirk van Gulik" }
-            },
-            {
-                "type": "hr:Department",
-                "id": "mailto:engineering@example.com",
-                "name": { "type": "String", "value": "Engineering" },
-                "hr:manager": { "id": "mailto:dirkx@example.com" }        
-            },
-            {
-                "type": "hr:Department",
-                "id": "mailto:hr-dept@example.com",
-                "name": { "type": "String", "value": "HR" }
-            },
-            {
-                "type": "hr:Team",
-                "id": "content-management-eng@example.com",
-                "name": { "type": "String", "value": "Content Management Engineering" }
-            },
-            {
-                "type": "hr:Team",
-                "id": "transcoding-eng@example.com",
-                "name": { "type": "String", "value": "Transcoding Engineering" }
-            },
-            {
-                "type": "hr:Team",
-                "id": "eng-management@example.com",
-                "name": { "type": "String", "value": "Engineering Management" }
-            }
-        ]
-    },
-    "message:deliveries": {
-        "type": "Set",
-        "value": {
-            "type": "Delivery",
-            "message:from": { "id": "mailto:dirkx@example.com" },
-            "message:to": { "id": "mailto:hr-dept@example.com" },
-            "message:sent": { "type": "Instant", "value": "20180611T20:09:01Z" },
-            "message:received": { "type": "Instant", "value": "20180611T20:09:27Z" }
+    "message:body": [
+        {
+            "type": "hr:Person",
+            "id": "mailto:leo@example.com",
+            "name": { "type": "String", "value": "Leo Simons" },
+            "hr:department": "mailto:engineering@example.com",
+            "hr:coachedBy": "mailto:simon@example.com",
+            "hr:teams": [
+                "mailto:content-management-eng@example.com",
+                "mailto:transcoding-eng@example.com",
+                "mailto:eng-management@example.com"
+            ]
+        },
+        {
+            "type": "hr:Person",
+            "id": "mailto:simon@example.com",
+            "name": { "type": "String", "value": "Simon Lucy" },
+            "hr:department": "mailto:engineering@example.com",
+            "hr:coachedBy": "mailto:dirkx@example.com",
+            "hr:coaches": true
+        },
+        {
+            "type": "hr:Person",
+            "id": "mailto:dirkx@example.com",
+            "name": { "type": "String", "value": "Dirk van Gulik" }
+        },
+        {
+            "type": "hr:Department",
+            "id": "mailto:engineering@example.com",
+            "name": { "type": "String", "value": "Engineering" },
+            "hr:manager": "mailto:dirkx@example.com"        
+        },
+        {
+            "type": "hr:Department",
+            "id": "mailto:hr-dept@example.com",
+            "name": { "type": "String", "value": "HR" }
+        },
+        {
+            "type": "hr:Team",
+            "id": "content-management-eng@example.com",
+            "name": { "type": "String", "value": "Content Management Engineering" }
+        },
+        {
+            "type": "hr:Team",
+            "id": "transcoding-eng@example.com",
+            "name": { "type": "String", "value": "Transcoding Engineering" }
+        },
+        {
+            "type": "hr:Team",
+            "id": "eng-management@example.com",
+            "name": { "type": "String", "value": "Engineering Management" }
         }
-    }
+    ],
+    "message:deliveries": [
+        {
+            "type": "Delivery",
+            "message:from": "mailto:dirkx@example.com",
+            "message:to": "mailto:hr-dept@example.com",
+            "message:sent": { "type": "xdt:dateTime", "value": "20180611T20:09:01Z" },
+            "message:received": { "type": "xdt:dateTime", "value": "20180611T20:09:27Z" }
+        }
+    ]
 }

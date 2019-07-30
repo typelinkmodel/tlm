@@ -8,5 +8,10 @@ function run_sql() {
     docker exec -i "$POSTGRES_CONTAINER" psql -a -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$1" < $2
 }
 
-run_sql postgres docs/design/psql-tlm-db.pgsql
-run_sql "$POSTGRES_DB" docs/design/psql-tlm-schema.pgsql
+for s in `ls packages/tlm-core-model/sql/*.pgsql`; do
+    if [[ "${s}" == *db.pgsql ]]; then
+        run_sql postgres "$s"
+    else
+        run_sql "$POSTGRES_DB" "$s"
+    fi
+done
