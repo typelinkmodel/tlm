@@ -5,3 +5,4 @@ dist/
 packages/*/node_modules/
 packages/*/coverage/
 packages/*/lib/
+.idea/
