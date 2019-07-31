@@ -21,4 +21,9 @@ POSTGRES_CONTAINER="$ENV-$USER-psql-tlm"
 POSTGRES_IMAGE="postgres"
 
 # shellcheck disable=SC2034
+PGTAP_CONTAINER="$ENV-$USER-pstap-tlm"
+# shellcheck disable=SC2034
+PGTAP_IMAGE="hbpmip/pgtap"
+
+# shellcheck disable=SC2034
 NODE_VERSION="10.16.0"

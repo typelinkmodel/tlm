@@ -42,7 +42,7 @@ function log() {
 }
 
 function info() {
-    log "${GREEN}${*}${GREEN}"
+    log "${GREEN}${*}${RESET}"
 }
 
 function warn() {
