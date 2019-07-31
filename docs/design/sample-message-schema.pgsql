@@ -8,14 +8,14 @@ CALL insert_type('tlm', 'Fact', 'tlm', 'Type',
   'A statement about an identified Object in the world considered to be true.');
 
 CALL insert_link(
-  from_type_ns   => 'tlm',
-  from_type_name => 'Fact',
-  link_name      => 'subject',
-  to_type_ns     => 'tlm',
-  to_type_name   => 'Type',
+  from_type_ns        => 'tlm',
+  from_type_name      => 'Fact',
+  link_name           => 'subject',
+  to_type_ns          => 'tlm',
+  to_type_name        => 'Type',
   is_singular    => TRUE,
   is_mandatory   => TRUE,
-  description    => 'The object this fact is about.'
+  description         => 'The object this fact is about.'
 );
 
 

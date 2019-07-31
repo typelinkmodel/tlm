@@ -11,8 +11,10 @@ CREATE FUNCTION tlm__report_schema(max_description INTEGER DEFAULT 20)
     link_from VARCHAR,
     link_name VARCHAR,
     link_to VARCHAR,
-    s BOOLEAN,
-    m BOOLEAN,
+    sf BOOLEAN,
+    mf BOOLEAN,
+    st BOOLEAN,
+    mt BOOLEAN,
     v BOOLEAN,
     t BOOLEAN,
     p BOOLEAN,
@@ -37,8 +39,10 @@ CREATE FUNCTION tlm__report_schema(max_description INTEGER DEFAULT 20)
         CASE WHEN l_to.name IS NULL THEN NULL
             ELSE CONCAT(l_to_n.prefix, ':', l_to.name)
         END AS link_to,
-        l.is_singular AS s,
-        l.is_mandatory AS m,
+        l.is_singular_from AS sf,
+        l.is_mandatory_from AS mf,
+        l.is_singular_to AS st,
+        l.is_mandatory_to AS mt,
         l.is_value AS v,
         l.is_toggle AS t,
         l.is_primary_id AS p,
@@ -75,4 +79,4 @@ $$;
 
 COMMIT;
 
-SELECT * FROM tlm__report_schema(max_description => 40);
+SELECT * FROM tlm__report_schema(max_description => 20);

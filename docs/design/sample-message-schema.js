@@ -18,7 +18,7 @@ const sample = {
     // ideally the ID is a URI using a well-known scheme
     // ideally the ID is a business key that means something in a domain
     // when no business key can be used, UUIDs are a good choice
-    "id": "uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",
+    "id": "urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",
 
     // besides a "type" and an "id", objects that are not of a value type
     // have 0 or more links to other objects

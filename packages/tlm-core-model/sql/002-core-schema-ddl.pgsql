@@ -117,13 +117,13 @@ INSERT INTO tlm__namespaces (oid, prefix, uri, description) VALUES
     'The Core TLM namespace.'
   );
 
--- define the xdt namespace
+-- define the xs namespace
 INSERT INTO tlm__objects DEFAULT VALUES;
 INSERT INTO tlm__namespaces (oid, prefix, uri, description) VALUES
   (
     tlm__current_oid(),
-    'xdt',
-    'https://www.w3.org/TR/xmlschema-2/',
+    'xs',
+    'http://www.w3.org/2001/XMLSchema',
     'Namespaces for XML Schema DataTypes.'
   );
 
@@ -142,7 +142,7 @@ UPDATE tlm__objects
     WHERE oid = tlm__select_namespace_oid('tlm');
 UPDATE tlm__objects
     SET type = tlm__select_type_oid('Namespace')
-    WHERE oid = tlm__select_namespace_oid('xdt');
+    WHERE oid = tlm__select_namespace_oid('xs');
 
 INSERT INTO tlm__objects DEFAULT VALUES;
 INSERT INTO tlm__types (oid, namespace, name, description) VALUES
