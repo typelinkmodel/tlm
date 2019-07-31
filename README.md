@@ -3,13 +3,15 @@ Type Link Model (TLM) Monorepo
 https://type.link.model.tools/
 
 Use
+```bash
     bash script/bootstrap.sh
     bash script/setup.sh
     bash script/server.sh
     bash script/test.sh
+```
 
 Follow
-    https://conventionalcommits.org/
+> https://conventionalcommits.org/
 
 with types:
 * build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)

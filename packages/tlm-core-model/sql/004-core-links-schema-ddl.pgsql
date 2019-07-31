@@ -44,6 +44,7 @@ CREATE TYPE tlm__link AS (
   description        TEXT
 );
 
+-- noinspection SqlUnused
 CREATE PROCEDURE tlm__insert_link (
   from_type_ns       VARCHAR,
   from_type_name     VARCHAR,

@@ -12,9 +12,9 @@ CREATE TABLE message__resolvers (
 );
 
 CREATE TYPE message__resolver AS (
-  oid INTEGER,
-  prefix VARCHAR,
-  url VARCHAR
+  oid     INTEGER,
+  prefix  VARCHAR,
+  url     VARCHAR
 );
 
 CREATE TABLE message__actors (
@@ -40,9 +40,9 @@ CREATE TABLE message__messages (
 );
 
 CREATE TYPE message__message AS (
-  oid INTEGER,
-  id VARCHAR,
-  subject INTEGER
+  oid      INTEGER,
+  id       VARCHAR,
+  subject  INTEGER
 );
 
 CREATE TABLE message__message__resolvers (
@@ -83,12 +83,12 @@ CREATE TABLE message__deliveries (
 );
 
 CREATE TYPE message__delivery AS (
-  oid INTEGER,
-  message INTEGER,
-  "from" INTEGER,
-  "to" INTEGER,
-  sent TIMESTAMP,
-  received TIMESTAMP
+  oid       INTEGER,
+  message   INTEGER,
+  "from"    INTEGER,
+  "to"      INTEGER,
+  sent      TIMESTAMP,
+  received  TIMESTAMP
 );
 
 COMMIT;

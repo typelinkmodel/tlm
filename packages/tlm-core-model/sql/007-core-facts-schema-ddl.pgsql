@@ -42,10 +42,10 @@ CREATE TABLE tlm__link_fact_sets ( -- extends tlm__facts
 );
 
 CREATE TYPE tlm__link_fact AS (
-  oid INTEGER,
-  subject INTEGER,
-  link INTEGER,
-  target INTEGER
+  oid      INTEGER,
+  subject  INTEGER,
+  link     INTEGER,
+  target   INTEGER
 );
 
 CREATE TABLE tlm__toggle_facts ( -- extends tlm__facts
@@ -56,10 +56,10 @@ CREATE TABLE tlm__toggle_facts ( -- extends tlm__facts
 );
 
 CREATE TYPE tlm__toggle_fact AS (
-  oid INTEGER,
-  subject INTEGER,
-  link INTEGER,
-  toggle BOOLEAN
+  oid      INTEGER,
+  subject  INTEGER,
+  link     INTEGER,
+  toggle   BOOLEAN
 );
 
 CREATE TABLE tlm__value_facts ( -- extends tlm__facts
@@ -85,11 +85,11 @@ CREATE TABLE tlm__value_fact_sets ( -- extends tlm__facts
 );
 
 CREATE TYPE tlm__value_fact AS (
-  oid INTEGER,
-  subject INTEGER,
-  link INTEGER,
-  value TEXT,
-  value_type INTEGER
+  oid         INTEGER,
+  subject     INTEGER,
+  link        INTEGER,
+  value       TEXT,
+  value_type  INTEGER
 );
 
 COMMIT;

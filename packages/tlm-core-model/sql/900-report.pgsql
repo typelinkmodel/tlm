@@ -23,34 +23,34 @@ CREATE FUNCTION tlm__report_schema(max_description INTEGER DEFAULT 20)
   LANGUAGE sql
   AS $$
     SELECT
-        DISTINCT(o.oid) AS oid,
-        CONCAT(t_n.prefix, ':', t.name) AS object_type,
-        n.prefix AS ns_prefix,
+        DISTINCT(o.oid)                  AS oid,
+        CONCAT(t_n.prefix, ':', t.name)  AS object_type,
+        n.prefix                         AS ns_prefix,
         CASE WHEN t2.name IS NULL THEN NULL
             ELSE CONCAT(t2_n.prefix, ':', t2.name)
-        END AS type_name,
+        END                              AS type_name,
         CASE WHEN t3.name IS NULL THEN NULL
             ELSE CONCAT(t3_n.prefix, ':', t3.name)
-        END AS parent_type,
+        END                              AS parent_type,
         CASE WHEN l_from.name IS NULL THEN NULL
             ELSE CONCAT(l_from_n.prefix, ':', l_from.name)
-        END AS link_from,
-        l.name link_name,
+        END                              AS link_from,
+        l.name                           AS link_name,
         CASE WHEN l_to.name IS NULL THEN NULL
             ELSE CONCAT(l_to_n.prefix, ':', l_to.name)
-        END AS link_to,
-        l.is_singular_from AS sf,
-        l.is_mandatory_from AS mf,
-        l.is_singular_to AS st,
-        l.is_mandatory_to AS mt,
-        l.is_value AS v,
-        l.is_toggle AS t,
-        l.is_primary_id AS p,
+        END                              AS link_to,
+        l.is_singular_from               AS sf,
+        l.is_mandatory_from              AS mf,
+        l.is_singular_to                 AS st,
+        l.is_mandatory_to                AS mt,
+        l.is_value                       AS v,
+        l.is_toggle                      AS t,
+        l.is_primary_id                  AS p,
         CASE WHEN t2.name IS NOT NULL THEN substring(t2.description from 0 for max_description)
             WHEN n.prefix IS NOT NULL THEN substring(n.description from 0 for max_description)
             WHEN l.name IS NOT NULL THEN substring(l.description from 0 for max_description)
             ELSE NULL
-        END AS description
+        END                              AS description
       FROM tlm__objects o
       LEFT OUTER JOIN tlm__types t              ON o.type = t.oid
       LEFT OUTER JOIN tlm__namespaces t_n       ON t.namespace = t_n.oid
@@ -74,7 +74,7 @@ CREATE FUNCTION tlm__report_schema(max_description INTEGER DEFAULT 20)
         tlm__select_type_oid('tlm', 'Link')
       )
 
-      ORDER BY o.oid ASC;
+      ORDER BY o.oid;
 $$;
 
 COMMIT;

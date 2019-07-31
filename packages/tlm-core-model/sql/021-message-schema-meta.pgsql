@@ -94,7 +94,7 @@ CALL tlm__insert_link(
   link_name           => 'subject',
   to_type_ns          => 'message',
   to_type_name        => 'Resolver',
-  description         => 'A resolver to use to derefences ids used in the Message.'
+  description         => 'A resolver to use to dereference ids used in the Message.'
 );
 
 CALL tlm__insert_link(
@@ -140,7 +140,7 @@ CALL tlm__insert_link(
   link_name           => 'to',
   to_type_ns          => 'message',
   to_type_name        => 'Actor',
-  to_name             => 'reciever',
+  to_name             => 'receiver',
   is_singular_from    => TRUE,
   is_mandatory_from   => TRUE,
   description         => 'The recipient of the Message.'

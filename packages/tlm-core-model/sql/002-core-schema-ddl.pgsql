@@ -13,7 +13,7 @@ INSERT INTO tlm__schema_history (description) VALUES ('TLM Core Schema: DDL');
 CREATE TABLE tlm__objects (
   oid     SERIAL PRIMARY KEY,
   "type"  INTEGER DEFAULT NULL
-  -- type will get its contraints momentarily after the Type type is defined
+  -- type will get its constraints momentarily after the Type type is defined
 );
 CREATE TYPE tlm__object AS (oid INTEGER, type VARCHAR);
 
@@ -28,23 +28,23 @@ $$;
 CREATE PROCEDURE tlm__insert_object(object_type INTEGER)
   LANGUAGE sql
   AS $$
-    INSERT INTO tlm__objects (type) values (object_type);
+      INSERT INTO tlm__objects (type) values (object_type);
 $$;
 
 -- a Namespace is a special Object that groups Types
 CREATE TABLE tlm__namespaces (
-  oid     INTEGER PRIMARY KEY
+  oid          INTEGER PRIMARY KEY
       REFERENCES tlm__objects (oid)
       ON DELETE CASCADE,
-  prefix  VARCHAR NOT NULL UNIQUE,
-  uri     VARCHAR NOT NULL UNIQUE,
-  description TEXT DEFAULT NULL
+  prefix       VARCHAR NOT NULL UNIQUE,
+  uri          VARCHAR NOT NULL UNIQUE,
+  description  TEXT DEFAULT NULL
 );
 CREATE TYPE tlm__namespace AS (
-  oid INTEGER,
-  prefix VARCHAR,
-  uri VARCHAR,
-  description TEXT
+  oid          INTEGER,
+  prefix       VARCHAR,
+  uri          VARCHAR,
+  description  TEXT
 );
 
 CREATE FUNCTION tlm__select_namespace_oid(ns_prefix VARCHAR)
@@ -74,11 +74,11 @@ CREATE TABLE tlm__types (
   UNIQUE (namespace, name)
 );
 CREATE TYPE "tlm__type" AS (
-  oid INTEGER,
-  namespace INTEGER,
-  name VARCHAR,
-  super INTEGER,
-  description TEXT
+  oid          INTEGER,
+  namespace    INTEGER,
+  name         VARCHAR,
+  super        INTEGER,
+  description  TEXT
 );
 
 CREATE FUNCTION tlm__select_type_oid(type_name VARCHAR)
@@ -104,7 +104,7 @@ $$;
 CREATE PROCEDURE tlm__insert_object(type_ns VARCHAR, type_name VARCHAR)
   LANGUAGE sql
   AS $$
-    INSERT INTO tlm__objects (type) values (tlm__select_type_oid(type_ns, type_name));
+      INSERT INTO tlm__objects (type) values (tlm__select_type_oid(type_ns, type_name));
 $$;
 
 -- define the tlm namespace
@@ -179,6 +179,7 @@ ALTER TABLE tlm__objects
 ALTER TABLE tlm__types
   ALTER COLUMN "super" SET NOT NULL;
 
+-- noinspection SqlUnused
 CREATE PROCEDURE tlm__insert_type (
   ns           VARCHAR,
   name         VARCHAR,
@@ -197,6 +198,7 @@ CREATE PROCEDURE tlm__insert_type (
       );
 $$;
 
+-- noinspection SqlUnused
 CREATE PROCEDURE tlm__insert_namespace(prefix VARCHAR, uri VARCHAR, description TEXT)
   LANGUAGE sql
   AS $$
