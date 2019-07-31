@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # script recording original project set up
 
 echo "Do not run me"

@@ -14,6 +14,7 @@ shopt -s globstar
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$SCRIPT_DIR/.."
+#shellcheck source=settings.sh
 source "$SCRIPT_DIR/settings.sh"
 
 UNDERLINE=""
@@ -26,7 +27,7 @@ YELLOW=""
 if test -t 1; then
     ncolors="$(tput colors)"
 
-    if test -n "$ncolors" && test $ncolors -ge 8; then
+    if test -n "$ncolors" && test "$ncolors" -ge 8; then
         UNDERLINE="$(tput smul)"
         NO_UNDERLINE="$(tput rmul)"
         RESET="$(tput sgr0)"
@@ -40,16 +41,20 @@ function log() {
     printf "%s\n" "$*" >&2;
 }
 
+function info() {
+    log "${GREEN}${*}${GREEN}"
+}
+
 function warn() {
-    log "${YELLOW}${@}${RESET}"
+    log "${YELLOW}${*}${RESET}"
 }
 
 function error() {
-    log "${RED}${@}${RESET}"
+    log "${RED}${*}${RESET}"
 }
 
 function errexit() {
-    log "${RED}${@}${RESET}"
+    log "${RED}${*}${RESET}"
     exit 127
 }
 
@@ -78,6 +83,7 @@ case "$(uname -s)" in
         ;;
     *)
         warn "Unrecognized OS ${UNDERLINE}$(uname -s)${NO_UNDERLINE}!"
+        # shellcheck disable=SC2034
         OS="Linux"
         ;;
 esac

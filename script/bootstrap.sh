@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+#shellcheck source=common.sh
 source "$SCRIPT_DIR/common.sh"
 
 MISSING_DEPENDENCY=0
@@ -8,7 +9,6 @@ MISSING_DEPENDENCY=0
 function require_by_platform() {
     cmd="$1"
     type="$(type -t "$cmd" || true)"
-    shift
     if [ -z "$type" ]; then
         error "Missing dependency ${UNDERLINE}${cmd}${NO_UNDERLINE}!"
         instr=""
@@ -19,10 +19,10 @@ function require_by_platform() {
           RedHat)
             instr="$3"
             ;;
-          Mac)
+          Windows)
             instr="$4"
             ;;
-          Windows)
+          Mac)
             instr="$5"
             ;;
         esac
@@ -59,10 +59,12 @@ function load_nvm() {
     if [ ! -s "$NVM_DIR/nvm.sh" ]; then
         return
     fi
+    # shellcheck disable=SC1090
     source "$NVM_DIR/nvm.sh"
 }
 load_nvm
 
+info "Checking requirements…"
 require_by_platform git \
   "apt install git" \
   "yum install git" \
@@ -76,8 +78,14 @@ require_by_platform docker \
 require_by_platform psql \
   "apt install postgresql-client-common" \
   "https://www.postgresql.org/download/linux/redhat/" \
-  "brew install libpq && brew link --force libpq" \
-  "https://www.enterprisedb.com/downloads/postgres-postgresql-downloads"
+  "https://www.enterprisedb.com/downloads/postgres-postgresql-downloads" \
+  "brew install libpq && brew link --force libpq"
+require_by_platform shellcheck \
+  "apt install shellcheck" \
+  "yum install ShellCheck" \
+  "choco install shellcheck" \
+  "brew install shellcheck"
+
 require node "nvm install ${NODE_VERSION}"
 require npm "nvm install ${NODE_VERSION}"
 require lerna "npm install -g lerna"
@@ -85,4 +93,5 @@ require yarn "npm install -g yarn"
 
 exit_if_missing_dependencies
 
+info "Running lerna bootstrap…"
 lerna bootstrap
