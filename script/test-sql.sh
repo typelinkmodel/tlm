@@ -24,8 +24,5 @@ docker run -it --rm \
     -e "HOST=db" \
     -e "PORT=5432" \
     -e "TESTS=/test/${PGTAP_TESTS_PATTERN}" \
-    "$PGTAP_IMAGE"
-
-# restore pgtap...
-# todo: custom docker image that doesn't uninstall
-source "script/setup-postgres-pgtap.sh"
+    "$PGTAP_IMAGE" \
+    -a -k

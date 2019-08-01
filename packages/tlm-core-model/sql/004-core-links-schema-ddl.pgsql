@@ -21,10 +21,26 @@ CREATE TABLE tlm__links (
   is_primary_id      BOOLEAN NOT NULL DEFAULT FALSE,
   description        TEXT DEFAULT NULL,
 
-  UNIQUE (from_type, to_type, name)
-
-  -- todo check is_toggle != is_value
-  -- todo check is_toggle means is_mandatory
+  UNIQUE (from_type, to_type, name),
+  CHECK (
+      CASE WHEN is_toggle THEN
+          is_value
+          AND is_singular_from
+          AND is_mandatory_from
+          AND NOT is_singular_to
+          AND NOT is_mandatory_to
+          AND NOT is_primary_id
+      ELSE
+          TRUE
+      END),
+  CHECK (
+      CASE WHEN is_primary_id THEN
+          is_singular_from
+          AND is_mandatory_from
+          AND is_value
+      ELSE
+          TRUE
+      END)
 );
 
 CREATE TYPE tlm__link AS (
@@ -75,6 +91,7 @@ CREATE PROCEDURE tlm__insert_link (
         is_singular_to,
         is_mandatory_from,
         is_mandatory_to,
+        is_toggle,
         is_value,
         is_primary_id,
         description
@@ -89,6 +106,7 @@ CREATE PROCEDURE tlm__insert_link (
         is_singular_to,
         is_mandatory_from,
         is_mandatory_to,
+        is_toggle,
         is_value,
         is_primary_id,
         description

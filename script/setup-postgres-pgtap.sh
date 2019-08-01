@@ -12,10 +12,13 @@ fi
 docker run -i --rm \
     --name "$PGTAP_CONTAINER" \
     --link "$POSTGRES_CONTAINER:db" \
-    --entrypoint "/usr/bin/psql" \
-    -e "PGPASSWORD=$POSTGRES_PASSWORD" \
-    "$PGTAP_IMAGE" \
-    -h db -p 5432 -d "$POSTGRES_DB" -U "$POSTGRES_USER" -f /pgtap/sql/pgtap.sql -q >/dev/null 2>&1
+    --entrypoint "/install.sh" \
+    -e "USER=$POSTGRES_USER" \
+    -e "PASSWORD=$POSTGRES_PASSWORD" \
+    -e "DATABASE=$POSTGRES_DB" \
+    -e "HOST=db" \
+    -e "PORT=5432" \
+    "$PGTAP_IMAGE"
 
 if [[ "$OS" == "Windows" ]]; then
     export MSYS_NO_PATHCONV=

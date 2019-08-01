@@ -40,7 +40,7 @@ function wait_for_psql() {
     echo
 }
 
-info "Setting up database schema $POSTGRES_CONTAINER/$1…"
+info "Setting up database schema $POSTGRES_CONTAINER/$POSTGRES_DB…"
 
 wait_for_tcp localhost "${POSTGRES_PORT}"
 wait_for_psql

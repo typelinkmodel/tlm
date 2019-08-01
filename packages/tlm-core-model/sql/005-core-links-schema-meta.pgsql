@@ -69,6 +69,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_value            => TRUE,
   is_mandatory_from   => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether there can be a single link like this for the "from" type.'
 );
 
@@ -81,6 +82,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_value            => TRUE,
   is_mandatory_from   => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether there has to be a value for the "from" type.'
 );
 
@@ -93,6 +95,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_value            => TRUE,
   is_mandatory_from   => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether this is a simple boolean link.'
 );
 
@@ -105,6 +108,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_value            => TRUE,
   is_mandatory_from   => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether this link is to a ValueType.'
 );
 
@@ -117,6 +121,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_value            => TRUE,
   is_mandatory_from   => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether this link is to a primary identifier.'
 );
 

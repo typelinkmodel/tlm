@@ -51,6 +51,7 @@ CALL tlm__insert_link(
   is_singular_from    => TRUE,
   is_mandatory_from   => TRUE,
   is_value            => TRUE,
+  is_toggle           => TRUE,
   description         => 'Whether the specific toggle is set or not for this Object.'
 );
 
