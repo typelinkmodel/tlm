@@ -69,7 +69,7 @@ function load_nvm() {
 }
 load_nvm
 
-info "Checking requirements…"
+info "Checking requirements are met…"
 require_by_platform git \
   "apt install git" \
   "yum install git" \

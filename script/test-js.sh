@@ -5,4 +5,6 @@ cd "$SCRIPT_DIR/.." || exit 127
 source "script/common.sh"
 
 info "Running js unit tests…"
-lerna run test
+# invoking node directly so lerna has good chance of knowing its environment on windows
+node node_modules/lerna/cli.js run prepare
+node node_modules/lerna/cli.js run test
