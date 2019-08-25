@@ -13,12 +13,6 @@ CREATE TABLE tlm__facts (
       ON DELETE CASCADE
 );
 
-CREATE TYPE tlm__fact AS (
-  oid INTEGER,
-  subject INTEGER,
-  link INTEGER
-);
-
 CREATE TABLE tlm__link_facts ( -- extends tlm__facts
   -- for singular links
   oid            INTEGER PRIMARY KEY
@@ -41,25 +35,11 @@ CREATE TABLE tlm__link_fact_sets ( -- extends tlm__facts
   PRIMARY KEY (oid, target)
 );
 
-CREATE TYPE tlm__link_fact AS (
-  oid      INTEGER,
-  subject  INTEGER,
-  link     INTEGER,
-  target   INTEGER
-);
-
 CREATE TABLE tlm__toggle_facts ( -- extends tlm__facts
   oid            INTEGER PRIMARY KEY
       REFERENCES tlm__facts (oid)
       ON DELETE CASCADE,
   toggle         BOOLEAN NOT NULL
-);
-
-CREATE TYPE tlm__toggle_fact AS (
-  oid      INTEGER,
-  subject  INTEGER,
-  link     INTEGER,
-  toggle   BOOLEAN
 );
 
 CREATE TABLE tlm__value_facts ( -- extends tlm__facts
@@ -82,14 +62,6 @@ CREATE TABLE tlm__value_fact_sets ( -- extends tlm__facts
       REFERENCES tlm__types (oid),
   
   PRIMARY KEY (oid, value, value_type)
-);
-
-CREATE TYPE tlm__value_fact AS (
-  oid         INTEGER,
-  subject     INTEGER,
-  link        INTEGER,
-  value       TEXT,
-  value_type  INTEGER
 );
 
 COMMIT;

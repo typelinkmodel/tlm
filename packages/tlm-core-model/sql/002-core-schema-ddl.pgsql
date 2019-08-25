@@ -15,7 +15,6 @@ CREATE TABLE tlm__objects (
   "type"  INTEGER DEFAULT NULL
   -- type will get its constraints momentarily after the Type type is defined
 );
-CREATE TYPE tlm__object AS (oid INTEGER, type VARCHAR);
 
 CREATE FUNCTION tlm__current_oid()
   RETURNS BIGINT
@@ -39,12 +38,6 @@ CREATE TABLE tlm__namespaces (
   prefix       VARCHAR NOT NULL UNIQUE,
   uri          VARCHAR NOT NULL UNIQUE,
   description  TEXT DEFAULT NULL
-);
-CREATE TYPE tlm__namespace AS (
-  oid          INTEGER,
-  prefix       VARCHAR,
-  uri          VARCHAR,
-  description  TEXT
 );
 
 CREATE FUNCTION tlm__select_namespace_oid(ns_prefix VARCHAR)
@@ -72,13 +65,6 @@ CREATE TABLE tlm__types (
   description TEXT DEFAULT NULL,
 
   UNIQUE (namespace, name)
-);
-CREATE TYPE "tlm__type" AS (
-  oid          INTEGER,
-  namespace    INTEGER,
-  name         VARCHAR,
-  super        INTEGER,
-  description  TEXT
 );
 
 CREATE FUNCTION tlm__select_type_oid(type_name VARCHAR)

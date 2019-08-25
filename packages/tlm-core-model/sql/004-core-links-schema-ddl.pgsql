@@ -43,23 +43,6 @@ CREATE TABLE tlm__links (
       END)
 );
 
-CREATE TYPE tlm__link AS (
-  oid                INTEGER,
-  from_type          INTEGER,
-  to_type            INTEGER,
-  name               VARCHAR,
-  from_name          VARCHAR,
-  to_name            VARCHAR,
-  is_singular_from   BOOLEAN,
-  is_singular_to     BOOLEAN,
-  is_mandatory_from  BOOLEAN,
-  is_mandatory_to    BOOLEAN,
-  is_toggle          BOOLEAN,
-  is_value           BOOLEAN,
-  is_primary_id      BOOLEAN,
-  description        TEXT
-);
-
 -- noinspection SqlUnused
 CREATE PROCEDURE tlm__insert_link (
   from_type_ns       VARCHAR,
