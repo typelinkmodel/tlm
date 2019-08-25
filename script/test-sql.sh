@@ -25,4 +25,5 @@ docker run -it --rm \
     -e "PORT=5432" \
     -e "TESTS=/test/${PGTAP_TESTS_PATTERN}" \
     "$PGTAP_IMAGE" \
+    /test.sh \
     -a -k
