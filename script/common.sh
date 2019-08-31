@@ -29,6 +29,7 @@ if [[ "${__COMMON_LOADED:-}" != "1" ]]; then
     cli_settings "$@"
 
     if [[ -f "script/settings-local.sh" ]]; then
+        # shellcheck disable=SC1091
         source "script/settings-local.sh"
         cli_settings "$@" # re-override
     fi
