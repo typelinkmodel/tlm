@@ -85,3 +85,5 @@ require node "nvm install ${NODE_VERSION}"
 require npm "nvm install ${NODE_VERSION}"
 require lerna "npm install -g lerna"
 require yarn "npm install -g yarn"
+
+exit_if_missing_dependencies
