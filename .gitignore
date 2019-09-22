@@ -7,3 +7,5 @@ packages/*/coverage/
 packages/*/lib/
 .idea/
 /script/settings-local.sh
+/pnpm-lock.yaml
+**/package-lock.json

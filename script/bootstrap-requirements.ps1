@@ -31,8 +31,7 @@ Test-Command-Available docker
 Test-Command-Available node
 # Test-Command-Available nvm
 
-Install-Node-Library lerna
-Install-Node-Library yarn
+Install-Node-Library pnpm
 
 Install-Module "PSScriptAnalyzer"
 

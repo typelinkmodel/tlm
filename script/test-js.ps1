@@ -11,6 +11,6 @@ $LernaScript = Join-Path `
     -ChildPath lerna `
     -AdditionalChildPath cli.js
 
-node $LernaScript run prepare
-node $LernaScript run lint
-node $LernaScript run test
+pnpm run -r prepare
+pnpm run -r lint
+pnpm run -r test

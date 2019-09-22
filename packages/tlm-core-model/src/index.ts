@@ -1,3 +1,5 @@
-const hello: string = "Hello, World!";
+export const hello: string = "Hello, World!";
 
-export default hello;
+export function foo(): string {
+    return "foo";
+}

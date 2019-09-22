@@ -10,7 +10,7 @@ Write-Notice "Bootstrapping tools…"
 Push-Location $WorkDir
 try
 {
-    lerna bootstrap
+    pnpm install -r
 }
 finally
 {
