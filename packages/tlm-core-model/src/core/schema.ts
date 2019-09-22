@@ -16,15 +16,12 @@ export class TlmObject {
     }
 }
 
-export class TlmNamespace {
-    private readonly _oid: number;
+export class TlmNamespace extends TlmObject {
+    public static readonly NAMESPACE_TYPE = 3;
+
     private readonly _prefix: string;
     private readonly _uri: string;
     private readonly _description: string;
-
-    get oid(): number {
-        return this._oid;
-    }
 
     get prefix(): string {
         return this._prefix;
@@ -39,23 +36,20 @@ export class TlmNamespace {
     }
 
     constructor(oid: number, prefix: string, uri: string, description: string) {
-        this._oid = oid;
+        super(oid, TlmNamespace.NAMESPACE_TYPE);
         this._prefix = prefix;
         this._uri = uri;
         this._description = description;
     }
 }
 
-export class TlmType {
-    private readonly _oid: number;
+export class TlmType extends TlmObject {
+    public static readonly TYPE_TYPE = 4;
+
     private readonly _namespace: number;
     private readonly _name: string;
     private readonly _superType: number;
     private readonly _description: string;
-
-    get oid(): number {
-        return this._oid;
-    }
 
     get namespace(): number {
         return this._namespace;
@@ -74,7 +68,7 @@ export class TlmType {
     }
 
     constructor(oid: number, namespace: number, name: string, superType: number, description: string) {
-        this._oid = oid;
+        super(oid, TlmType.TYPE_TYPE);
         this._namespace = namespace;
         this._name = name;
         this._superType = superType;
