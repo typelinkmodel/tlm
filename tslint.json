@@ -7,7 +7,11 @@
     "rules": {
         "object-literal-sort-keys": false,
         "max-classes-per-file": [false, 999],
-        "no-console": false
+        "no-console": false,
+        "variable-name": [true,
+            "check-format",
+            "allow-leading-underscore"
+        ]
     },
     "rulesDirectory": []
 }
