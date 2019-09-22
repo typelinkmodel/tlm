@@ -2,13 +2,14 @@ Type Link Model (TLM) Monorepo
 
 https://type.link.model.tools/
 
-Use
-```bash
-    bash script/bootstrap.sh
-    bash script/setup.sh
-    bash script/server.sh
-    bash script/test.sh
+Use [PowerShell Core 6+](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6):
+```powershell
+    pwsh script\bootstrap.ps1
+    pwsh script\setup.ps1
+    pwsh script\server.ps1
+    pwsh script\test.ps1
 ```
+(also on linux or mac)
 
 Follow
 > https://conventionalcommits.org/
