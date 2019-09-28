@@ -1,0 +1,29 @@
+{
+  "name": "@typelinkmodel/tlm-tests",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "author": "Leo Simons <mail@leosimons.com>",
+  "homepage": "https://github.com/typelinkmodel/tlm#readme",
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typelinkmodel/tlm.git"
+  },
+  "scripts": {
+    "prepare": "npm run compile",
+    "compile": "echo nothing to compile",
+    "test": "cucumber-js features/**/*.feature --require step-definitions/**/*.ts --require-module ts-node/register",
+    "lint": "tslint -c ../../tslint.json -e 'node_modules/**/*.ts' -e '**/*/*.d.ts' '**/*.ts'"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.5",
+    "cucumber": "^5.1.0",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
+  }
+}
