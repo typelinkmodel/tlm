@@ -1,4 +1,4 @@
-import {TlmNamespace, TlmObject, TlmType} from "../../src";
+import {TlmLink, TlmNamespace, TlmObject, TlmType} from "../../src";
 
 test("TlmObject", async () => {
     const o = new TlmObject(98, TlmType.TYPE_TYPE);
@@ -32,4 +32,32 @@ test("TlmType", async () => {
     expect(t.name).toBe("SampleType");
     expect(t.superType).toBe(TlmType.TYPE_TYPE);
     expect(t.description).toBe("Test type");
+});
+
+test("TlmLink", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.oid).toBe(101);
+    expect(l.type).toBe(TlmLink.LINK_TYPE);
+    expect(l.fromType).toBe(100);
+    expect(l.toType).toBe(16);
+    expect(l.name).toBe("name");
+
+    l = new TlmLink(
+        102,
+        100,
+        100, // string
+        "sample parent/child link",
+        "parent",
+        "child");
+    expect(l.oid).toBe(102);
+    expect(l.type).toBe(TlmLink.LINK_TYPE);
+    expect(l.fromType).toBe(100);
+    expect(l.toType).toBe(100);
+    expect(l.name).toBe("sample parent/child link");
+    expect(l.fromName).toBe("parent");
+    expect(l.toName).toBe("child");
 });
