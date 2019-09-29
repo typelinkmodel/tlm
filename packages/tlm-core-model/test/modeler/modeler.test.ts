@@ -1,4 +1,8 @@
 import {IModeler, Modeler, TlmNamespace} from "../../src";
+import {LinkModel} from "../../src/modeler/link";
+import {NamespaceModel} from "../../src/modeler/namespace";
+import {OidGenerator} from "../../src/modeler/oid";
+import {TypeModel} from "../../src/modeler/type";
 
 test("initialize(): Modeler lazy loading means initially the model is empty", async () => {
     const modeler: IModeler = new Modeler();
@@ -13,6 +17,13 @@ test("initialize(): Modeler initialization loads the core model", async () => {
     expect(modeler.types.tlm.Namespace.name).toBe("Namespace");
     expect(modeler.types.tlm.Type.namespace).toBe(modeler.namespaces.tlm.oid);
     expect(modeler.links.tlm.Link["is singular"].fromType).toBe(modeler.types.tlm.Link.oid);
+});
+
+test("initialize(): can safely be called more than once", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.initialize();
+    modeler.initialize();
 });
 
 test("activeNamespace: basic usage", async () => {
@@ -94,7 +105,7 @@ test("addStatement: can only process certain statements", async () => {
     const modeler: Modeler = new Modeler();
     expect(
         () => modeler.addStatement(
-            "Thousands of monkeys might write something nice but I don't know how to read it")
+            "Thousands of monkeys might write something nice but I don't know how to read it"),
     ).toThrowError(/statement/);
 });
 
@@ -109,7 +120,7 @@ test("addStatement: types are namespaced", async () => {
     modeler.activeNamespace = "foo";
     modeler.addStatement("A Person has exactly one name which must be a string.");
 
-    expect(modeler.types.hr.Person.oid).toBeDefined()
+    expect(modeler.types.hr.Person.oid).toBeDefined();
     expect(modeler.types.foo.Person.oid).toBeDefined();
     expect(modeler.types.hr.Person.oid).not.toBe(modeler.types.foo.Person.oid);
 });
@@ -128,18 +139,20 @@ test("addStatement: active namespace is needed", async () => {
     modeler.initialize();
     modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     expect(
-        () => modeler.addStatement("A Person has exactly one name which must be a string.")
+        () => modeler.addStatement("A Person has exactly one name which must be a string."),
     ).toThrowError(/Active namespace/i);
 });
 
-// below some implementation-poking unit tests for what should be unreachable conditions
-
-test("findTypeByOid: error on unknown oid", () => {
-    const modeler = new Modeler() as any;
-    expect(() => modeler.findTypeByOid(1000000)).toThrowError(/oid/);
+test("getValueTypeForLink: basic usage", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    expect(modeler.getValueTypeForLink(modeler.links.tlm.Type.namespace).name).toBe("Namespace");
 });
 
-test("findNamespaceByOid: error on unknown oid", () => {
-    const modeler = new Modeler() as any;
-    expect(() => modeler.findNamespaceByOid(1000000)).toThrowError(/oid/);
+test("constructor: inject dependencies", async () => {
+    const oidGenerator = new OidGenerator();
+    const namespaceModel = new NamespaceModel(oidGenerator);
+    const typeModel = new TypeModel(oidGenerator, namespaceModel);
+    const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
+    expect(new Modeler(oidGenerator, namespaceModel, typeModel, linkModel)).toBeDefined();
 });
