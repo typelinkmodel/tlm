@@ -30,11 +30,15 @@ Initialize-Default-Variable PostgresDatabase   tlm
 Initialize-Default-Variable PostgresPort       5432
 Initialize-Default-Variable PostgresContainer  ${ENV}-${STACK}-psql-${PostgresDatabase}
 Initialize-Default-Variable PostgresImage      postgres
+Initialize-Default-Variable PostgresScriptsDir $(Join-Path `
+        -Path packages `
+        -ChildPath tlm-pgsql `
+        -AdditionalChildPath sql)
 
 Initialize-Default-Variable PgTapContainer     ${ENV}-${STACK}-pgtap-${PostgresDatabase}
 Initialize-Default-Variable PgTapImage         lsimons/pgtap
 Initialize-Default-Variable PgTapTestsDir      $(Join-Path `
         -Path packages `
-        -ChildPath tlm-core-model `
+        -ChildPath tlm-pgsql `
         -AdditionalChildPath test-sql)
 Initialize-Default-Variable PgTapTestsPattern  *.sql

@@ -53,11 +53,8 @@ function Invoke-SQL ([string]$Database, [Object]$File)
 Wait-For-TCP localhost $PostgresPort
 Wait-For-PSQL
 
-$PostgresScriptsDir = Join-Path `
-        -Path $WorkDir `
-        -ChildPath "packages" `
-        -AdditionalChildPath @("tlm-core-model", "sql")
-Get-ChildItem $PostgresScriptsDir -Filter *.pgsql | Foreach-Object {
+$SqlScriptDir = Join-Path $WorkDir $PostgresScriptsDir
+Get-ChildItem $SqlScriptDir -Filter *.pgsql | Foreach-Object {
     if ($_.Name -match 'db\.pgsql$')
     {
         Invoke-SQL -Database postgres -File $_

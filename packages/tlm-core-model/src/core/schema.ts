@@ -118,7 +118,7 @@ export class TlmLink extends TlmObject {
         this._toType = toType;
         this._name = name;
         this._fromName = fromName;
-        this._toName = toName
+        this._toName = toName;
         this._isSingular = isSingular;
         this._isMandatory = isMandatory;
         this._isPrimaryId = isPrimaryId;
