@@ -1,0 +1,60 @@
+model:
+  namespaces:
+    - default:   https://type.link.model.tools/ns/tlm/
+    - xs:        https://www.w3.org/TR/xmlschema-2/
+    - tlm:       https://type.link.model.tools/ns/tlm/
+    - message:   https://type.link.model.tools/ns/message/
+    - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
+  namespace:     hr
+  links:
+    # Facts about people
+    - from:      hr:Person
+      to:        tlm:URI
+      name:      id
+      primary:   true
+    - from:      hr:Person
+      to:        xs:string
+      name:      name
+      singular:  true
+      mandatory: true
+    - from:      hr:Person
+      to:        hr:Person
+      name:      coach
+    # Facts about departments
+    - from:      hr:Department
+      to:        tlm:URI
+      name:      id
+      primary:   true
+    - from:      hr:Department
+      to:        xs:string
+      name:      name
+      singular:  true
+      mandatory: true
+    - from:      hr:Department
+      to:        hr:Person
+      name:      manager
+      singular:  true
+      mandatory: true
+    - from:      hr:Person
+      to:        hr:Department
+      name:      department
+      singular:  true
+      mandatory: false
+    # Facts about teams
+    - from:      hr:Team
+      to:        tlm:URI
+      name:      id
+      primary:   true
+    - from:      hr:Team
+      to:        xs:string
+      name:      name
+      singular:  true
+      mandatory: false
+    - from:      hr:Team
+      to:        hr:Person
+      name:      lead
+      singular:  false
+      mandatory: true
+    - from:      hr:Person
+      to:        hr:Team
+      name:      team

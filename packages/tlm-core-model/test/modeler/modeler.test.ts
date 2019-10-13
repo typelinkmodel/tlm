@@ -216,8 +216,8 @@ test("addStatement: can have some", async () => {
     modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Person can have some teams each of which must be a Team.");
-    const link = modeler.links.hr.Person.teams;
+    modeler.addStatement("A Person can have some team each of which must be a Team.");
+    const link = modeler.links.hr.Person.team;
     expect(link).toBeDefined();
     expect(link.isMandatory).toBe(false);
     expect(link.isSingular).toBe(false);

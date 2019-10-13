@@ -41,14 +41,13 @@ Feature: Basic Model
       | A Department has exactly one manager which must be a Person. |
       | A Team has at most one name which must be a string.          |
       | A Team is identified by id which must be a URI.              |
-      | A Person can have some teams each of which must be a Team.   |
-      | A Person can have some teams each of which must be a Team.   |
+      | A Person can have some team each of which must be a Team.   |
       | A Team has at least one lead which must be a Person.         |
     Then the link name from type Team should be singular
     Then the link name from type Team should be optional
-    Then the link teams from type Person should be constrained to values of type Team
-    Then the link teams from type Person should be plural
-    Then the link teams from type Person should be optional
+    Then the link team from type Person should be constrained to values of type Team
+    Then the link team from type Person should be plural
+    Then the link team from type Person should be optional
     Then the link lead from type Team should be constrained to values of type Person
     Then the link lead from type Team should be plural
     Then the link lead from type Team should be mandatory
