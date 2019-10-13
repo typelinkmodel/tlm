@@ -15,7 +15,9 @@
   "scripts": {
     "prepare": "pnpm run compile",
     "compile": "echo nothing to compile",
-    "test": "cucumber-js -p default",
+    "test": "pnpm run test:default && pnpm run test:pgsql",
+    "test:default": "cucumber-js -p default",
+    "test:pgsql": "cucumber-js -p pgsql",
     "lint": "tslint -c ../../tslint.json -e 'node_modules/**/*.ts' -e '**/*/*.d.ts' '**/*.ts'"
   },
   "devDependencies": {
@@ -30,6 +32,9 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@typelinkmodel/tlm-core-model": "^0.0.0"
+    "@typelinkmodel/tlm-core-model": "^0.0.0",
+    "@typelinkmodel/tlm-pgsql": "^0.0.0",
+    "@types/pg": "^7.11.2",
+    "pg": "^7.12.1"
   }
 }

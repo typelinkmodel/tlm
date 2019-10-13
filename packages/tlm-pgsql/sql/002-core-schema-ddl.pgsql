@@ -17,7 +17,7 @@ CREATE TABLE tlm__objects (
 );
 
 CREATE FUNCTION tlm__current_oid()
-  RETURNS BIGINT
+  RETURNS INTEGER
   LANGUAGE sql
   STABLE
   AS $$

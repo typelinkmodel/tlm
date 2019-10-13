@@ -78,7 +78,7 @@ export class NamespaceModel {
         this._xsNamespace = this.namespaceMap.xs;
     }
 
-    public addNamespace(prefix: string, uri: string, description?: string): TlmNamespace {
+    public async addNamespace(prefix: string, uri: string, description?: string): Promise<TlmNamespace> {
         for (const existingNamespace of this._namespaces) {
             if (existingNamespace.prefix === prefix) {
                 if (existingNamespace.uri === uri) {
@@ -94,7 +94,7 @@ export class NamespaceModel {
                 );
             }
         }
-        const newNamespace = new TlmNamespace(this._oidGenerator.nextOid(), prefix, uri, description);
+        const newNamespace = new TlmNamespace(await this._oidGenerator.nextOid(), prefix, uri, description);
         this._namespaces.push(newNamespace);
         return newNamespace;
     }

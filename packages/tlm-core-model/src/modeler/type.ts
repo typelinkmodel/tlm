@@ -95,13 +95,14 @@ export class TypeModel {
         }
     }
 
-    public addType(name: string): TlmType {
+    public async addType(name: string): Promise<TlmType> {
         const existingType = this.findTypeByNameOptional(name);
         if (existingType) {
             return existingType;
         }
 
-        const newType = new TlmType(this._oidGenerator.nextOid(), this._namespaceModel.getActiveNamespaceOid(), name);
+        const newType = new TlmType(await this._oidGenerator.nextOid(),
+            this._namespaceModel.getActiveNamespaceOid(), name);
         this._types.push(newType);
         return newType;
     }

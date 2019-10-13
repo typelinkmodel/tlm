@@ -28,7 +28,7 @@ test("initialize(): can safely be called more than once", async () => {
 
 test("activeNamespace: basic usage", async () => {
     const modeler: Modeler = new Modeler();
-    modeler.addNamespace("foo", "https://example.com/ns/foo");
+    await modeler.addNamespace("foo", "https://example.com/ns/foo");
     modeler.activeNamespace = "foo";
     expect(modeler.activeNamespace).toBe("foo");
 });
@@ -45,7 +45,7 @@ test("activeNamespace: Can't activate an unknown namespace", async () => {
 
 test("activeNamespace: Can't deactivate namespace", async () => {
     const modeler: Modeler = new Modeler();
-    modeler.addNamespace("foo", "https://example.com/ns/foo");
+    await modeler.addNamespace("foo", "https://example.com/ns/foo");
     modeler.activeNamespace = "foo";
     const untypedModeler = modeler as any;
     expect(() => untypedModeler.activeNamespace = undefined).toThrowError(/deactivate/);
@@ -60,8 +60,8 @@ test("activeNamespace: Can't activate built-in namespaces", async () => {
 
 test("addNamespace: basic usage", async () => {
     const modeler: Modeler = new Modeler();
-    modeler.addNamespace("foo", "https://example.com/ns/foo");
-    modeler.addNamespace("bar", "https://example.com/ns/bar", "It may be about drinking.");
+    await modeler.addNamespace("foo", "https://example.com/ns/foo");
+    await modeler.addNamespace("bar", "https://example.com/ns/bar", "It may be about drinking.");
 
     expect(modeler.namespaces.foo.uri).toBe("https://example.com/ns/foo");
     expect(modeler.namespaces.bar.uri).toBe("https://example.com/ns/bar");
@@ -71,7 +71,7 @@ test("addNamespace: basic usage", async () => {
 test("addNamespace: cannot modify previously defined namespace", async () => {
     const modeler: Modeler = new Modeler();
 
-    const fooNs = modeler.addNamespace("foo", "https://example.com/ns/foo");
+    const fooNs = await modeler.addNamespace("foo", "https://example.com/ns/foo");
     expect(fooNs.oid).toBeGreaterThan(0);
     expect(fooNs.type).toBe(TlmNamespace.NAMESPACE_TYPE);
     expect(fooNs.prefix).toBe("foo");
@@ -79,26 +79,37 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
     expect(fooNs.description).toBeUndefined();
 
     // can't modify namespace after adding
-    expect( () => modeler.addNamespace("foo", "https://example.com/ns/bar")).toThrowError(/already exists/);
-    expect( () => modeler.addNamespace("bar", "https://example.com/ns/foo")).toThrowError(/already exists/);
+    try {
+        await modeler.addNamespace("foo", "https://example.com/ns/bar");
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/already exists/);
+    }
+    try {
+        await modeler.addNamespace("bar", "https://example.com/ns/foo")
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/already exists/);
+    }
 
     // but if the values are the same, ignore the api call
-    expect(modeler.addNamespace("foo", "https://example.com/ns/foo").prefix).toBe("foo");
+    const resultNs = await modeler.addNamespace("foo", "https://example.com/ns/foo");
+    expect(resultNs.prefix).toBe("foo");
 
     // edge case: can't change the description either
-    modeler.addNamespace("foo", "https://example.com/ns/foo", "new description");
+    await modeler.addNamespace("foo", "https://example.com/ns/foo", "new description");
     expect(modeler.namespaces.foo.description).toBeUndefined();
 });
 
 test("addStatement: basic usage with 'has exactly one'", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Person has exactly one name which must be a string.");
-    modeler.addStatement("A Person has exactly one coach which must be a Person.");
-    modeler.addStatement("A Department has exactly one manager which must be a Person.");
+    await modeler.addStatement("A Person has exactly one name which must be a string.");
+    await modeler.addStatement("A Person has exactly one coach which must be a Person.");
+    await modeler.addStatement("A Department has exactly one manager which must be a Person.");
 
     expect(modeler.namespaces.hr.uri).toBe("https://type.link.model.tools/ns/tlm-sample-hr/");
     expect(modeler.types.hr.Person).toBeDefined();
@@ -122,22 +133,25 @@ test("addStatement: basic usage with 'has exactly one'", async () => {
 
 test("addStatement: can only process certain statements", async () => {
     const modeler: Modeler = new Modeler();
-    expect(
-        () => modeler.addStatement(
-            "Thousands of monkeys might write something nice but I don't know how to read it"),
-    ).toThrowError(/statement/);
+    try {
+        await modeler.addStatement(
+            "Thousands of monkeys might write something nice but I don't know how to read it");
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/statement/);
+    }
 });
 
 test("addStatement: types are namespaced", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
-    modeler.addStatement("A Person has exactly one name which must be a string.");
+    await modeler.addStatement("A Person has exactly one name which must be a string.");
 
-    modeler.addNamespace("foo", "https://example.com/ns/foo");
+    await modeler.addNamespace("foo", "https://example.com/ns/foo");
     modeler.activeNamespace = "foo";
-    modeler.addStatement("A Person has exactly one name which must be a string.");
+    await modeler.addStatement("A Person has exactly one name which must be a string.");
 
     expect(modeler.types.hr.Person.oid).toBeDefined();
     expect(modeler.types.foo.Person.oid).toBeDefined();
@@ -147,36 +161,39 @@ test("addStatement: types are namespaced", async () => {
 test("addStatement: statements can be repeated", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
-    modeler.addStatement("A Person has exactly one name which must be a string.");
-    modeler.addStatement("A Person has exactly one name which must be a string.");
+    await modeler.addStatement("A Person has exactly one name which must be a string.");
+    await modeler.addStatement("A Person has exactly one name which must be a string.");
 });
 
 test("addStatement: active namespace is needed", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
-    expect(
-        () => modeler.addStatement("A Person has exactly one name which must be a string."),
-    ).toThrowError(/Active namespace/i);
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    try {
+        await modeler.addStatement("A Person has exactly one name which must be a string.");
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/Active namespace/i);
+    }
 });
 
 test("addStatement: 'A' and 'An' are both ok", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
-    modeler.addStatement("An Individual has exactly one name which must be an integer.");
+    await modeler.addStatement("An Individual has exactly one name which must be an integer.");
 });
 
 test("addStatement: identifier definitions", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Person is identified by id which must be a URI.");
+    await modeler.addStatement("A Person is identified by id which must be a URI.");
     const link = modeler.links.hr.Person.id;
     expect(link).toBeDefined();
     expect(link.isPrimaryId).toBe(true);
@@ -185,10 +202,10 @@ test("addStatement: identifier definitions", async () => {
 test("addStatement: has at most one", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Team has at most one name which must be a string.");
+    await modeler.addStatement("A Team has at most one name which must be a string.");
     const link = modeler.links.hr.Team.name;
     expect(link).toBeDefined();
     expect(link.isMandatory).toBe(false);
@@ -199,10 +216,10 @@ test("addStatement: has at most one", async () => {
 test("addStatement: has at least one", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Team has at least one lead which must be a Person.");
+    await modeler.addStatement("A Team has at least one lead which must be a Person.");
     const link = modeler.links.hr.Team.lead;
     expect(link).toBeDefined();
     expect(link.isMandatory).toBe(true);
@@ -213,10 +230,10 @@ test("addStatement: has at least one", async () => {
 test("addStatement: can have some", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement("A Person can have some team each of which must be a Team.");
+    await modeler.addStatement("A Person can have some team each of which must be a Team.");
     const link = modeler.links.hr.Person.team;
     expect(link).toBeDefined();
     expect(link.isMandatory).toBe(false);
@@ -227,10 +244,10 @@ test("addStatement: can have some", async () => {
 test("addStatement: support extra whitespace", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
-    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    await modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
     modeler.activeNamespace = "hr";
 
-    modeler.addStatement(`
+    await modeler.addStatement(`
     A  Person  has
         exactly   one
             name
@@ -251,15 +268,18 @@ test("getValueTypeForLink: basic usage", async () => {
 
 test("processLinkDefinitionStatement: cover unreachable default case", async () => {
     const modeler: Modeler = new Modeler();
-    expect(() => {
-        (modeler as any).processLinkDefinitionStatement([
+    try {
+        await (modeler as any).processLinkDefinitionStatement([
             "A Person flub-boxes things which must be a Team.",
             "Person",
             "flub-boxes",
             "things",
             "Team",
         ]);
-    }).toThrowError(/Cannot process statement relationship/);
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/Cannot process statement relationship/);
+    }
 });
 
 test("constructor: inject dependencies", async () => {

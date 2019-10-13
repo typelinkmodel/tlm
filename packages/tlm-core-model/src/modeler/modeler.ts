@@ -20,7 +20,7 @@ export class Modeler implements IModeler {
 
     private readonly _statementProcessors = [
         /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+identified\s+by|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+([A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
-        (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
+        async (st: RegExpMatchArray) => await this.processLinkDefinitionStatement(st),
     ];
 
     constructor(
@@ -70,17 +70,17 @@ export class Modeler implements IModeler {
         this._linkModel.initialize();
     }
 
-    public addNamespace(prefix: string, uri: string, description?: string): TlmNamespace {
-        return this._namespaceModel.addNamespace(prefix, uri, description);
+    public async addNamespace(prefix: string, uri: string, description?: string): Promise<TlmNamespace> {
+        return await this._namespaceModel.addNamespace(prefix, uri, description);
     }
 
-    public addStatement(statement: string): void {
+    public async addStatement(statement: string): Promise<void> {
         for (let i = 0; i < this._statementProcessors.length; i++) {
             const regex = this._statementProcessors[i] as RegExp;
-            const processor = this._statementProcessors[++i] as (st: RegExpMatchArray) => void;
+            const processor = this._statementProcessors[++i] as (st: RegExpMatchArray) => Promise<void>;
             const match = statement.match(regex);
             if (match) {
-                processor(match);
+                await processor(match);
                 return;
             }
         }
@@ -91,13 +91,13 @@ export class Modeler implements IModeler {
         return this._typeModel.findTypeByOid(link.toType);
     }
 
-    private processLinkDefinitionStatement(match: RegExpMatchArray): void {
+    private async processLinkDefinitionStatement(match: RegExpMatchArray): Promise<void> {
         // noinspection JSUnusedLocalSymbols
         const [_, type, rel, link, otherType] = match;
         const processedRel = rel.replace(/\s+/g, " ").trim();
         switch (processedRel) {
             case "is identified by":
-                this._linkModel.addLink(
+                await this._linkModel.addLink(
                     type,
                     otherType,
                     link,
@@ -109,7 +109,7 @@ export class Modeler implements IModeler {
                 );
                 break;
             case "has exactly one":
-                this._linkModel.addLink(
+                await this._linkModel.addLink(
                     type,
                     otherType,
                     link,
@@ -121,7 +121,7 @@ export class Modeler implements IModeler {
                 );
                 break;
             case "has at most one":
-                this._linkModel.addLink(
+                await this._linkModel.addLink(
                     type,
                     otherType,
                     link,
@@ -133,7 +133,7 @@ export class Modeler implements IModeler {
                 );
                 break;
             case "has at least one":
-                this._linkModel.addLink(
+                await this._linkModel.addLink(
                     type,
                     otherType,
                     link,
@@ -145,7 +145,7 @@ export class Modeler implements IModeler {
                 );
                 break;
             case "can have some":
-                this._linkModel.addLink(
+                await this._linkModel.addLink(
                     type,
                     otherType,
                     link,
@@ -159,6 +159,5 @@ export class Modeler implements IModeler {
             default:
                 throw new Error(`Cannot process statement relationship '${processedRel}'`);
         }
-        this._linkModel.addLink(type, otherType, link);
     }
 }

@@ -11,7 +11,7 @@ export class OidGenerator {
         this._nextOid = 1001;
     }
 
-    public nextOid(): number {
+    public async nextOid(): Promise<number> {
         const result = this._nextOid;
         this._nextOid++;
         return result;

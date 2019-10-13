@@ -71,7 +71,7 @@ export class LinkModel {
         }
     }
 
-    public addLink(
+    public async addLink(
         fromType: string,
         toType: string,
         name: string,
@@ -80,9 +80,9 @@ export class LinkModel {
         isSingular: boolean = false,
         isMandatory: boolean = false,
         isPrimaryId: boolean = false,
-    ): TlmLink {
-        const fromTypeObj: TlmType = this._typeModel.addType(fromType);
-        const toTypeObj: TlmType = this._typeModel.addType(toType);
+    ): Promise<TlmLink> {
+        const fromTypeObj: TlmType = await this._typeModel.addType(fromType);
+        const toTypeObj: TlmType = await this._typeModel.addType(toType);
 
         const existingLink = this.findLinkByNameOptional(fromTypeObj.oid, name);
         if (existingLink) {
@@ -90,7 +90,7 @@ export class LinkModel {
         }
 
         const newLink = new TlmLink(
-            this._oidGenerator.nextOid(),
+            await this._oidGenerator.nextOid(),
             fromTypeObj.oid,
             toTypeObj.oid,
             name,

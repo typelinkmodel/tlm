@@ -13,7 +13,7 @@ Given(/^an empty type\-link model is set up$/,
 Given(/^the namespace ([^ ]+) exists with uri ([^ ]+)$/,
     async function(ns: string, uri: string) {
         const modeler: IModeler = this.modeler;
-        modeler.addNamespace(ns, uri);
+        await modeler.addNamespace(ns, uri);
     });
 
 Given(/^the namespace ([^ ]+) is the active namespace$/,
@@ -25,7 +25,7 @@ Given(/^the namespace ([^ ]+) is the active namespace$/,
 When(/^the modeling statement (.*) is added to the model:?$/,
     async function(statement: string) {
         const modeler: IModeler = this.modeler;
-        modeler.addStatement(statement);
+        await modeler.addStatement(statement);
     });
 
 Then(/^the model should contain the type ([^ ]+)$/,
@@ -90,7 +90,7 @@ Given(/^this model:$/,
         const modeler: IModeler = this.modeler;
         for (const row of statements.raw()) {
             for (const cell of row) {
-                modeler.addStatement(cell);
+                await modeler.addStatement(cell);
             }
         }
     });

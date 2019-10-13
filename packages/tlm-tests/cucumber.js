@@ -13,5 +13,6 @@ function getWorldParameters(assembly) {
 }
 
 module.exports = {
-    default: common + " " + getWorldParameters("default")
+    default: common + " " + getWorldParameters("default"),
+    pgsql: common + " " + getWorldParameters("pgsql")
 };

@@ -20,9 +20,9 @@ export interface IModeler {
 
     initialize(): void;
 
-    addNamespace(prefix: string, uri: string, description?: string): TlmNamespace;
+    addNamespace(prefix: string, uri: string, description?: string): Promise<TlmNamespace>;
 
-    addStatement(statement: string): void;
+    addStatement(statement: string): Promise<void>;
 
     getValueTypeForLink(link: TlmLink): TlmType;
 }
