@@ -26,7 +26,7 @@ export function csv_cast(value: string, context: {[key: string]: any}): any {
 const CSV_OPTIONS = {
     columns: true,
     skip_empty_lines: true,
-    cast: csv_cast
+    cast: csv_cast,
 };
 
 const NAMESPACE_DATA: string = `
