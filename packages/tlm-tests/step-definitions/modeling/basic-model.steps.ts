@@ -31,7 +31,9 @@ When(/^the modeling statement (.*) is added to the model$/,
 Then(/^the model should contain the type ([^ ]+)$/,
     async function(type: string) {
         const modeler: IModeler = this.modeler;
-        assert.isDefined(modeler.types[modeler.activeNamespace!][type]);
+        const types = modeler.types[modeler.activeNamespace!];
+        const typeObj = types[type];
+        assert.isDefined(typeObj);
     });
 
 Then(/^the model should contain the link ([^ ]+) from type ([^ ]+)$/,
@@ -47,3 +49,10 @@ Then(/^the link ([^ ]+) from type ([^ ]+) should be constrained to values of typ
         const valueTypeObj: TlmType = modeler.getValueTypeForLink(linkObj);
         assert.equal(valueTypeObj.name, valueType);
     });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be a primary id$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isTrue(linkObj.isPrimaryId);
+});

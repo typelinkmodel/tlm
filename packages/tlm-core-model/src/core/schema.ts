@@ -90,14 +90,24 @@ export class TlmLink extends TlmObject {
     private readonly _name: string;
     private readonly _fromName?: string;
     private readonly _toName?: string;
+    private readonly _isPrimaryId: boolean;
 
-    constructor(oid: number, fromType: number, toType: number, name: string, fromName?: string, toName?: string) {
+    constructor(
+        oid: number,
+        fromType: number,
+        toType: number,
+        name: string,
+        fromName?: string,
+        toName?: string,
+        isPrimaryId: boolean = false,
+    ) {
         super(oid, TlmLink.LINK_TYPE);
         this._fromType = fromType;
         this._toType = toType;
         this._name = name;
         this._fromName = fromName;
         this._toName = toName;
+        this._isPrimaryId = isPrimaryId;
     }
 
     get fromType(): number {
@@ -118,5 +128,9 @@ export class TlmLink extends TlmObject {
 
     get toName(): string | undefined {
         return this._toName;
+    }
+
+    get isPrimaryId(): boolean {
+        return this._isPrimaryId;
     }
 }

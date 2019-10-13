@@ -71,7 +71,14 @@ export class LinkModel {
         }
     }
 
-    public addLink(fromType: string, name: string, toType: string): TlmLink {
+    public addLink(
+        fromType: string,
+        toType: string,
+        name: string,
+        fromName?: string,
+        toName?: string,
+        isPrimaryId: boolean = false,
+    ): TlmLink {
         const fromTypeObj: TlmType = this._typeModel.addType(fromType);
         const toTypeObj: TlmType = this._typeModel.addType(toType);
 
@@ -80,7 +87,14 @@ export class LinkModel {
             return existingLink;
         }
 
-        const newLink = new TlmLink(this._oidGenerator.nextOid(), fromTypeObj.oid, toTypeObj.oid, name);
+        const newLink = new TlmLink(
+            this._oidGenerator.nextOid(),
+            fromTypeObj.oid,
+            toTypeObj.oid,
+            name,
+            fromName,
+            toName,
+            isPrimaryId);
         this._links.push(newLink);
         return newLink;
     }

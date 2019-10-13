@@ -19,8 +19,10 @@ export class Modeler implements IModeler {
     private _initialized = false;
 
     private readonly _statementProcessors = [
-        /An? ([A-Za-z0-9_-]+) has exactly one ([A-Za-z0-9_-]+) which must be a ([A-Za-z0-9_-]+)\.?/i,
+        /An? ([A-Za-z0-9_-]+) has exactly one ([A-Za-z0-9_-]+) which must be an? ([A-Za-z0-9_-]+)\.?/i,
         (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
+        /An? ([A-Za-z0-9_-]+) is identified by ([A-Za-z0-9_-]+) which must be an? ([A-Za-z0-9_-]+)\.?/i,
+        (st: RegExpMatchArray) => this.processIdentityDefinitionStatement(st),
     ];
 
     constructor(
@@ -94,6 +96,19 @@ export class Modeler implements IModeler {
     private processLinkDefinitionStatement(match: RegExpMatchArray): void {
         // noinspection JSUnusedLocalSymbols
         const [_, type, link, otherType] = match;
-        this._linkModel.addLink(type, link, otherType);
+        this._linkModel.addLink(type, otherType, link);
+    }
+
+    private processIdentityDefinitionStatement(match: RegExpMatchArray): void {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, link, otherType] = match;
+        this._linkModel.addLink(
+            type,
+            otherType,
+            link,
+            undefined,
+            undefined,
+            true,
+        );
     }
 }

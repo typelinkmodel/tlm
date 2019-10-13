@@ -34,7 +34,7 @@ test("TlmType", async () => {
     expect(t.description).toBe("Test type");
 });
 
-test("TlmLink", async () => {
+test("TlmLink: basic usage", async () => {
     let l = new TlmLink(
         101,
         100,
@@ -60,4 +60,33 @@ test("TlmLink", async () => {
     expect(l.name).toBe("sample parent/child link");
     expect(l.fromName).toBe("parent");
     expect(l.toName).toBe("child");
+});
+
+test("TlmLink: that is a primary id", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.isPrimaryId).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false);
+    expect(l.isPrimaryId).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        true);
+    expect(l.isPrimaryId).toBe(true);
 });

@@ -99,6 +99,25 @@ test("addStatement: basic usage", async () => {
     modeler.addStatement("A Person has exactly one name which must be a string.");
     modeler.addStatement("A Person has exactly one coach which must be a Person.");
     modeler.addStatement("A Department has exactly one manager which must be a Person.");
+
+    expect(modeler.namespaces.hr.uri).toBe("https://type.link.model.tools/ns/tlm-sample-hr/");
+    expect(modeler.types.hr.Person).toBeDefined();
+    expect(modeler.types.hr.Person.name).toBe("Person");
+    expect(modeler.types.hr.Person.namespace).toBe(modeler.namespaces.hr.oid);
+    expect(modeler.types.hr.Person.type).toBe(modeler.types.tlm.Type.oid);
+    expect(modeler.types.hr.Person.superType).toBe(modeler.types.tlm.Type.oid);
+
+    expect(modeler.links.hr.Person.name.fromType).toBe(modeler.types.hr.Person.oid);
+    expect(modeler.links.hr.Person.name.name).toBe("name");
+    expect(modeler.links.hr.Person.name.toType).toBe(modeler.types.xs.string.oid);
+
+    expect(modeler.links.hr.Person.coach.fromType).toBe(modeler.types.hr.Person.oid);
+    expect(modeler.links.hr.Person.coach.name).toBe("coach");
+    expect(modeler.links.hr.Person.coach.toType).toBe(modeler.types.hr.Person.oid);
+
+    expect(modeler.links.hr.Department.manager.fromType).toBe(modeler.types.hr.Department.oid);
+    expect(modeler.links.hr.Department.manager.name).toBe("manager");
+    expect(modeler.links.hr.Department.manager.toType).toBe(modeler.types.hr.Person.oid);
 });
 
 test("addStatement: can only process certain statements", async () => {
@@ -141,6 +160,27 @@ test("addStatement: active namespace is needed", async () => {
     expect(
         () => modeler.addStatement("A Person has exactly one name which must be a string."),
     ).toThrowError(/Active namespace/i);
+});
+
+test("addStatement: 'A' and 'An' are both ok", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+    modeler.addStatement("An Individual has exactly one name which must be an integer.");
+});
+
+test("addStatement: identifier definitions", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+
+    modeler.addStatement("A Person is identified by id which must be a URI.");
+    const link = modeler.links.hr.Person.id;
+    expect(link).toBeDefined();
+    expect(link.name).toBe("id");
+    expect(link.isPrimaryId).toBe(true);
 });
 
 test("getValueTypeForLink: basic usage", async () => {

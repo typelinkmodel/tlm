@@ -18,12 +18,13 @@ Feature: Basic Model
       | A Person has exactly one name which must be a string. | Person | name | string |
       | A Department has exactly one name which must be a string. | Department | name | string |
 
-#  Scenario Outline: define identity types for basic types in the HR domain
-#    When the modeling statement <statement> is added to the model
-#    Then the model should contain the type <type>
-#    And the model should contain the link id from type <type>
-#    And the link id from type <type> should be constrained to values of type <valueType>
-#    Examples:
-#      | statement | type | valueType |
-#      | A Person is identified by id which must be a URI. | hr:Person | tlm:URI |
-#      | A Department is identified by id which must be a URI. | hr:Department | tlm:URI |
+  Scenario Outline: define identity types for basic types in the HR domain
+    When the modeling statement <statement> is added to the model
+    Then the model should contain the type <type>
+    And the model should contain the link <link> from type <type>
+    And the link <link> from type <type> should be constrained to values of type <valueType>
+    And the link <link> from type <type> should be a primary id
+    Examples:
+      | statement | type | link | valueType |
+      | A Person is identified by id which must be a URI. | Person | id | URI |
+      | A Department is identified by id which must be a URI. | Department | id | URI |
