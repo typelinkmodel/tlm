@@ -62,6 +62,66 @@ test("TlmLink: basic usage", async () => {
     expect(l.toName).toBe("child");
 });
 
+test("TlmLink: that is singular", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.isSingular).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false);
+    expect(l.isSingular).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        true);
+    expect(l.isSingular).toBe(true);
+});
+
+test("TlmLink: that is mandatory", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.isMandatory).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        false);
+    expect(l.isMandatory).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        true);
+    expect(l.isMandatory).toBe(true);
+});
+
 test("TlmLink: that is a primary id", async () => {
     let l = new TlmLink(
         101,
@@ -77,6 +137,8 @@ test("TlmLink: that is a primary id", async () => {
         "name",
         undefined,
         undefined,
+        false,
+        false,
         false);
     expect(l.isPrimaryId).toBe(false);
 
@@ -87,6 +149,34 @@ test("TlmLink: that is a primary id", async () => {
         "name",
         undefined,
         undefined,
+        true,
+        true,
         true);
     expect(l.isPrimaryId).toBe(true);
+
+    expect(() => {
+        return new TlmLink(
+            101,
+            100,
+            16, // string
+            "name",
+            undefined,
+            undefined,
+            false,
+            true,
+            true);
+    }).toThrowError(/must be singular/);
+
+    expect(() => {
+        return new TlmLink(
+            101,
+            100,
+            16, // string
+            "name",
+            undefined,
+            undefined,
+            true,
+            false,
+            true);
+    }).toThrowError(/must be mandatory/);
 });

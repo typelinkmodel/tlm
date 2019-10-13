@@ -77,6 +77,8 @@ export class LinkModel {
         name: string,
         fromName?: string,
         toName?: string,
+        isSingular: boolean = false,
+        isMandatory: boolean = false,
         isPrimaryId: boolean = false,
     ): TlmLink {
         const fromTypeObj: TlmType = this._typeModel.addType(fromType);
@@ -94,6 +96,8 @@ export class LinkModel {
             name,
             fromName,
             toName,
+            isSingular,
+            isMandatory,
             isPrimaryId);
         this._links.push(newLink);
         return newLink;

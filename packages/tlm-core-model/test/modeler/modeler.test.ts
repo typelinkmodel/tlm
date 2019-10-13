@@ -90,7 +90,7 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
     expect(modeler.namespaces.foo.description).toBeUndefined();
 });
 
-test("addStatement: basic usage", async () => {
+test("addStatement: basic usage with 'has exactly one'", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
     modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
@@ -179,14 +179,87 @@ test("addStatement: identifier definitions", async () => {
     modeler.addStatement("A Person is identified by id which must be a URI.");
     const link = modeler.links.hr.Person.id;
     expect(link).toBeDefined();
-    expect(link.name).toBe("id");
     expect(link.isPrimaryId).toBe(true);
+});
+
+test("addStatement: has at most one", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+
+    modeler.addStatement("A Team has at most one name which must be a string.");
+    const link = modeler.links.hr.Team.name;
+    expect(link).toBeDefined();
+    expect(link.isMandatory).toBe(false);
+    expect(link.isSingular).toBe(true);
+    expect(link.isPrimaryId).toBe(false);
+});
+
+test("addStatement: has at least one", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+
+    modeler.addStatement("A Team has at least one lead which must be a Person.");
+    const link = modeler.links.hr.Team.lead;
+    expect(link).toBeDefined();
+    expect(link.isMandatory).toBe(true);
+    expect(link.isSingular).toBe(false);
+    expect(link.isPrimaryId).toBe(false);
+});
+
+test("addStatement: can have some", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+
+    modeler.addStatement("A Person can have some teams each of which must be a Team.");
+    const link = modeler.links.hr.Person.teams;
+    expect(link).toBeDefined();
+    expect(link.isMandatory).toBe(false);
+    expect(link.isSingular).toBe(false);
+    expect(link.isPrimaryId).toBe(false);
+});
+
+test("addStatement: support extra whitespace", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    modeler.addNamespace("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+    modeler.activeNamespace = "hr";
+
+    modeler.addStatement(`
+    A  Person  has
+        exactly   one
+            name
+        which  must  be  a
+            string
+     .`);
+
+    expect(modeler.types.hr.Person).toBeDefined();
+    expect(modeler.links.hr.Person.name.fromType).toBe(modeler.types.hr.Person.oid);
+    expect(modeler.links.hr.Person.name.toType).toBe(modeler.types.xs.string.oid);
 });
 
 test("getValueTypeForLink: basic usage", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
     expect(modeler.getValueTypeForLink(modeler.links.tlm.Type.namespace).name).toBe("Namespace");
+});
+
+test("processLinkDefinitionStatement: cover unreachable default case", async () => {
+    const modeler: Modeler = new Modeler();
+    expect(() => {
+        (modeler as any).processLinkDefinitionStatement([
+            "A Person flub-boxes things which must be a Team.",
+            "Person",
+            "flub-boxes",
+            "things",
+            "Team",
+        ]);
+    }).toThrowError(/Cannot process statement relationship/);
 });
 
 test("constructor: inject dependencies", async () => {

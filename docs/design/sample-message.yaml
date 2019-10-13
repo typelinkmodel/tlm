@@ -2,7 +2,7 @@ message:Message:
   id:          urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e
   namespaces:
   - default:   https://type.link.model.tools/ns/tlm/
-  - xdt:       https://www.w3.org/TR/xmlschema-2/
+  - xs:        https://www.w3.org/TR/xmlschema-2/
   - tlm:       https://type.link.model.tools/ns/tlm/
   - message:   https://type.link.model.tools/ns/message/
   - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
@@ -20,7 +20,7 @@ message:Message:
     facts:
     - link:      tlm:name
       value:     Leo Simons
-      valueType: xdt:string
+      valueType: xs:string
     - link:      hr:Department
       target:    mailto:engineering@example.com
     - link:      hr:teams
@@ -33,7 +33,7 @@ message:Message:
     facts:
     - link:      tlm:name
       value:     Simon Lucy
-      valueType: xdt:string
+      valueType: xs:string
     - link:      hr:coachedBy
       target:    mailto:dirkx@example.com
     - link:      hr:teams
@@ -43,19 +43,19 @@ message:Message:
       -          mailto:eng-management@example.com
     - link:      hr:coaches
       value:     true
-      valuetype: xdt:boolean
+      valuetype: xs:boolean
   - id:        mailto:dirkx@example.com
     type:      hr:Person
     facts:
     - link:      tlm:name
       value:     Dirk van Gulik
-      valueType: xdt:string
+      valueType: xs:string
   - id:        mailto:engineering@example.com
     type:      hr:Department
     facts:
     - link:      tlm:name
       value:     Engineering
-      valueType: xdt:string
+      valueType: xs:string
     - link:      hr:manager
       target:    mailto:dirkx@example.com
   - id:        mailto:hr@example.com
@@ -63,7 +63,7 @@ message:Message:
     facts:
     - link:      tlm:name
       value:     HR
-      valueType: xdt:string
+      valueType: xs:string
   message:deliveries:
   - type:      message::Delivery
     facts:
@@ -73,7 +73,7 @@ message:Message:
       target:    mailto:hr-dept@example.com
     - link:      tlm:sent
       value:     20180611T20:09:01Z
-      valueType: xdt:timestamp
+      valueType: xs:timestamp
     - link:      tlm:received
       value:     20180611T20:09:27Z
-      valueType: xdt:timestamp
+      valueType: xs:timestamp

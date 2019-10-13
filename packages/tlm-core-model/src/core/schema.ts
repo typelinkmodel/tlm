@@ -90,6 +90,8 @@ export class TlmLink extends TlmObject {
     private readonly _name: string;
     private readonly _fromName?: string;
     private readonly _toName?: string;
+    private readonly _isSingular: boolean;
+    private readonly _isMandatory: boolean;
     private readonly _isPrimaryId: boolean;
 
     constructor(
@@ -99,14 +101,26 @@ export class TlmLink extends TlmObject {
         name: string,
         fromName?: string,
         toName?: string,
+        isSingular: boolean = false,
+        isMandatory: boolean = false,
         isPrimaryId: boolean = false,
     ) {
         super(oid, TlmLink.LINK_TYPE);
+        if (isPrimaryId) {
+            if (!isSingular) {
+                throw new Error("Primary ID links must be singular");
+            }
+            if (!isMandatory) {
+                throw new Error("Primary ID links must be mandatory");
+            }
+        }
         this._fromType = fromType;
         this._toType = toType;
         this._name = name;
         this._fromName = fromName;
-        this._toName = toName;
+        this._toName = toName
+        this._isSingular = isSingular;
+        this._isMandatory = isMandatory;
         this._isPrimaryId = isPrimaryId;
     }
 
@@ -128,6 +142,14 @@ export class TlmLink extends TlmObject {
 
     get toName(): string | undefined {
         return this._toName;
+    }
+
+    get isSingular(): boolean {
+        return this._isSingular;
+    }
+
+    get isMandatory(): boolean {
+        return this._isMandatory;
     }
 
     get isPrimaryId(): boolean {

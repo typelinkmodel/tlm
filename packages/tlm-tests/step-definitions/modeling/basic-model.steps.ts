@@ -2,7 +2,7 @@
 
 import {IModeler, TlmLink, TlmType} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
-import {Given, Then, When} from "cucumber";
+import {Given, TableDefinition, Then, When} from "cucumber";
 
 Given(/^an empty type\-link model is set up$/,
     async function() {
@@ -22,7 +22,7 @@ Given(/^the namespace ([^ ]+) is the active namespace$/,
         modeler.activeNamespace = ns;
     });
 
-When(/^the modeling statement (.*) is added to the model$/,
+When(/^the modeling statement (.*) is added to the model:?$/,
     async function(statement: string) {
         const modeler: IModeler = this.modeler;
         modeler.addStatement(statement);
@@ -50,9 +50,47 @@ Then(/^the link ([^ ]+) from type ([^ ]+) should be constrained to values of typ
         assert.equal(valueTypeObj.name, valueType);
     });
 
+Then(/^the link ([^ ]+) from type ([^ ]+) should be singular$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isTrue(linkObj.isSingular);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be plural$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isFalse(linkObj.isSingular);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be optional$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isFalse(linkObj.isMandatory);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be mandatory$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isTrue(linkObj.isMandatory);
+    });
+
 Then(/^the link ([^ ]+) from type ([^ ]+) should be a primary id$/,
     async function(link: string, type: string) {
         const modeler: IModeler = this.modeler;
         const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
         assert.isTrue(linkObj.isPrimaryId);
-});
+    });
+
+Given(/^this model:$/,
+    async function(statements: TableDefinition) {
+        const modeler: IModeler = this.modeler;
+        for (const row of statements.raw()) {
+            for (const cell of row) {
+                modeler.addStatement(cell);
+            }
+        }
+    });

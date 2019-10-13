@@ -19,10 +19,8 @@ export class Modeler implements IModeler {
     private _initialized = false;
 
     private readonly _statementProcessors = [
-        /An? ([A-Za-z0-9_-]+) has exactly one ([A-Za-z0-9_-]+) which must be an? ([A-Za-z0-9_-]+)\.?/i,
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+identified\s+by|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+([A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
-        /An? ([A-Za-z0-9_-]+) is identified by ([A-Za-z0-9_-]+) which must be an? ([A-Za-z0-9_-]+)\.?/i,
-        (st: RegExpMatchArray) => this.processIdentityDefinitionStatement(st),
     ];
 
     constructor(
@@ -95,20 +93,72 @@ export class Modeler implements IModeler {
 
     private processLinkDefinitionStatement(match: RegExpMatchArray): void {
         // noinspection JSUnusedLocalSymbols
-        const [_, type, link, otherType] = match;
+        const [_, type, rel, link, otherType] = match;
+        const processedRel = rel.replace(/\s+/g, " ").trim();
+        switch (processedRel) {
+            case "is identified by":
+                this._linkModel.addLink(
+                    type,
+                    otherType,
+                    link,
+                    undefined,
+                    undefined,
+                    true,
+                    true,
+                    true,
+                );
+                break;
+            case "has exactly one":
+                this._linkModel.addLink(
+                    type,
+                    otherType,
+                    link,
+                    undefined,
+                    undefined,
+                    true,
+                    true,
+                    false,
+                );
+                break;
+            case "has at most one":
+                this._linkModel.addLink(
+                    type,
+                    otherType,
+                    link,
+                    undefined,
+                    undefined,
+                    true,
+                    false,
+                    false,
+                );
+                break;
+            case "has at least one":
+                this._linkModel.addLink(
+                    type,
+                    otherType,
+                    link,
+                    undefined,
+                    undefined,
+                    false,
+                    true,
+                    false,
+                );
+                break;
+            case "can have some":
+                this._linkModel.addLink(
+                    type,
+                    otherType,
+                    link,
+                    undefined,
+                    undefined,
+                    false,
+                    false,
+                    false,
+                );
+                break;
+            default:
+                throw new Error(`Cannot process statement relationship '${processedRel}'`);
+        }
         this._linkModel.addLink(type, otherType, link);
-    }
-
-    private processIdentityDefinitionStatement(match: RegExpMatchArray): void {
-        // noinspection JSUnusedLocalSymbols
-        const [_, type, link, otherType] = match;
-        this._linkModel.addLink(
-            type,
-            otherType,
-            link,
-            undefined,
-            undefined,
-            true,
-        );
     }
 }
