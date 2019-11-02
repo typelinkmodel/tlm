@@ -21,7 +21,7 @@ CREATE FUNCTION tlm__current_oid()
   LANGUAGE sql
   STABLE
   AS $$
-      SELECT currval(pg_get_serial_sequence('tlm__objects', 'oid'))
+      SELECT currval(pg_get_serial_sequence('tlm__objects', 'oid'))::INTEGER
 $$;
 
 CREATE PROCEDURE tlm__insert_object(object_type INTEGER)

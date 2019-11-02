@@ -8,7 +8,7 @@ FROM tlm__schema_history;
 
 -- object tests
 CALL tlm__insert_object(3);
-SELECT is(max(oid)::bigint, tlm__current_oid(),
+SELECT is(max(oid)::integer, tlm__current_oid(),
     'Current oid is the last inserted one')
 FROM tlm__objects;
 
