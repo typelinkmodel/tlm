@@ -86,7 +86,7 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
         expect(e.message).toMatch(/already exists/);
     }
     try {
-        await modeler.addNamespace("bar", "https://example.com/ns/foo")
+        await modeler.addNamespace("bar", "https://example.com/ns/foo");
         fail();
     } catch (e) {
         expect(e.message).toMatch(/already exists/);
