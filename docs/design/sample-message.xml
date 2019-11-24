@@ -49,7 +49,7 @@
     <message:deliveries>
         <Delivery>
             <message:from>mailto:simon@example.com</message:from>
-            <message:to>mailto:hr-dept@example.com</message:to>
+            <message:to>mailto:hr@example.com</message:to>
             <message:sent><dateTime>20180611T20:09:01Z</dateTime></message:sent>
             <message:received><dateTime>20180611T20:09:27Z</dateTime></message:received>
         </Delivery>

@@ -70,7 +70,7 @@ message:Message:
     - link:      tlm:from
       target:    mailto:simon@example.com
     - link:      tlm:to
-      target:    mailto:hr-dept@example.com
+      target:    mailto:hr@example.com
     - link:      tlm:sent
       value:     20180611T20:09:01Z
       valueType: xs:timestamp
