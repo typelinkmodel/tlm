@@ -180,3 +180,77 @@ test("TlmLink: that is a primary id", async () => {
             true);
     }).toThrowError(/must be mandatory/);
 });
+
+test("TlmLink: that is singular to the target", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.isSingularTo).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        false,
+        false,
+        false,
+        false);
+    expect(l.isSingularTo).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        false,
+        false,
+        true,
+        false);
+    expect(l.isSingularTo).toBe(true);
+});
+
+test("TlmLink: that is mandatory to the target", async () => {
+    let l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name");
+    expect(l.isMandatoryTo).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        false,
+        false,
+        false,
+        false);
+    expect(l.isMandatoryTo).toBe(false);
+
+    l = new TlmLink(
+        101,
+        100,
+        16, // string
+        "name",
+        undefined,
+        undefined,
+        false,
+        false,
+        false,
+        false,
+        true);
+    expect(l.isMandatoryTo).toBe(true);
+});

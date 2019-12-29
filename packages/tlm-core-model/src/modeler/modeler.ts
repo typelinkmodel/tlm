@@ -21,8 +21,12 @@ export class Modeler implements IModeler {
     private readonly _statementProcessors = [
         /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+identified\s+by|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+([A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processLinkDefinitionStatement(st),
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        async (st: RegExpMatchArray) => await this.processReverseLinkDefinitionStatement(st),
         /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processSuperTypeDefinitionStatement(st),
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+"([^"]+)"\s*\.?\s*/i,
+        async (st: RegExpMatchArray) => await this.processTypeDescriptionStatement(st),
     ];
 
     constructor(
@@ -163,6 +167,32 @@ export class Modeler implements IModeler {
         }
     }
 
+    private async processReverseLinkDefinitionStatement(match: RegExpMatchArray): Promise<void> {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, rel, link, otherType] = match;
+        const processedRel = rel.replace(/\s+/g, " ").trim();
+        switch (processedRel) {
+            case "is exactly one":
+                await this._linkModel.addReverseMandatoryLink(
+                    type,
+                    otherType,
+                    link,
+                    true,
+                );
+                break;
+            case "must be a":
+                await this._linkModel.addReverseMandatoryLink(
+                    type,
+                    otherType,
+                    link,
+                    false,
+                );
+                break;
+            default:
+                throw new Error(`Cannot process reverse statement relationship '${processedRel}'`);
+        }
+    }
+
     private async processSuperTypeDefinitionStatement(match: RegExpMatchArray): Promise<void> {
         // noinspection JSUnusedLocalSymbols
         const [_, type, superType] = match;
@@ -170,6 +200,14 @@ export class Modeler implements IModeler {
         const superTypeObj = await this._typeModel.addType(superType);
         const newTypeObj = new TlmType(typeObj.oid, typeObj.namespace, typeObj.name, superTypeObj.oid,
             typeObj.description);
+        await this._typeModel.replaceType(newTypeObj);
+    }
+
+    private async processTypeDescriptionStatement(match: RegExpMatchArray): Promise<void> {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, description] = match;
+        const typeObj = await this._typeModel.addType(type);
+        const newTypeObj = new TlmType(typeObj.oid, typeObj.namespace, typeObj.name, typeObj.oid, description);
         await this._typeModel.replaceType(newTypeObj);
     }
 }

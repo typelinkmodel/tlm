@@ -93,6 +93,8 @@ export class TlmLink extends TlmObject {
     private readonly _isSingular: boolean;
     private readonly _isMandatory: boolean;
     private readonly _isPrimaryId: boolean;
+    private readonly _isSingularTo: boolean;
+    private readonly _isMandatoryTo: boolean;
 
     constructor(
         oid: number,
@@ -104,6 +106,8 @@ export class TlmLink extends TlmObject {
         isSingular: boolean = false,
         isMandatory: boolean = false,
         isPrimaryId: boolean = false,
+        isSingularTo: boolean = false,
+        isMandatoryTo: boolean = false,
     ) {
         super(oid, TlmLink.LINK_TYPE);
         if (isPrimaryId) {
@@ -122,6 +126,8 @@ export class TlmLink extends TlmObject {
         this._isSingular = isSingular;
         this._isMandatory = isMandatory;
         this._isPrimaryId = isPrimaryId;
+        this._isSingularTo = isSingularTo;
+        this._isMandatoryTo = isMandatoryTo;
     }
 
     get fromType(): number {
@@ -154,5 +160,13 @@ export class TlmLink extends TlmObject {
 
     get isPrimaryId(): boolean {
         return this._isPrimaryId;
+    }
+
+    get isSingularTo(): boolean {
+        return this._isSingularTo;
+    }
+
+    get isMandatoryTo(): boolean {
+        return this._isMandatoryTo;
     }
 }

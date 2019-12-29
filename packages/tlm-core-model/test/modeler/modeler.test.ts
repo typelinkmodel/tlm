@@ -254,6 +254,48 @@ test("addStatement: is a kind of", async () => {
     expect(requirementNumberType.superType).toBe(nameType.oid);
 });
 
+test("addStatement: is exactly one for", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    await modeler.addNamespace("media", "https://type.link.model.tools/ns/tlm-sample-media/");
+    modeler.activeNamespace = "media";
+
+    await modeler.addStatement("An Album has at least one track which must be a Track.");
+    await modeler.addStatement("A Track is exactly one track for an Album.");
+    const link = modeler.links.media.Album.track;
+    expect(link.isMandatory).toBe(true);
+    expect(link.isSingular).toBe(false);
+    expect(link.isPrimaryId).toBe(false);
+    expect(link.isMandatoryTo).toBe(true);
+    expect(link.isSingularTo).toBe(true);
+});
+
+test("addStatement: must be for", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    await modeler.addNamespace("media", "https://type.link.model.tools/ns/tlm-sample-media/");
+    modeler.activeNamespace = "media";
+
+    await modeler.addStatement("A Song can have some rendition which must be a Track.");
+    await modeler.addStatement("A Track must be a rendition for a Song.");
+    const link = modeler.links.media.Song.rendition;
+    expect(link.isMandatory).toBe(false);
+    expect(link.isSingular).toBe(false);
+    expect(link.isMandatoryTo).toBe(true);
+    expect(link.isSingularTo).toBe(false);
+});
+
+test("addStatement: type description", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    await modeler.addNamespace("media", "https://type.link.model.tools/ns/tlm-sample-media/");
+    modeler.activeNamespace = "media";
+
+    await modeler.addStatement("An Album is a \"collection of songs\".");
+    const type = modeler.types.media.Album;
+    expect(type.description).toBe("collection of songs");
+});
+
 test("addStatement: support extra whitespace", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();
@@ -292,6 +334,22 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
         fail();
     } catch (e) {
         expect(e.message).toMatch(/Cannot process statement relationship/);
+    }
+});
+
+test("processReverseLinkDefinitionStatement: cover unreachable default case", async () => {
+    const modeler: Modeler = new Modeler();
+    try {
+        await (modeler as any).processReverseLinkDefinitionStatement([
+            "A Track flub-boxes rendition for a Song.",
+            "Track",
+            "flub-boxes",
+            "rendition",
+            "Song",
+        ]);
+        fail();
+    } catch (e) {
+        expect(e.message).toMatch(/Cannot process reverse statement relationship/);
     }
 });
 

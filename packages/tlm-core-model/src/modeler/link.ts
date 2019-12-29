@@ -108,4 +108,36 @@ export class LinkModel {
         this._linkMapCache = undefined;
         return newLink;
     }
+
+    public async addReverseMandatoryLink(
+        toType: string,
+        fromType: string,
+        name: string,
+        isSingularTo: boolean = false,
+    ): Promise<TlmLink> {
+        const toTypeObj = this._typeModel.findTypeByName(toType);
+        const fromTypeObj = this._typeModel.findTypeByName(fromType);
+
+        const existingLink = this.findLinkByName(fromTypeObj.oid, name);
+        if (toTypeObj.oid !== existingLink.toType) {
+            throw new Error(`Existing relationship '${name}' from '${fromType}' goes to '${toTypeObj.name}', not '${toType}'`);
+        }
+
+        const newLink = new TlmLink(
+            existingLink.oid,
+            existingLink.fromType,
+            existingLink.toType,
+            existingLink.name,
+            existingLink.fromName,
+            existingLink.toName,
+            existingLink.isSingular,
+            existingLink.isMandatory,
+            existingLink.isPrimaryId,
+            isSingularTo,
+            true);
+        const i = this._links.indexOf(existingLink);
+        this._links.splice(i, 1, newLink);
+        this._linkMapCache = undefined;
+        return newLink;
+    }
 }

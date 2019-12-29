@@ -85,12 +85,47 @@ Then(/^the link ([^ ]+) from type ([^ ]+) should be a primary id$/,
         assert.isTrue(linkObj.isPrimaryId);
     });
 
-Then(/^the type ([^ ]+) should have the supertype ([^ ]+)\.$/,
+Then(/^the type ([^ ]+) should have the supertype ([^ ]+)$/,
     async function(type: string, superType: string) {
         const modeler: IModeler = this.modeler;
         const typeObj = findType(modeler, type);
         const superTypeObj = findType(modeler, superType);
         assert.equal(typeObj.superType, superTypeObj.oid);
+    });
+
+Then(/^the description of type ([^ ]+) should be (.*)$/,
+    async function(type: string, description: string) {
+        const modeler: IModeler = this.modeler;
+        const typeObj = findType(modeler, type);
+        assert.equal(typeObj.description, description);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be singular for the target type$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isTrue(linkObj.isSingularTo);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be plural for the target type$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isFalse(linkObj.isSingularTo);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be mandatory for the target type$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isTrue(linkObj.isMandatoryTo);
+    });
+
+Then(/^the link ([^ ]+) from type ([^ ]+) should be optional for the target type$/,
+    async function(link: string, type: string) {
+        const modeler: IModeler = this.modeler;
+        const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
+        assert.isFalse(linkObj.isMandatoryTo);
     });
 
 Given(/^this model:$/,
