@@ -4,6 +4,7 @@ import {OidGenerator} from "./oid";
 
 export class NamespaceModel {
     private _namespaces: TlmNamespace[] = [];
+    private _namespaceMapCache?: ITlmNamespaceMap = undefined;
     private _initialized: boolean = false;
     private _tlmNamespace: TlmNamespace | undefined = undefined;
     private _xsNamespace: TlmNamespace | undefined = undefined;
@@ -15,10 +16,14 @@ export class NamespaceModel {
     }
 
     public get namespaceMap(): ITlmNamespaceMap {
+        if (this._namespaceMapCache !== undefined) {
+            return this._namespaceMapCache;
+        }
         const result: ITlmNamespaceMap = {};
         for (const ns of this._namespaces) {
             result[ns.prefix] = ns;
         }
+        this._namespaceMapCache = result;
         return result;
     }
 
@@ -96,6 +101,7 @@ export class NamespaceModel {
         }
         const newNamespace = new TlmNamespace(await this._oidGenerator.nextOid(), prefix, uri, description);
         this._namespaces.push(newNamespace);
+        this._namespaceMapCache = undefined;
         return newNamespace;
     }
 

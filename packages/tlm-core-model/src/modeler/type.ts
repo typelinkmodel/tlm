@@ -5,6 +5,7 @@ import {OidGenerator} from "./oid";
 
 export class TypeModel {
     private _types: TlmType[] = [];
+    private _typeMapCache?: ITlmTypeMap = undefined;
     private _initialized: boolean = false;
     private readonly _oidGenerator: OidGenerator;
     private readonly _namespaceModel: NamespaceModel;
@@ -18,6 +19,9 @@ export class TypeModel {
     }
 
     public get typeMap(): ITlmTypeMap {
+        if (this._typeMapCache !== undefined) {
+            return this._typeMapCache;
+        }
         const result: ITlmTypeMap = {};
         for (const ns of this._namespaceModel.namespaces) {
             result[ns.prefix] = {};
@@ -26,6 +30,7 @@ export class TypeModel {
             const ns = this._namespaceModel.findNamespaceByOid(t.namespace);
             result[ns.prefix][t.name] = t;
         }
+        this._typeMapCache = result;
         return result;
     }
 
@@ -104,6 +109,20 @@ export class TypeModel {
         const newType = new TlmType(await this._oidGenerator.nextOid(),
             this._namespaceModel.getActiveNamespaceOid(), name);
         this._types.push(newType);
+        this._typeMapCache = undefined;
         return newType;
+    }
+
+    public async replaceType(type: TlmType): Promise<void> {
+        if (type.namespace !== this._namespaceModel.getActiveNamespaceOid()) {
+            throw new Error("Can only replace types in the active namespace");
+        }
+        const existingType = this.findTypeByOid(type.oid);
+        if (type.namespace !== existingType.namespace) {
+            throw new Error("Cannot move types to a new namespace");
+        }
+        const i = this._types.indexOf(existingType);
+        this._types.splice(i, 1, type);
+        this._typeMapCache = undefined;
     }
 }

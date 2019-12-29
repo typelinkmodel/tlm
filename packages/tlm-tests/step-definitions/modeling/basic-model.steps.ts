@@ -3,8 +3,9 @@
 import {IModeler, TlmLink, TlmType} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
 import {Given, TableDefinition, Then, When} from "cucumber";
+import {findType} from "../../support/util";
 
-Given(/^an empty type\-link model is set up$/,
+Given(/^an empty type-link model is set up$/,
     async function() {
         const modeler: IModeler = this.modeler;
         modeler.initialize();
@@ -31,8 +32,7 @@ When(/^the modeling statement (.*) is added to the model:?$/,
 Then(/^the model should contain the type ([^ ]+)$/,
     async function(type: string) {
         const modeler: IModeler = this.modeler;
-        const types = modeler.types[modeler.activeNamespace!];
-        const typeObj = types[type];
+        const typeObj = findType(modeler, type);
         assert.isDefined(typeObj);
     });
 
@@ -83,6 +83,14 @@ Then(/^the link ([^ ]+) from type ([^ ]+) should be a primary id$/,
         const modeler: IModeler = this.modeler;
         const linkObj: TlmLink = modeler.links[modeler.activeNamespace!][type][link];
         assert.isTrue(linkObj.isPrimaryId);
+    });
+
+Then(/^the type ([^ ]+) should have the supertype ([^ ]+)\.$/,
+    async function(type: string, superType: string) {
+        const modeler: IModeler = this.modeler;
+        const typeObj = findType(modeler, type);
+        const superTypeObj = findType(modeler, superType);
+        assert.equal(typeObj.superType, superTypeObj.oid);
     });
 
 Given(/^this model:$/,

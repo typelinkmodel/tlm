@@ -21,6 +21,8 @@ export class Modeler implements IModeler {
     private readonly _statementProcessors = [
         /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+identified\s+by|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+([A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processLinkDefinitionStatement(st),
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        async (st: RegExpMatchArray) => await this.processSuperTypeDefinitionStatement(st),
     ];
 
     constructor(
@@ -159,5 +161,15 @@ export class Modeler implements IModeler {
             default:
                 throw new Error(`Cannot process statement relationship '${processedRel}'`);
         }
+    }
+
+    private async processSuperTypeDefinitionStatement(match: RegExpMatchArray): Promise<void> {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, superType] = match;
+        const typeObj = await this._typeModel.addType(type);
+        const superTypeObj = await this._typeModel.addType(superType);
+        const newTypeObj = new TlmType(typeObj.oid, typeObj.namespace, typeObj.name, superTypeObj.oid,
+            typeObj.description);
+        await this._typeModel.replaceType(newTypeObj);
     }
 }

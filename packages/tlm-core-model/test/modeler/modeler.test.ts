@@ -241,6 +241,19 @@ test("addStatement: can have some", async () => {
     expect(link.isPrimaryId).toBe(false);
 });
 
+test("addStatement: is a kind of", async () => {
+    const modeler: Modeler = new Modeler();
+    modeler.initialize();
+    await modeler.addNamespace("req", "https://type.link.model.tools/ns/tlm-sample-requirements/");
+    modeler.activeNamespace = "req";
+
+    await modeler.addStatement("A RequirementNumber is a kind of Name.");
+    const requirementNumberType = modeler.types.req.RequirementNumber;
+    const nameType = modeler.types.xs.Name;
+    expect(requirementNumberType).toBeDefined();
+    expect(requirementNumberType.superType).toBe(nameType.oid);
+});
+
 test("addStatement: support extra whitespace", async () => {
     const modeler: Modeler = new Modeler();
     modeler.initialize();

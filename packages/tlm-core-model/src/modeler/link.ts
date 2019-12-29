@@ -6,6 +6,7 @@ import {TypeModel} from "./type";
 
 export class LinkModel {
     private _links: TlmLink[] = [];
+    private _linkMapCache?: ITlmLinkMap = undefined;
     private readonly _oidGenerator: OidGenerator;
     private readonly _namespaceModel: NamespaceModel;
     private readonly _typeModel: TypeModel;
@@ -22,6 +23,9 @@ export class LinkModel {
     }
 
     public get linkMap(): ITlmLinkMap {
+        if (this._linkMapCache !== undefined) {
+            return this._linkMapCache;
+        }
         const result: ITlmLinkMap = {};
         for (const ns of this._namespaceModel.namespaces) {
             result[ns.prefix] = {};
@@ -37,6 +41,7 @@ export class LinkModel {
             const linkName = link.name;
             result[ns.prefix][fromType.name][linkName] = link;
         }
+        this._linkMapCache = result;
         return result;
     }
 
@@ -100,6 +105,7 @@ export class LinkModel {
             isMandatory,
             isPrimaryId);
         this._links.push(newLink);
+        this._linkMapCache = undefined;
         return newLink;
     }
 }

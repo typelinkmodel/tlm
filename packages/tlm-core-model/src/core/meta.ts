@@ -157,7 +157,8 @@ export function parseLinkData(data: Array<{ [key: string]: any }>): TlmLink[] {
             is_primary_id,
             description,
         } = row;
-        result.push(new TlmLink(oid, from_type, to_type, name, from_name, to_name));
+        result.push(new TlmLink(oid, from_type, to_type, name, from_name, to_name,
+          is_singular_from, is_mandatory_from, is_primary_id));
     }
     return result;
 }
@@ -174,7 +175,7 @@ export function loadCoreSchema(): void {
     }
     initialized = true;
 
-    // parsing takes about in order of 10ms, so we do it lazily
+    // parsing takes about 10ms, so we do it lazily
 
     const namespaceData = parse(NAMESPACE_DATA, CSV_OPTIONS);
     const namespaces = parseNamespaceData(namespaceData);
