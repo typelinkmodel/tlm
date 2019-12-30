@@ -3,7 +3,7 @@
 import {IModeler, TlmLink, TlmType} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
 import {Given, TableDefinition, Then, When} from "cucumber";
-import {findType} from "../../support/util";
+import {findType} from "../support/util";
 
 Given(/^an empty type-link model is set up$/,
     async function() {
