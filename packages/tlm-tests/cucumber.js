@@ -1,8 +1,8 @@
 const common = [
     'features/**/*.feature',
     '--require-module ts-node/register',
-    '--require step-definitions/**/*.ts',
-    '--require support/**/*.ts'
+    '--require src/step-definitions/**/*.ts',
+    '--require src/support/**/*.ts'
 ].join(' ');
 
 function getWorldParameters(assembly) {

@@ -1,35 +1,35 @@
 {
-  "name": "@typelinkmodel/tlm-pgsql",
-  "version": "0.0.0",
-  "private": true,
-  "description": "",
-  "author": "Leo Simons <mail@leosimons.com>",
-  "homepage": "https://github.com/typelinkmodel/tlm#readme",
-  "license": "Apache-2.0",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/typelinkmodel/tlm.git"
-  },
-  "scripts": {
-    "prepare": "pnpm run compile",
-    "compile": "tsc",
-    "test": "jest",
-    "lint": "tslint -c ../../tslint.json -e 'node_modules/**/*.ts' -e '**/*/*.d.ts' '**/*.ts'"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.5",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "ts-node": "^8.4.1",
-    "tslint": "^5.11.0",
-    "typescript": "^3.0.3"
-  },
-  "dependencies": {
-    "@typelinkmodel/tlm-core-model": "^0.0.0",
-    "@types/pg": "^7.11.2",
-    "pg": "^7.12.1"
-  }
+    "name": "@typelinkmodel/tlm-pgsql",
+    "version": "0.0.0",
+    "private": true,
+    "description": "",
+    "author": "Leo Simons <mail@leosimons.com>",
+    "homepage": "https://github.com/typelinkmodel/tlm#readme",
+    "license": "Apache-2.0",
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/typelinkmodel/tlm.git"
+    },
+    "scripts": {
+        "prepare": "pnpm run compile",
+        "compile": "tsc",
+        "test": "jest",
+        "lint": "tslint -c ../../tslint.json -e 'node_modules/**/*.ts' -e '**/*/*.d.ts' '**/*.ts'"
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.18",
+        "@types/node": "^12.7.5",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "ts-node": "^8.4.1",
+        "tslint": "^5.11.0",
+        "typescript": "^3.0.3"
+    },
+    "dependencies": {
+        "@typelinkmodel/tlm-core-model": "^0.0.0",
+        "@types/pg": "^7.11.2",
+        "pg": "^7.12.1"
+    }
 }
