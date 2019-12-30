@@ -8,5 +8,6 @@ export interface IQuery {
 }
 
 export interface ISearcher {
-    findUnique(query: IQuery): Promise<TlmObject>;
+    getUnique(query: IQuery): Promise<TlmObject>;
+    findUnique(query: IQuery): Promise<TlmObject|undefined>;
 }
