@@ -18,4 +18,3 @@ The HR namespace is for defining facts about people, departments, and teams.
 * A Team has at most one name which must be a string.
 * A Team has at least one lead which must be a Person.
 * A Person can have some team which must be a Team.
-* A Person can have some team which must be a Team.
