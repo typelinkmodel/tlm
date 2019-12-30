@@ -1,3 +1,4 @@
+import {ILoader, IReader, ISearcher} from "@typelinkmodel/tlm-core-db";
 import {IModeler} from "@typelinkmodel/tlm-core-model";
 import {setWorldConstructor} from "cucumber";
 
@@ -8,6 +9,9 @@ export class World {
     private readonly _attach: (value: any, mimeType?: string) => any;
     private _assembly: any;
     private _modeler: any;
+    private _loader: any;
+    private _reader: any;
+    private _searcher: any;
 
     constructor(options: {[key: string]: any}) {
         this._attach = options.attach;
@@ -31,6 +35,30 @@ export class World {
         }
         this._modeler = new this._assembly.Modeler(this);
         return this._modeler;
+    }
+
+    public get loader(): ILoader {
+        if (this._loader) {
+            return this._loader;
+        }
+        this._loader = new this._assembly.Loader(this);
+        return this._loader;
+    }
+
+    public get reader(): IReader {
+        if (this._reader) {
+            return this._reader;
+        }
+        this._reader = new this._assembly.Reader(this);
+        return this._reader;
+    }
+
+    public get searcher(): ISearcher {
+        if (this._searcher) {
+            return this._searcher;
+        }
+        this._searcher = new this._assembly.Searcher(this);
+        return this._searcher;
     }
 
     private chooseAssembly(): string {
