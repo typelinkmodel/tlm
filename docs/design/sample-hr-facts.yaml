@@ -1,0 +1,56 @@
+data:
+  namespaces:
+    - default:   https://type.link.model.tools/ns/tlm/
+    - tlm:       https://type.link.model.tools/ns/tlm/
+    - xs:        https://www.w3.org/TR/xmlschema-2/
+    - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
+  objects:
+    - id:        mailto:leo@example.com
+      type:      hr:Person
+      facts:
+        - link:      name
+          value:     Leo Simons
+          valueType: xs:string
+        - link:      department
+          target:    mailto:engineering@example.com
+        - link:      team
+          targets:
+            -        mailto:content-management-eng@example.com
+            -        mailto:transcoding-eng@example.com
+            -        mailto:eng-management@example.com
+    - id:        mailto:simon@example.com
+      type:      hr:Person
+      facts:
+        - link:      name
+          value:     Simon Lucy
+          valueType: xs:string
+        - link:      coachedBy
+          target:    mailto:dirkx@example.com
+        - link:      team
+          targets:
+            -        mailto:content-management-eng@example.com
+            -        mailto:transcoding-eng@example.com
+            -        mailto:eng-management@example.com
+        - link:      coaches
+          value:     true
+          valuetype: xs:boolean
+    - id:        mailto:dirkx@example.com
+      type:      hr:Person
+      facts:
+        - link:      name
+          value:     Dirk van Gulik
+          valueType: xs:string
+    - id:        mailto:engineering@example.com
+      type:      hr:Department
+      facts:
+        - link:      name
+          value:     Engineering
+          valueType: xs:string
+        - link:      manager
+          target:    mailto:dirkx@example.com
+    - id:        mailto:hr@example.com
+      type:      hr:Department
+      facts:
+        - link:      name
+          value:     HR
+          valueType: xs:string
