@@ -1,0 +1,33 @@
+tlm:Data:
+  namespaces:
+    tlm:    https://type.link.model.tools/ns/tlm/
+    hr:     https://type.link.model.tools/ns/tlm-sample-hr/
+  objects:
+    - id:            mailto:leo@example.com
+      type:          hr:Person
+      name:          Leo Simons
+      department:    mailto:engineering@example.com
+      team:
+        - mailto:content-management-eng@example.com
+        - mailto:transcoding-eng@example.com
+        - mailto:eng-management@example.com
+    - id:            mailto:simon@example.com
+      type:          hr:Person
+      name:          Simon Lucy
+      coachedBy:     mailto:dirk@example.com
+      coaches:       true
+      department:    mailto:engineering@example.com
+      team:
+        - mailto:content-management-eng@example.com
+        - mailto:transcoding-eng@example.com
+        - mailto:eng-management@example.com
+    - id:            mailto:dirk@example.com
+      type:          hr:Person
+      name:          Dirk van Gulik
+    - id:            mailto:engineering@example.com
+      type:          hr:Department
+      name:          Engineering
+      manager:       mailto:dirk@example.com
+    - id:            mailto:hr@example.com
+      type:          hr:Department
+      name:          HR

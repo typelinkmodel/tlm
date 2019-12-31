@@ -5,6 +5,7 @@ The HR namespace is for defining facts about people, departments, and teams.
 ## Facts about people
 * A Person is identified by id which must be a URI.
 * A Person has exactly one name which must be a string.
+* A Person has toggle coaches.
 * A Person can have some coach which must be a Person.
 
 ## Facts about departments

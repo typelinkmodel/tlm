@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        targetNamespace="https://type.link.model.tools/ns/tlm-sample-hr/"
+        xmlns:tlm="https://type.link.model.tools/ns/tlm/"
+        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/">
+    <xs:import
+            namespace="https://type.link.model.tools/ns/tlm/"
+            schemaLocation="tlm.xsd"/>
+
+    <xs:element name="name" type="xs:string"/>
+
+    <xs:element name="coachedBy" type="tlm:URI"/>
+    <xs:element name="department" type="tlm:URI"/>
+    <xs:element name="team" type="tlm:URI"/>
+    <xs:element name="coaches" type="xs:boolean"/>
+
+    <xs:element name="manager" type="tlm:URI"/>
+
+    <xs:element name="Person">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tlm:id"/>
+                <xs:element ref="hr:name"/>
+                <xs:element minOccurs="0" ref="hr:coachedBy"/>
+                <xs:element minOccurs="0" ref="hr:coaches"/>
+                <xs:element minOccurs="0" ref="hr:department"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="hr:team"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Department">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tlm:id"/>
+                <xs:element ref="hr:name"/>
+                <xs:element minOccurs="0" ref="hr:manager"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

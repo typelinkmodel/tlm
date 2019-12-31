@@ -42,63 +42,11 @@ CALL hr__insert_team(
 CALL message__insert_subject(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
+  subject_type   => 'Person',
+  subject_ns     => 'hr',
   link           => 'coachedBy',
   target         => 'mailto:simon@example.com'
 );
-
--- 4) all other facts about all objects in the message
-
-CALL message__insert_value_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:leo@example.com',
-  link           => 'name',
-  value_type_ns  => 'xs',
-  value_type     => 'string',
-  value          => 'Leo Simons'
-);
-CALL message__insert_link_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:leo@example.com',
-  link           => 'department',
-  value_type_ns  => 'hr',
-  value_type     => 'Department',
-  value          => 'mailto:engineering@example.com'
-);
-CALL message__insert_link_set_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:leo@example.com',
-  link           => 'team',
-  value_type_ns  => 'hr',
-  value_type     => 'Team',
-  value          => 'mailto:content-management-eng@example.com'
-);
-CALL message__insert_link_set_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:leo@example.com',
-  link           => 'team',
-  value_type_ns  => 'hr',
-  value_type     => 'Team',
-  value          => 'mailto:transcoding-eng@example.com'
-);
-CALL message__insert_link_set_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:leo@example.com',
-  link           => 'team',
-  value_type_ns  => 'hr',
-  value_type     => 'Team',
-  value          => 'mailto:eng-management@example.com'
-);
-
-CALL message__insert_toggle_fact(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  subject        => 'mailto:simon@example.com',
-  link           => 'coaches',
-  value_type_ns  => 'xs',
-  value_type     => 'boolean',
-  value          => TRUE
-);
-
--- (...some more facts here...)
 
 -- 5) delivery info
 

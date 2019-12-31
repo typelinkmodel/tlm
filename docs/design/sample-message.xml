@@ -1,54 +1,20 @@
 <?xml version="1.0"?>
-<Message
-        xmlns="https://type.link.model.tools/ns/tlm/"
-        xmlns:tlm="https://type.link.model.tools/ns/tlm/"
-        xmlns:xs="https://www.w3.org/TR/xmlschema-2/"
+<message:Message
+        xmlns="https://type.link.model.tools/ns/message/"
         xmlns:message="https://type.link.model.tools/ns/message/"
-        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/">
-    <id>urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e</id>
-    <message:subject>
-        <hr:Person>
-            <hr:id>mailto:leo@example.com</hr:id>
-            <hr:coachedBy>mailto:simon@example.com</hr:coachedBy>
-        </hr:Person>
-    </message:subject>
-    <message:body>
-        <hr:Person>
-            <hr:id>mailto:leo@example.com</hr:id>
-            <hr:name tlm:type="xs:string">Leo Simons</hr:name>
-            <hr:department>mailto:engineering@example.com</hr:department>
-            <hr:teams>
-                <target>mailto:content-management-eng@example.com</target>
-                <target>mailto:transcoding-eng@example.com</target>
-                <target>mailto:eng-management@example.com</target>
-            </hr:teams>
-        </hr:Person>
-        <hr:Person>
-            <hr:id>mailto:simon@example.com</hr:id>
-            <hr:name tlm:type="xs:string">Simon Lucy</hr:name>
-            <hr:coachedBy>mailto:dirk@example.com</hr:coachedBy>
-            <hr:coaches/>
-        </hr:Person>
-        <hr:Person>
-            <hr:id>mailto:dirk@example.com</hr:id>
-            <hr:name tlm:type="xs:string">Dirk van Gulik</hr:name>
-        </hr:Person>
-        <hr:Department>
-            <hr:id>mailto:engineering@example.com</hr:id>
-            <hr:name tlm:type="xs:string">Engineering</hr:name>
-            <hr:manager>mailto:dirk@example.com</hr:manager>
-        </hr:Department>
-        <hr:Department>
-            <hr:id>mailto:hr@example.com</hr:id>
-            <hr:name tlm:type="xs:string">HR</hr:name>
-        </hr:Department>
-    </message:body>
-    <message:delivery>
-        <message:Delivery>
-            <message:sender>mailto:simon@example.com</message:sender>
-            <message:receiver>mailto:hr@example.com</message:receiver>
-            <message:sendTime tlm:type="xs:dateTime">20180611T20:09:01Z</message:sendTime>
-            <message:receiveTime tlm:type="xs:dateTime">20180611T20:09:27Z</message:receiveTime>
-        </message:Delivery>
-    </message:delivery>
-</Message>
+        xmlns:tlm="https://type.link.model.tools/ns/tlm/"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hr="sample-hr-schema.xsd">
+    <tlm:id>urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e</tlm:id>
+    <subject>
+        <tlm:type>hr:Person</tlm:type>
+        <tlm:id>mailto:leo@example.com</tlm:id>
+        <hr:coachedBy>mailto:simon@example.com</hr:coachedBy>
+    </subject>
+    <delivery>
+        <sender>mailto:dirk@example.com</sender>
+        <receiver>mailto:hr-dept@example.com</receiver>
+        <sendTime tlm:type="xs:dateTime">20180611T20:09:01Z</sendTime>
+        <receiveTime tlm:type="xs:dateTime">20180611T20:09:27Z</receiveTime>
+    </delivery>
+</message:Message>

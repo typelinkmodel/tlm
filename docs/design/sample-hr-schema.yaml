@@ -1,7 +1,7 @@
 model:
   namespaces:
     - default:   https://type.link.model.tools/ns/tlm/
-    - xs:        https://www.w3.org/TR/xmlschema-2/
+    - xs:        http://www.w3.org/2001/XMLSchema
     - tlm:       https://type.link.model.tools/ns/tlm/
     - message:   https://type.link.model.tools/ns/message/
     - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
@@ -19,7 +19,7 @@ model:
       mandatory: true
     - from:      hr:Person
       to:        hr:Person
-      name:      coach
+      name:      coachedBy
     # Facts about departments
     - from:      hr:Department
       to:        tlm:URI
