@@ -1,9 +1,13 @@
 <tlm:Data
         xmlns="https://type.link.model.tools/ns/tlm-sample-hr/"
-        xmlns:tlm="https://type.link.model.tools/ns/tlm/">
+        xmlns:tlm="https://type.link.model.tools/ns/tlm/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+                https://type.link.model.tools/ns/tlm/             ../spec/tlm.xsd
+                https://type.link.model.tools/ns/tlm-sample-hr/   sample-hr-model.xsd">
     <Person>
         <tlm:id>mailto:leo@example.com</tlm:id>
-        <name>Leo Simons</name>
+        <tlm:name>Leo Simons</tlm:name>
         <department>mailto:engineering@example.com</department>
         <team>mailto:content-management-eng@example.com</team>
         <team>mailto:transcoding-eng@example.com</team>
@@ -11,7 +15,7 @@
     </Person>
     <Person>
         <tlm:id>mailto:simon@example.com</tlm:id>
-        <name>Simon Lucy</name>
+        <tlm:name>Simon Lucy</tlm:name>
         <coachedBy>mailto:dirk@example.com</coachedBy>
         <coaches>true</coaches>
         <department>mailto:engineering@example.com</department>
@@ -21,15 +25,31 @@
     </Person>
     <Person>
         <tlm:id>mailto:dirk@example.com</tlm:id>
-        <name>Dirk van Gulik</name>
+        <tlm:name>Dirk van Gulik</tlm:name>
     </Person>
     <Department>
         <tlm:id>mailto:engineering@example.com</tlm:id>
-        <name>Engineering</name>
+        <tlm:name>Engineering</tlm:name>
         <manager>mailto:dirk@example.com</manager>
     </Department>
     <Department>
         <tlm:id>mailto:hr@example.com</tlm:id>
-        <name>HR</name>
+        <tlm:name>HR</tlm:name>
     </Department>
+    <Team>
+        <tlm:id>mailto:content-management-eng@example.com</tlm:id>
+        <tlm:name>Content Management Engineering</tlm:name>
+        <lead>mailto:leo@example.com</lead>
+    </Team>
+    <Team>
+        <tlm:id>mailto:transcoding-eng@example.com</tlm:id>
+        <tlm:name>Transcoding Engineering</tlm:name>
+        <lead>mailto:leo@example.com</lead>
+    </Team>
+    <Team>
+        <tlm:id>mailto:eng-management@example.com</tlm:id>
+        <tlm:name>Engineering Management</tlm:name>
+        <lead>mailto:dirk@example.com</lead>
+        <lead>mailto:simon@example.com</lead>
+    </Team>
 </tlm:Data>

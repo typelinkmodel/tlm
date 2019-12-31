@@ -1,8 +1,8 @@
 {
     "type": "tlm:Data",
     "namespaces": {
-        "tlm":     "https://type.link.model.tools/ns/tlm/",
-        "hr":      "https://type.link.model.tools/ns/tlm-sample-hr/"
+        "tlm":               "https://type.link.model.tools/ns/tlm/",
+        "hr":                "https://type.link.model.tools/ns/tlm-sample-hr/"
     },
     "objects": [
         {
@@ -11,9 +11,9 @@
             "name":          "Leo Simons",
             "department":    "mailto:engineering@example.com",
             "team": [
-                "mailto:content-management-eng@example.com",
-                "mailto:transcoding-eng@example.com",
-                "mailto:eng-management@example.com"
+                             "mailto:content-management-eng@example.com",
+                             "mailto:transcoding-eng@example.com",
+                             "mailto:eng-management@example.com"
             ]
         },
         {
@@ -24,9 +24,9 @@
             "coaches":       true,
             "department":    "mailto:engineering@example.com",
             "team": [
-                "mailto:content-management-eng@example.com",
-                "mailto:transcoding-eng@example.com",
-                "mailto:eng-management@example.com"
+                             "mailto:content-management-eng@example.com",
+                             "mailto:transcoding-eng@example.com",
+                             "mailto:eng-management@example.com"
             ]
         },
         {
@@ -44,6 +44,31 @@
             "id":            "mailto:hr@example.com",
             "type":          "hr:Department",
             "name":          "HR"
+        },
+        {
+            "id":            "mailto:content-management-eng@example.com",
+            "type":          "hr:Team",
+            "name":          "Content Management Engineering",
+            "lead": [
+                             "mailto:leo@example.com"
+            ]
+        },
+        {
+            "id":            "mailto:transcoding-eng@example.com",
+            "type":          "hr:Team",
+            "name":          "Transcoding Engineering",
+            "lead": [
+                             "mailto:leo@example.com"
+            ]
+        },
+        {
+            "id":            "mailto:eng-management@example.com",
+            "type":          "hr:Team",
+            "name":          "Engineering Management",
+            "lead": [
+                             "mailto:dirk@example.com",
+                             "mailto:simon@example.com"
+            ]
         }
     ]
 }

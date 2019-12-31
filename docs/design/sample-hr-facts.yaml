@@ -54,3 +54,31 @@ tlm:Facts:
         - link:      name
           value:     HR
           type:      xs:string
+    - id:        mailto:content-management-eng@example.com
+      type:      hr:Team
+      facts:
+        - link:      name
+          value:     Content Management Engineering
+          type:      xs:string
+        - link:      lead
+          targets:
+            -        mailto:leo@example.com
+    - id:        mailto:transcoding-eng@example.com
+      type:      hr:Team
+      facts:
+        - link:      name
+          value:     Transcoding Engineering
+          type:      xs:string
+        - link:      lead
+          targets:
+            -        mailto:leo@example.com
+    - id:        mailto:eng-management@example.com
+      type:      hr:Team
+      facts:
+        - link:      name
+          value:     Engineering Management
+          type:      xs:string
+        - link:      lead
+          targets:
+            -        mailto:dirk@example.com
+            -        mailto:simon@example.com

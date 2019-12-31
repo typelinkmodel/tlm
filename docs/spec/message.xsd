@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="https://type.link.model.tools/ns/message/"
+           xmlns:tlm="https://type.link.model.tools/ns/tlm/"
+           xmlns:message="https://type.link.model.tools/ns/message/">
+    <xs:import
+            namespace="https://type.link.model.tools/ns/tlm/"
+            schemaLocation="tlm.xsd"/>
+    <xs:element name="Message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tlm:id"/>
+                <xs:element name="subject" type="Subject"/>
+                <xs:element name="delivery" type="Delivery"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Subject">
+        <xs:sequence>
+            <xs:element name="id" type="tlm:ID"/>
+            <xs:element name="type" type="tlm:TypeName"/>
+            <xs:element maxOccurs="unbounded" name="Fact" type="tlm:Fact"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Delivery">
+        <xs:sequence>
+            <xs:element name="sender" type="tlm:URI"/>
+            <xs:element name="receiver" type="tlm:URI"/>
+            <xs:element name="sendTime" type="xs:dateTime"/>
+            <xs:element name="receiveTime" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

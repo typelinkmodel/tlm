@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        targetNamespace="https://type.link.model.tools/ns/tlm-sample-hr/"
+        xmlns:tlm="https://type.link.model.tools/ns/tlm/">
+    <xs:import
+            namespace="https://type.link.model.tools/ns/tlm/"
+            schemaLocation="../spec/tlm.xsd"/>
+
+    <xs:element name="Person" type="Person"/>
+    <xs:complexType name="Person">
+        <xs:annotation>
+            <xs:documentation>being regarded as an individual</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <!-- A Person is identified by id which must be a URI. -->
+            <xs:element ref="tlm:id"/>
+            <!-- A Person has exactly one name which must be a string. -->
+            <xs:element ref="tlm:name"/>
+            <!-- A Person can have some coach which must be a Person. -->
+            <xs:element minOccurs="0" name="coachedBy" type="tlm:URI"/>
+            <!-- A Person has toggle coaches. -->
+            <xs:element minOccurs="0" name="coaches" type="xs:boolean"/>
+            <!-- A Person has at most one department which must be a Department. -->
+            <xs:element minOccurs="0" name="department" type="tlm:URI"/>
+            <!-- A Person can have some team which must be a Team. -->
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="team" type="tlm:URI"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Department" type="Department"/>
+    <xs:complexType name="Department">
+        <xs:annotation>
+            <xs:documentation>division of an organization</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <!-- A Department is identified by id which must be a URI. -->
+            <xs:element ref="tlm:id"/>
+            <!-- A Department has exactly one name which must be a string. -->
+            <xs:element ref="tlm:name"/>
+            <!-- A Department has exactly one manager which must be a Person. -->
+            <xs:element minOccurs="0" name="manager" type="tlm:URI"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Team" type="Team"/>
+    <xs:complexType name="Team">
+        <xs:annotation>
+            <xs:documentation>group of several people associated together</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <!-- A Team is identified by id which must be a URI. -->
+            <xs:element ref="tlm:id"/>
+            <!-- A Team has at most one name which must be a string. -->
+            <xs:element minOccurs="0" ref="tlm:name"/>
+            <!-- A Team has at least one lead which must be a Person. -->
+            <xs:element maxOccurs="unbounded" name="lead" type="tlm:URI"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

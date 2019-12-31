@@ -1,4 +1,4 @@
-model:
+tlm:Model:
   namespaces:
     - default:   https://type.link.model.tools/ns/tlm/
     - xs:        http://www.w3.org/2001/XMLSchema

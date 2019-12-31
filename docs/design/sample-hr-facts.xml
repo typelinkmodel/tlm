@@ -1,79 +1,123 @@
 <Facts
-        xmlns="https://type.link.model.tools/ns/tlm-foo/"
+        xmlns="https://type.link.model.tools/ns/tlm/"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/">
-    <object>
+        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+                https://type.link.model.tools/ns/tlm/             ../spec/tlm.xsd
+                https://type.link.model.tools/ns/tlm-sample-hr/   sample-hr-model.xsd">
+    <Object>
         <id>mailto:leo@example.com</id>
         <type>hr:Person</type>
-        <fact>
+        <Fact>
             <link>name</link>
             <value>Leo Simons</value>
             <type>xs:string</type>
-        </fact>
-        <fact>
+        </Fact>
+        <Fact>
             <link>department</link>
             <target>mailto:engineering@example.com</target>
-        </fact>
-        <fact>
+        </Fact>
+        <Fact>
             <link>team</link>
-            <targets>mailto:content-management-eng@example.com</targets>
-            <targets>mailto:transcoding-eng@example.com</targets>
-            <targets>mailto:eng-management@example.com</targets>
-        </fact>
-    </object>
-    <object>
+            <target>mailto:content-management-eng@example.com</target>
+            <target>mailto:transcoding-eng@example.com</target>
+            <target>mailto:eng-management@example.com</target>
+        </Fact>
+    </Object>
+    <Object>
         <id>mailto:simon@example.com</id>
         <type>hr:Person</type>
-        <fact>
+        <Fact>
             <link>name</link>
             <value>Simon Lucy</value>
             <type>xs:string</type>
-        </fact>
-        <fact>
+        </Fact>
+        <Fact>
             <link>coachedBy</link>
             <target>mailto:dirk@example.com</target>
-        </fact>
-        <fact>
+        </Fact>
+        <Fact>
             <link>team</link>
-            <targets>mailto:content-management-eng@example.com</targets>
-            <targets>mailto:transcoding-eng@example.com</targets>
-            <targets>mailto:eng-management@example.com</targets>
-        </fact>
-        <fact>
+            <target>mailto:content-management-eng@example.com</target>
+            <target>mailto:transcoding-eng@example.com</target>
+            <target>mailto:eng-management@example.com</target>
+        </Fact>
+        <Fact>
             <link>coaches</link>
             <value>true</value>
             <type>xs:boolean</type>
-        </fact>
-    </object>
-    <object>
+        </Fact>
+    </Object>
+    <Object>
         <id>mailto:dirk@example.com</id>
         <type>hr:Person</type>
-        <fact>
+        <Fact>
             <link>name</link>
             <value>Dirk van Gulik</value>
             <type>xs:string</type>
-        </fact>
-    </object>
-    <object>
+        </Fact>
+    </Object>
+    <Object>
         <id>mailto:engineering@example.com</id>
         <type>hr:Department</type>
-        <fact>
+        <Fact>
             <link>name</link>
             <value>Engineering</value>
             <type>xs:string</type>
-        </fact>
-        <fact>
+        </Fact>
+        <Fact>
             <link>manager</link>
             <target>mailto:dirk@example.com</target>
-        </fact>
-    </object>
-    <object>
+        </Fact>
+    </Object>
+    <Object>
         <id>mailto:hr@example.com</id>
         <type>hr:Department</type>
-        <fact>
+        <Fact>
             <link>name</link>
             <value>HR</value>
             <type>xs:string</type>
-        </fact>
-    </object>
+        </Fact>
+    </Object>
+    <Object>
+        <id>mailto:content-management-eng@example.com</id>
+        <type>hr:team</type>
+        <Fact>
+            <link>name</link>
+            <value>Content Management Engineering</value>
+            <type>xs:string</type>
+        </Fact>
+        <Fact>
+            <link>lead</link>
+            <target>mailto:leo@example.com</target>
+        </Fact>
+    </Object>
+    <Object>
+        <id>mailto:transcoding-eng@example.com</id>
+        <type>hr:team</type>
+        <Fact>
+            <link>name</link>
+            <value>Transcoding Engineering</value>
+            <type>xs:string</type>
+        </Fact>
+        <Fact>
+            <link>lead</link>
+            <target>mailto:leo@example.com</target>
+        </Fact>
+    </Object>
+    <Object>
+        <id>mailto:eng-management@example.com</id>
+        <type>hr:team</type>
+        <Fact>
+            <link>name</link>
+            <value>Engineering Management</value>
+            <type>xs:string</type>
+        </Fact>
+        <Fact>
+            <link>lead</link>
+            <target>mailto:dirk@example.com</target>
+            <target>mailto:simon@example.com</target>
+        </Fact>
+    </Object>
 </Facts>

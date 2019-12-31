@@ -2,9 +2,9 @@
     "facts": {
         "namespaces": {
             "default": "https://type.link.model.tools/ns/tlm/",
-            "tlm": "https://type.link.model.tools/ns/tlm/",
-            "xs": "http://www.w3.org/2001/XMLSchema",
-            "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+            "tlm":     "https://type.link.model.tools/ns/tlm/",
+            "xs":      "http://www.w3.org/2001/XMLSchema",
+            "hr":      "https://type.link.model.tools/ns/tlm-sample-hr/"
         },
         "objects": [
             {
@@ -92,6 +92,58 @@
                         "link": "name",
                         "value": "HR",
                         "type": "xs:string"
+                    }
+                ]
+            },
+            {
+                "id": "mailto:content-management-eng@example.com",
+                "type": "hr:Team",
+                "facts": [
+                    {
+                        "link": "name",
+                        "value": "Content Management Engineering",
+                        "type": "xs:string"
+                    },
+                    {
+                        "link": "lead",
+                        "targets": [
+                            "mailto:leo@example.com"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "mailto:transcoding-eng@example.com",
+                "type": "hr:Team",
+                "facts": [
+                    {
+                        "link": "name",
+                        "value": "Transcoding Engineering",
+                        "type": "xs:string"
+                    },
+                    {
+                        "link": "lead",
+                        "targets": [
+                            "mailto:leo@example.com"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "mailto:eng-management@example.com",
+                "type": "hr:Team",
+                "facts": [
+                    {
+                        "link": "name",
+                        "value": "Engineering Management",
+                        "type": "xs:string"
+                    },
+                    {
+                        "link": "lead",
+                        "targets": [
+                            "mailto:dirk@example.com",
+                            "mailto:simon@example.com"
+                        ]
                     }
                 ]
             }

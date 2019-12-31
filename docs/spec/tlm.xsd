@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        targetNamespace="https://type.link.model.tools/ns/tlm/">
+
+
+    <!-- common elements and attributes -->
+
+    <xs:element name="id" type="ID"/>
+    <xs:element name="name" type="Name"/>
+    <xs:element name="description" type="xs:string"/>
+    <xs:attribute name="type" type="TypeName"/>
+
+
+    <!-- data types -->
+
+    <xs:simpleType name="ID">
+        <xs:restriction base="xs:token"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="URI">
+        <xs:restriction base="xs:anyURI"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="Name">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="TypeName">
+        <xs:restriction base="xs:NMTOKEN"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="LinkName">
+        <xs:restriction base="xs:NMTOKEN"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="Value">
+        <xs:restriction base="xs:anyType"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="Target">
+        <xs:restriction base="URI"/>
+    </xs:simpleType>
+
+
+    <!-- data definition -->
+
+    <xs:element name="Data" type="Data"/>
+
+    <xs:complexType name="Data">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!-- fact definition -->
+
+    <xs:element name="Facts" type="Facts"/>
+
+    <xs:complexType name="Facts">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Object" type="Object"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Object">
+        <xs:sequence>
+            <xs:element name="id" type="ID"/>
+            <xs:element name="type" type="TypeName"/>
+            <xs:element maxOccurs="unbounded" name="Fact" type="Fact"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Fact">
+        <xs:sequence>
+            <xs:element name="link" type="LinkName"/>
+            <xs:choice>
+                <!-- link to value type -->
+                <xs:sequence>
+                    <xs:element name="value" type="Value"/>
+                    <xs:element name="type" type="TypeName"/>
+                </xs:sequence>
+                <!-- link to singular type -->
+                <xs:element name="target" type="Target"/>
+                <!-- link to plural type -->
+                <xs:element maxOccurs="unbounded" name="target" type="LinkName"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!-- model definition -->
+
+    <xs:element name="Model" type="Model"/>
+
+    <xs:complexType name="Model">
+        <xs:annotation>
+            <xs:documentation>
+                A collection of TLM model statements.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="namespace" type="xs:NMTOKEN">
+                <xs:annotation>
+                    <xs:documentation>
+                        The target namespace this model describes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" ref="description"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Type" type="Type"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Link" type="Link"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Type">
+        <xs:sequence>
+            <xs:element name="name" type="TypeName"/>
+            <xs:element minOccurs="0" ref="description"/>
+            <xs:element minOccurs="0" name="plural" type="TypeName"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Link">
+        <xs:annotation>
+            <xs:documentation>
+                A single TLM model statement.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="from" type="TypeName"/>
+            <xs:element name="to" type="TypeName"/>
+            <xs:element name="name" type="LinkName"/>
+            <xs:element minOccurs="0" ref="description"/>
+            <xs:element minOccurs="0" name="primary" type="xs:boolean"/>
+            <xs:element minOccurs="0" name="singular" type="xs:boolean"/>
+            <xs:element minOccurs="0" name="mandatory" type="xs:boolean"/>
+            <xs:element minOccurs="0" name="singularTo" type="xs:boolean"/>
+            <xs:element minOccurs="0" name="mandatoryTo" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

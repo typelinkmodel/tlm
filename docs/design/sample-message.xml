@@ -1,20 +1,25 @@
 <?xml version="1.0"?>
-<message:Message
+<Message
         xmlns="https://type.link.model.tools/ns/message/"
-        xmlns:message="https://type.link.model.tools/ns/message/"
         xmlns:tlm="https://type.link.model.tools/ns/tlm/"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:hr="sample-hr-schema.xsd">
+        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+                https://type.link.model.tools/ns/tlm/             ../spec/tlm.xsd
+                https://type.link.model.tools/ns/message/         ../spec/message.xsd">
     <tlm:id>urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e</tlm:id>
     <subject>
-        <tlm:type>hr:Person</tlm:type>
-        <tlm:id>mailto:leo@example.com</tlm:id>
-        <hr:coachedBy>mailto:simon@example.com</hr:coachedBy>
+        <id>mailto:leo@example.com</id>
+        <type>hr:Person</type>
+        <Fact>
+            <tlm:link>coachedBy</tlm:link>
+            <tlm:target>mailto:simon@example.com</tlm:target>
+        </Fact>
     </subject>
     <delivery>
         <sender>mailto:dirk@example.com</sender>
         <receiver>mailto:hr-dept@example.com</receiver>
-        <sendTime tlm:type="xs:dateTime">20180611T20:09:01Z</sendTime>
-        <receiveTime tlm:type="xs:dateTime">20180611T20:09:27Z</receiveTime>
+        <sendTime>20180611T20:09:01Z</sendTime>
+        <receiveTime>20180611T20:09:27Z</receiveTime>
     </delivery>
-</message:Message>
+</Message>

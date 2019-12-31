@@ -1,0 +1,111 @@
+<Model
+        xmlns="https://type.link.model.tools/ns/tlm/"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://type.link.model.tools/ns/tlm/ ../spec/tlm.xsd">
+    <namespace>hr</namespace>
+    <description>The HR namespace is for defining facts about people, departments, and teams.</description>
+    <Type>
+        <name>Person</name>
+        <description>being regarded as an individual</description>
+        <plural>People</plural>
+    </Type>
+    <Type>
+        <name>Department</name>
+        <description>division of an organization</description>
+        <plural>Departments</plural>
+    </Type>
+    <Type>
+        <name>Team</name>
+        <description>group of several people associated together</description>
+        <plural>Teams</plural>
+    </Type>
+    <Link>
+        <from>Person</from>
+        <to>tlm:URI</to>
+        <name>id</name>
+        <description>A Person is identified by id which must be a URI.</description>
+        <primary>true</primary>
+    </Link>
+    <Link>
+        <from>Person</from>
+        <to>xs:string</to>
+        <name>name</name>
+        <description>A Person has exactly one name which must be a string.</description>
+        <singular>true</singular>
+        <mandatory>true</mandatory>
+    </Link>
+    <Link>
+        <from>Person</from>
+        <to>Person</to>
+        <name>coachedBy</name>
+        <description>A Person can have some coach which must be a Person.</description>
+    </Link>
+    <Link>
+        <from>Person</from>
+        <to>xs:boolean</to>
+        <name>coaches</name>
+        <description>A Person has toggle coaches.</description>
+    </Link>
+    <Link>
+        <from>Department</from>
+        <to>tlm:URI</to>
+        <name>id</name>
+        <description>A Department is identified by id which must be a URI.</description>
+        <primary>true</primary>
+    </Link>
+    <Link>
+        <from>Department</from>
+        <to>xs:string</to>
+        <name>name</name>
+        <description>A Department has exactly one name which must be a string.</description>
+        <singular>true</singular>
+        <mandatory>true</mandatory>
+    </Link>
+    <Link>
+        <from>Department</from>
+        <to>Person</to>
+        <name>manager</name>
+        <description>A Department has exactly one manager which must be a Person.</description>
+        <singular>true</singular>
+        <mandatory>true</mandatory>
+    </Link>
+    <Link>
+        <from>Person</from>
+        <to>Department</to>
+        <name>department</name>
+        <description>A Person has at most one department which must be a Department.</description>
+        <singular>true</singular>
+        <mandatory>false</mandatory>
+    </Link>
+    <Link>
+        <from>hr:Team</from>
+        <to>tlm:URI</to>
+        <name>id</name>
+        <description>A Team is identified by id which must be a URI.</description>
+        <primary>true</primary>
+    </Link>
+    <Link>
+        <from>hr:Team</from>
+        <to>xs:string</to>
+        <name>name</name>
+        <description>A Team has at most one name which must be a string.</description>
+        <singular>true</singular>
+        <mandatory>false</mandatory>
+    </Link>
+    <Link>
+        <from>hr:Team</from>
+        <to>Person</to>
+        <name>lead</name>
+        <description>A Team has at least one lead which must be a Person.</description>
+        <singular>false</singular>
+        <mandatory>true</mandatory>
+    </Link>
+    <Link>
+        <from>Person</from>
+        <to>hr:Team</to>
+        <name>team</name>
+        <description>A Person can have some team which must be a Team.</description>
+    </Link>
+</Model>
