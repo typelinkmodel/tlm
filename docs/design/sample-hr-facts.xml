@@ -38,15 +38,18 @@
             <target>mailto:dirk@example.com</target>
         </Fact>
         <Fact>
-            <link>team</link>
-            <target>mailto:content-management-eng@example.com</target>
-            <target>mailto:transcoding-eng@example.com</target>
-            <target>mailto:eng-management@example.com</target>
-        </Fact>
-        <Fact>
             <link>coaches</link>
             <value>true</value>
             <type>xs:boolean</type>
+        </Fact>
+        <Fact>
+            <link>department</link>
+            <target>mailto:engineering@example.com</target>
+        </Fact>
+        <Fact>
+            <link>team</link>
+            <target>mailto:content-management-eng@example.com</target>
+            <target>mailto:eng-management@example.com</target>
         </Fact>
     </Object>
     <Object>
@@ -56,6 +59,19 @@
             <link>name</link>
             <value>Dirk van Gulik</value>
             <type>xs:string</type>
+        </Fact>
+        <Fact>
+            <link>coaches</link>
+            <value>true</value>
+            <type>xs:boolean</type>
+        </Fact>
+        <Fact>
+            <link>department</link>
+            <target>mailto:engineering@example.com</target>
+        </Fact>
+        <Fact>
+            <link>team</link>
+            <target>mailto:eng-management@example.com</target>
         </Fact>
     </Object>
     <Object>

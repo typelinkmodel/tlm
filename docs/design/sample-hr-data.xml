@@ -20,12 +20,14 @@
         <coaches>true</coaches>
         <department>mailto:engineering@example.com</department>
         <team>mailto:content-management-eng@example.com</team>
-        <team>mailto:transcoding-eng@example.com</team>
         <team>mailto:eng-management@example.com</team>
     </Person>
     <Person>
         <tlm:id>mailto:dirk@example.com</tlm:id>
         <tlm:name>Dirk van Gulik</tlm:name>
+        <coaches>true</coaches>
+        <department>mailto:engineering@example.com</department>
+        <team>mailto:eng-management@example.com</team>
     </Person>
     <Department>
         <tlm:id>mailto:engineering@example.com</tlm:id>

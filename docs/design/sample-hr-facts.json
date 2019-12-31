@@ -44,17 +44,20 @@
                         "target": "mailto:dirk@example.com"
                     },
                     {
-                        "link": "team",
-                        "targets": [
-                            "mailto:content-management-eng@example.com",
-                            "mailto:transcoding-eng@example.com",
-                            "mailto:eng-management@example.com"
-                        ]
-                    },
-                    {
                         "link": "coaches",
                         "value": true,
                         "type": "xs:boolean"
+                    },
+                    {
+                        "link": "department",
+                        "target": "mailto:engineering@example.com"
+                    },
+                    {
+                        "link": "team",
+                        "targets": [
+                            "mailto:content-management-eng@example.com",
+                            "mailto:eng-management@example.com"
+                        ]
                     }
                 ]
             },
@@ -66,6 +69,21 @@
                         "link": "name",
                         "value": "Dirk van Gulik",
                         "type": "xs:string"
+                    },
+                    {
+                        "link": "coaches",
+                        "value": true,
+                        "type": "xs:boolean"
+                    },
+                    {
+                        "link": "department",
+                        "target": "mailto:engineering@example.com"
+                    },
+                    {
+                        "link": "team",
+                        "targets": [
+                            "mailto:eng-management@example.com"
+                        ]
                     }
                 ]
             },

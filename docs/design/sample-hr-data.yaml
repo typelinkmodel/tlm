@@ -19,11 +19,14 @@ tlm:Data:
       department:    mailto:engineering@example.com
       team:
         -            mailto:content-management-eng@example.com
-        -            mailto:transcoding-eng@example.com
         -            mailto:eng-management@example.com
     - id:            mailto:dirk@example.com
       type:          hr:Person
       name:          Dirk van Gulik
+      coaches:       true
+      department:    mailto:engineering@example.com
+      team:
+        -            mailto:eng-management@example.com
     - id:            mailto:engineering@example.com
       type:          hr:Department
       name:          Engineering
