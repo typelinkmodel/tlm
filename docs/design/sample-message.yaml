@@ -6,24 +6,20 @@ message:Message:
   - tlm:       https://type.link.model.tools/ns/tlm/
   - message:   https://type.link.model.tools/ns/message/
   - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
-  message:resolvers:
-  - mailto:    https://directory.example.com/person/
-  - mailto:    https://directory.example.com/department/
-  - mailto:    https://directory.example.com/team/
-  message:subject:
+  subject:
     id:        mailto:leo@example.com
-    link:      hr:coachedBy
+    link:      coachedBy
     target:    mailto:simon@example.com
-  message:body:
+  body:
   - id:        mailto:leo@example.com
     type:      hr:Person
     facts:
-    - link:      tlm:name
+    - link:      name
       value:     Leo Simons
       valueType: xs:string
-    - link:      hr:Department
+    - link:      department
       target:    mailto:engineering@example.com
-    - link:      hr:teams
+    - link:      team
       targets:
         -        mailto:content-management-eng@example.com
         -        mailto:transcoding-eng@example.com
@@ -31,12 +27,12 @@ message:Message:
   - id:        mailto:simon@example.com
     type:      hr:Person
     facts:
-    - link:      tlm:name
+    - link:      name
       value:     Simon Lucy
       valueType: xs:string
-    - link:      hr:coachedBy
-      target:    mailto:dirkx@example.com
-    - link:      hr:teams
+    - link:      coachedBy
+      target:    mailto:dirk@example.com
+    - link:      team
       targets:
       -          mailto:content-management-eng@example.com
       -          mailto:transcoding-eng@example.com
@@ -44,36 +40,36 @@ message:Message:
     - link:      hr:coaches
       value:     true
       valuetype: xs:boolean
-  - id:        mailto:dirkx@example.com
+  - id:        mailto:dirk@example.com
     type:      hr:Person
     facts:
-    - link:      tlm:name
+    - link:      name
       value:     Dirk van Gulik
       valueType: xs:string
   - id:        mailto:engineering@example.com
     type:      hr:Department
     facts:
-    - link:      tlm:name
+    - link:      name
       value:     Engineering
       valueType: xs:string
-    - link:      hr:manager
-      target:    mailto:dirkx@example.com
+    - link:      manager
+      target:    mailto:dirk@example.com
   - id:        mailto:hr@example.com
-    type:      hr:Department
+    type:      department
     facts:
-    - link:      tlm:name
+    - link:      name
       value:     HR
       valueType: xs:string
-  message:deliveries:
-  - type:      message::Delivery
+  delivery:
+  - type:      message:Delivery
     facts:
-    - link:      tlm:from
+    - link:      sender
       target:    mailto:simon@example.com
-    - link:      tlm:to
+    - link:      receiver
       target:    mailto:hr@example.com
-    - link:      tlm:sent
+    - link:      sendTime
       value:     20180611T20:09:01Z
-      valueType: xs:timestamp
-    - link:      tlm:received
+      valueType: xs:dateTime
+    - link:      receiveTime
       value:     20180611T20:09:27Z
-      valueType: xs:timestamp
+      valueType: xs:dateTime

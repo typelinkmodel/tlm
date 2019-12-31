@@ -6,27 +6,21 @@
         "message": "https://type.link.model.tools/ns/message/",
         "hr":      "https://type.link.model.tools/ns/tlm-sample-hr/"
     },
-    "resolvers": {
-        "mailto": [
-            "https://directory.example.com/person/",
-            "https://directory.example.com/department/",
-            "https://directory.example.com/team/"
-         ]
-    },
     "type": "message:Message",
     "id": "urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e",
-    "message:subject": {
+    "subject": {
         "id": "mailto:leo@example.com",
-        "hr:coachedBy": "mailto:simon@example.com"
+        "type": "hr:Person",
+        "coachedBy": "mailto:simon@example.com"
     },
-    "message:body": [
+    "body": [
         {
             "type": "hr:Person",
             "id": "mailto:leo@example.com",
-            "name": { "type": "String", "value": "Leo Simons" },
-            "hr:department": "mailto:engineering@example.com",
-            "hr:coachedBy": "mailto:simon@example.com",
-            "hr:teams": [
+            "name": { "type": "xs:string", "value": "Leo Simons" },
+            "department": "mailto:engineering@example.com",
+            "coachedBy": "mailto:simon@example.com",
+            "team": [
                 "mailto:content-management-eng@example.com",
                 "mailto:transcoding-eng@example.com",
                 "mailto:eng-management@example.com"
@@ -35,50 +29,49 @@
         {
             "type": "hr:Person",
             "id": "mailto:simon@example.com",
-            "name": { "type": "String", "value": "Simon Lucy" },
-            "hr:department": "mailto:engineering@example.com",
-            "hr:coachedBy": "mailto:dirkx@example.com",
-            "hr:coaches": true
+            "name": { "type": "xs:string", "value": "Simon Lucy" },
+            "department": "mailto:engineering@example.com",
+            "coachedBy": "mailto:dirk@example.com"
         },
         {
             "type": "hr:Person",
-            "id": "mailto:dirkx@example.com",
-            "name": { "type": "String", "value": "Dirk van Gulik" }
+            "id": "mailto:dirk@example.com",
+            "name": { "type": "xs:string", "value": "Dirk van Gulik" }
         },
         {
             "type": "hr:Department",
             "id": "mailto:engineering@example.com",
-            "name": { "type": "String", "value": "Engineering" },
-            "hr:manager": "mailto:dirkx@example.com"        
+            "name": { "type": "xs:string", "value": "Engineering" },
+            "manager": "mailto:dirk@example.com"
         },
         {
             "type": "hr:Department",
             "id": "mailto:hr-dept@example.com",
-            "name": { "type": "String", "value": "HR" }
+            "name": { "type": "xs:string", "value": "HR" }
         },
         {
             "type": "hr:Team",
             "id": "content-management-eng@example.com",
-            "name": { "type": "String", "value": "Content Management Engineering" }
+            "name": { "type": "xs:string", "value": "Content Management Engineering" }
         },
         {
             "type": "hr:Team",
             "id": "transcoding-eng@example.com",
-            "name": { "type": "String", "value": "Transcoding Engineering" }
+            "name": { "type": "xs:string", "value": "Transcoding Engineering" }
         },
         {
             "type": "hr:Team",
             "id": "eng-management@example.com",
-            "name": { "type": "String", "value": "Engineering Management" }
+            "name": { "type": "xs:string", "value": "Engineering Management" }
         }
     ],
-    "message:deliveries": [
+    "delivery": [
         {
             "type": "Delivery",
-            "message:from": "mailto:dirkx@example.com",
-            "message:to": "mailto:hr-dept@example.com",
-            "message:sent": { "type": "xdt:dateTime", "value": "20180611T20:09:01Z" },
-            "message:received": { "type": "xdt:dateTime", "value": "20180611T20:09:27Z" }
+            "sender": "mailto:dirk@example.com",
+            "receiver": "mailto:hr-dept@example.com",
+            "sendTime": { "type": "xs:dateTime", "value": "20180611T20:09:01Z" },
+            "receiveTime": { "type": "xs:dateTime", "value": "20180611T20:09:27Z" }
         }
     ]
 }

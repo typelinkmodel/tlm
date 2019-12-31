@@ -6,22 +6,6 @@ CALL message__insert_message(
 
 -- 2) all objects in the message
 
-CALL message__insert_resolver(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  prefix         => 'mailto',
-  url            => 'https://directory.example.com/person/'
-);
-CALL message__insert_resolver(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  prefix         => 'mailto',
-  url            => 'https://directory.example.com/department/'
-);
-CALL message__insert_resolver(
-  message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  prefix         => 'mailto',
-  url            => 'https://directory.example.com/team/'
-);
-
 CALL hr__insert_person(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   id             => 'mailto:leo@example.com'
@@ -32,7 +16,7 @@ CALL hr__insert_person(
 );
 CALL hr__insert_person(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  id             => 'mailto:dirkx@example.com'
+  id             => 'mailto:dirk@example.com'
 );
 
 CALL hr__insert_department(
@@ -58,7 +42,6 @@ CALL hr__insert_team(
 CALL message__insert_subject(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'hr',
   link           => 'coachedBy',
   target         => 'mailto:simon@example.com'
 );
@@ -68,16 +51,14 @@ CALL message__insert_subject(
 CALL message__insert_value_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'tlm',
   link           => 'name',
-  value_type_ns  => 'xdt',
+  value_type_ns  => 'xs',
   value_type     => 'string',
   value          => 'Leo Simons'
 );
 CALL message__insert_link_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'hr',
   link           => 'department',
   value_type_ns  => 'hr',
   value_type     => 'Department',
@@ -86,8 +67,7 @@ CALL message__insert_link_fact(
 CALL message__insert_link_set_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'hr',
-  link           => 'teams',
+  link           => 'team',
   value_type_ns  => 'hr',
   value_type     => 'Team',
   value          => 'mailto:content-management-eng@example.com'
@@ -95,8 +75,7 @@ CALL message__insert_link_set_fact(
 CALL message__insert_link_set_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'hr',
-  link           => 'teams',
+  link           => 'team',
   value_type_ns  => 'hr',
   value_type     => 'Team',
   value          => 'mailto:transcoding-eng@example.com'
@@ -104,8 +83,7 @@ CALL message__insert_link_set_fact(
 CALL message__insert_link_set_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:leo@example.com',
-  link_ns        => 'hr',
-  link           => 'teams',
+  link           => 'team',
   value_type_ns  => 'hr',
   value_type     => 'Team',
   value          => 'mailto:eng-management@example.com'
@@ -114,9 +92,8 @@ CALL message__insert_link_set_fact(
 CALL message__insert_toggle_fact(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
   subject        => 'mailto:simon@example.com',
-  link_ns        => 'hr',
-  link           => 'teams',
-  value_type_ns  => 'xdt',
+  link           => 'coaches',
+  value_type_ns  => 'xs',
   value_type     => 'boolean',
   value          => TRUE
 );
@@ -127,8 +104,8 @@ CALL message__insert_toggle_fact(
 
 CALL message__insert_delivery(
   message        => 'urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e',
-  from           => 'mailto:simon@example.com',
-  to             => 'mailto:hr-dept@example.com',
-  sent           => '20180611T20:09:01Z',
-  received       => '20180611T20:09:27Z'
+  sender         => 'mailto:dirk@example.com',
+  receiver       => 'mailto:hr-dept@example.com',
+  sendTime       => '20180611T20:09:01Z',
+  receiveTime    => '20180611T20:09:27Z'
 );

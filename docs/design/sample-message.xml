@@ -1,24 +1,21 @@
 <?xml version="1.0"?>
 <Message
         xmlns="https://type.link.model.tools/ns/tlm/"
-        xmlns:xdt="https://www.w3.org/TR/xmlschema-2/"
         xmlns:tlm="https://type.link.model.tools/ns/tlm/"
+        xmlns:xs="https://www.w3.org/TR/xmlschema-2/"
         xmlns:message="https://type.link.model.tools/ns/message/"
         xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/">
-    <resolvers>
-        <mailto>https://directory.example.com/person/</mailto>
-        <mailto>https://directory.example.com/department/</mailto>
-        <mailto>https://directory.example.com/team/</mailto>
-    </resolvers>
     <id>urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e</id>
     <message:subject>
-        <id>mailto:leo@example.com</id>
-        <hr:coachedBy>mailto:simon@example.com</hr:coachedBy>
+        <hr:Person>
+            <hr:id>mailto:leo@example.com</hr:id>
+            <hr:coachedBy>mailto:simon@example.com</hr:coachedBy>
+        </hr:Person>
     </message:subject>
     <message:body>
         <hr:Person>
-            <id>mailto:leo@example.com</id>
-            <name><String>Leo Simons</String></name>
+            <hr:id>mailto:leo@example.com</hr:id>
+            <hr:name tlm:type="xs:string">Leo Simons</hr:name>
             <hr:department>mailto:engineering@example.com</hr:department>
             <hr:teams>
                 <target>mailto:content-management-eng@example.com</target>
@@ -27,31 +24,31 @@
             </hr:teams>
         </hr:Person>
         <hr:Person>
-            <id>mailto:simon@example.com</id>
-            <name><String>Simon Lucy</String></name>
-            <hr:coachedBy>mailto:dirkx@example.com</hr:coachedBy>
+            <hr:id>mailto:simon@example.com</hr:id>
+            <hr:name tlm:type="xs:string">Simon Lucy</hr:name>
+            <hr:coachedBy>mailto:dirk@example.com</hr:coachedBy>
             <hr:coaches/>
         </hr:Person>
         <hr:Person>
-            <id>mailto:dirkx@example.com</id>
-            <name><String>Dirk van Gulik</String></name>
+            <hr:id>mailto:dirk@example.com</hr:id>
+            <hr:name tlm:type="xs:string">Dirk van Gulik</hr:name>
         </hr:Person>
         <hr:Department>
-            <id>mailto:engineering@example.com</id>
-            <name><String>Engineering</String></name>
-            <hr:manager>mailto:dirkx@example.com</hr:manager>
+            <hr:id>mailto:engineering@example.com</hr:id>
+            <hr:name tlm:type="xs:string">Engineering</hr:name>
+            <hr:manager>mailto:dirk@example.com</hr:manager>
         </hr:Department>
         <hr:Department>
-            <id>mailto:hr@example.com</id>
-            <name><String>HR</String></name>
+            <hr:id>mailto:hr@example.com</hr:id>
+            <hr:name tlm:type="xs:string">HR</hr:name>
         </hr:Department>
     </message:body>
-    <message:deliveries>
-        <Delivery>
-            <message:from>mailto:simon@example.com</message:from>
-            <message:to>mailto:hr@example.com</message:to>
-            <message:sent><dateTime>20180611T20:09:01Z</dateTime></message:sent>
-            <message:received><dateTime>20180611T20:09:27Z</dateTime></message:received>
-        </Delivery>
-    </message:deliveries>
+    <message:delivery>
+        <message:Delivery>
+            <message:sender>mailto:simon@example.com</message:sender>
+            <message:receiver>mailto:hr@example.com</message:receiver>
+            <message:sendTime tlm:type="xs:dateTime">20180611T20:09:01Z</message:sendTime>
+            <message:receiveTime tlm:type="xs:dateTime">20180611T20:09:27Z</message:receiveTime>
+        </message:Delivery>
+    </message:delivery>
 </Message>
