@@ -20,6 +20,10 @@ tlm:Model:
     - from:      hr:Person
       to:        hr:Person
       name:      coachedBy
+    - from:      hr:Person
+      to:        xs:boolean
+      name:      coaches
+      singular:  true
     # Facts about departments
     - from:      hr:Department
       to:        tlm:URI

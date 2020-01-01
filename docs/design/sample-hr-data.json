@@ -1,7 +1,6 @@
 {
     "type": "tlm:Data",
     "namespaces": {
-        "tlm":               "https://type.link.model.tools/ns/tlm/",
         "hr":                "https://type.link.model.tools/ns/tlm-sample-hr/"
     },
     "objects": [
