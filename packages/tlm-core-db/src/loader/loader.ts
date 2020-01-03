@@ -36,13 +36,35 @@ export class Loader implements ILoader {
     }
 
     private async loadNamespaces(facts: any): Promise<void> {
+        let defaultNs;
+
         if (facts.hasOwnProperty("namespaces")) {
             for (const [prefixObject, uriObject] of Object.entries(facts.namespaces)) {
                 if (uriObject !== null && uriObject !== undefined) {
                     const prefix = String(prefixObject);
                     const uri = String(uriObject);
-                    await this._modeler.addNamespace(prefix, uri);
+                    if (prefix === "default") {
+                        defaultNs = uri;
+                    } else {
+                        await this._modeler.addNamespace(prefix, uri);
+                    }
                 }
+            }
+        }
+
+        if (defaultNs !== undefined) {
+            let foundNs = false;
+            for (const [prefix, ns] of Object.entries(this._modeler.namespaces)) {
+                if (ns.uri === defaultNs) {
+                    if (prefix !== "tlm" && prefix !== "xs") {
+                        this._modeler.activeNamespace = prefix;
+                    }
+                    foundNs = true;
+                    break;
+                }
+            }
+            if (!foundNs) {
+                throw new Error(`No prefix defined for default namespace ${defaultNs}`);
             }
         }
     }
