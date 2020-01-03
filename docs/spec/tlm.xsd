@@ -9,7 +9,7 @@
 
     <xs:element name="id" type="ID"/>
     <xs:element name="name" type="Name"/>
-    <xs:element name="description" type="xs:string"/>
+    <xs:element name="description" type="Description"/>
     <xs:attribute name="type" type="TypeName"/>
 
 
@@ -27,12 +27,16 @@
         <xs:restriction base="xs:string"/>
     </xs:simpleType>
 
+    <xs:simpleType name="Description">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
     <xs:simpleType name="TypeName">
-        <xs:restriction base="xs:NMTOKEN"/>
+        <xs:union memberTypes="xs:NCName xs:QName"/>
     </xs:simpleType>
 
     <xs:simpleType name="LinkName">
-        <xs:restriction base="xs:NMTOKEN"/>
+        <xs:restriction base="xs:NCName"/>
     </xs:simpleType>
 
     <xs:simpleType name="Value">
@@ -102,7 +106,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="namespace" type="xs:NMTOKEN">
+            <xs:element name="namespace" type="xs:token">
                 <xs:annotation>
                     <xs:documentation>
                         The target namespace this model describes.

@@ -30,9 +30,9 @@
     </Link>
     <Link>
         <from>Person</from>
-        <to>xs:string</to>
+        <to>Name</to>
         <name>name</name>
-        <description>A Person has exactly one name which must be a string.</description>
+        <description>A Person has exactly one name which must be a Name.</description>
         <singular>true</singular>
         <mandatory>true</mandatory>
     </Link>
@@ -57,9 +57,9 @@
     </Link>
     <Link>
         <from>Department</from>
-        <to>xs:string</to>
+        <to>Name</to>
         <name>name</name>
-        <description>A Department has exactly one name which must be a string.</description>
+        <description>A Department has exactly one name which must be a Name.</description>
         <singular>true</singular>
         <mandatory>true</mandatory>
     </Link>
@@ -88,9 +88,9 @@
     </Link>
     <Link>
         <from>hr:Team</from>
-        <to>xs:string</to>
+        <to>Name</to>
         <name>name</name>
-        <description>A Team has at most one name which must be a string.</description>
+        <description>A Team has at most one name which must be a Name.</description>
         <singular>true</singular>
         <mandatory>false</mandatory>
     </Link>
