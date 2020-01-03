@@ -27,17 +27,17 @@ export class Loader implements ILoader {
 
     private async loadYaml(filename: string): Promise<void> {
         const doc = safeLoad(readFileSync(filename, "utf8"));
-        if (!doc.hasOwnProperty("data")) {
-            throw new Error(`Expect yaml file to start with data:`);
+        if (!doc.hasOwnProperty("tlm:Facts")) {
+            throw new Error(`Expect yaml file to start with tlm:Facts:`);
         }
-        const data = doc.data;
-        await this.loadNamespaces(data);
-        await this.loadObjects(data);
+        const facts = doc["tlm:Facts"];
+        await this.loadNamespaces(facts);
+        await this.loadObjects(facts);
     }
 
-    private async loadNamespaces(data: any): Promise<void> {
-        if (data.hasOwnProperty("namespaces")) {
-            for (const [prefixObject, uriObject] of Object.entries(data.namespaces)) {
+    private async loadNamespaces(facts: any): Promise<void> {
+        if (facts.hasOwnProperty("namespaces")) {
+            for (const [prefixObject, uriObject] of Object.entries(facts.namespaces)) {
                 if (uriObject !== null && uriObject !== undefined) {
                     const prefix = String(prefixObject);
                     const uri = String(uriObject);
@@ -47,17 +47,17 @@ export class Loader implements ILoader {
         }
     }
 
-    private async loadObjects(data: any): Promise<void> {
-        if (data.hasOwnProperty("objects")) {
+    private async loadObjects(facts: any): Promise<void> {
+        if (facts.hasOwnProperty("objects")) {
             // ids and value links
             let i = 0;
-            for (const object of data.objects) {
+            for (const object of facts.objects) {
                 await this.loadObjectBasic(object, i);
                 i++;
             }
             // links targeting other objects
             i = 0;
-            for (const object of data.objects) {
+            for (const object of facts.objects) {
                 await this.loadObjectLinks(object, i);
                 i++;
             }
