@@ -16,17 +16,17 @@ Given(/^these facts are loaded:$/,
 Then(/^the ([^ ]+) with ([^ ]+) "([^"]*)" should exist$/,
     async function(type: string, link: string, value: string) {
         const searcher: ISearcher = this.searcher;
-        const object: TlmObject = await searcher.findUnique({type, link, value});
+        const object: TlmObject|undefined = await searcher.findUnique({type, link, value});
         assert.isDefined(object);
     });
 
 Then(/^the ([^ ]+) with ([^ ]+) "([^"]*)" should have ([^ ]+) "([^"]*)"$/,
     async function(type: string, link: string, value: string, assertLink: string, assertValue: string) {
         const searcher: ISearcher = this.searcher;
-        const object: TlmObject = await searcher.findUnique({type, link, value});
+        const object: TlmObject|undefined = await searcher.findUnique({type, link, value});
 
         const reader: IReader = this.reader;
-        const fact: TlmFact = await reader.readFactUnique(object, {links: [assertLink]})!;
+        const fact: TlmFact = await reader.readFactUnique(object!, {links: [assertLink]})!;
 
         assert.equal(fact.value, assertValue);
     });
@@ -35,11 +35,11 @@ Then(/^the ([^ ]+) with ([^ ]+) "([^"]*)" should have a ([^ ]+) with ([^ ]+) "([
     async function(type: string, link: string, value: string, assertLink: string, assertValueLink: string,
                    assertValue: string) {
         const searcher: ISearcher = this.searcher;
-        const object: TlmObject = await searcher.findUnique({type, link, value});
-        const target: TlmObject = await searcher.findUnique({object, link});
+        const object: TlmObject|undefined = await searcher.findUnique({type, link, value});
+        const target: TlmObject|undefined = await searcher.findUnique({object, link});
 
         const reader: IReader = this.reader;
-        const fact: TlmFact = await reader.readFactUnique(target, {links: [assertValueLink]})!;
+        const fact: TlmFact = await reader.readFactUnique(target!, {links: [assertValueLink]})!;
 
         assert.equal(fact.value, assertValue);
     });
