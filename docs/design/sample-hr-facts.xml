@@ -1,11 +1,9 @@
 <Facts
         xmlns="https://type.link.model.tools/ns/tlm/"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:hr="https://type.link.model.tools/ns/tlm-sample-hr/"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="
-                https://type.link.model.tools/ns/tlm/             ../spec/tlm.xsd
-                https://type.link.model.tools/ns/tlm-sample-hr/   sample-hr-model.xsd">
+                https://type.link.model.tools/ns/tlm/             ../spec/tlm.xsd">
     <Object>
         <id>mailto:leo@example.com</id>
         <type>hr:Person</type>

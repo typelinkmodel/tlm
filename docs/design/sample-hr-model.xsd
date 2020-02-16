@@ -8,6 +8,12 @@
             namespace="https://type.link.model.tools/ns/tlm/"
             schemaLocation="../spec/tlm.xsd"/>
 
+    <!--
+    The Sample HR Model is a simple example of using TLM for a concrete domain many people are familiar with. While it
+    follows best practices, it is kept deliberately very simple. A real-life HR domain would have more types and links
+    in it.
+    -->
+
     <xs:element name="Person" type="Person"/>
     <xs:complexType name="Person">
         <xs:annotation>
@@ -18,11 +24,27 @@
             <xs:element ref="tlm:id"/>
             <!-- A Person has exactly one name which must be a string. -->
             <xs:element ref="tlm:name"/>
-            <!-- A Person can have some coach which must be a Person. -->
-            <xs:element minOccurs="0" name="coachedBy" type="tlm:URI"/>
+            <!-- A Person, the coachee, can have some coach which must be a Person, the coach.
+                Examples:
+
+                coachee/name    | coach/name
+                =============== | ==============
+                Leo Simons      | Simon Lucy
+                Leo Simons      | Dirk van Gulik
+                Michael Jackson | Diana Ross
+            -->
+            <xs:element minOccurs="0" name="coachedBy" type="tlm:URI">
             <!-- A Person has toggle coaches. -->
-            <xs:element minOccurs="0" name="coaches" type="xs:boolean"/>
-            <!-- A Person has at most one department which must be a Department. -->
+            <xs:element default="false" name="coaches" type="xs:boolean"/>
+            <!-- A Person has at most one department which must be a Department.
+                Examples:
+
+                name            | department/name
+                =============== | ===============
+                Dirk van Gulik  | Engineering
+                Leo Simons      | Engineering
+                Simon Lucy      | Engineering
+            -->
             <xs:element minOccurs="0" name="department" type="tlm:URI"/>
             <!-- A Person can have some team which must be a Team. -->
             <xs:element minOccurs="0" maxOccurs="unbounded" name="team" type="tlm:URI"/>
@@ -39,7 +61,13 @@
             <xs:element ref="tlm:id"/>
             <!-- A Department has exactly one name which must be a string. -->
             <xs:element ref="tlm:name"/>
-            <!-- A Department has exactly one manager which must be a Person. -->
+            <!-- A Department has exactly one manager which must be a Person.
+                Examples:
+
+                department/name | manager/name
+                =============== | ==============
+                Engineering     | Dirk van Gulik
+            -->
             <xs:element minOccurs="0" name="manager" type="tlm:URI"/>
         </xs:sequence>
     </xs:complexType>

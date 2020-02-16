@@ -1,4 +1,6 @@
 # Data
+Namespaces:
+* [hr](https://type.link.model.tools/ns/tlm-sample-hr/)
 
 ## People
 The hr:Person with id mailto:leo@example.com

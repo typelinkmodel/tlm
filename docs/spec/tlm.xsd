@@ -39,6 +39,10 @@
         <xs:restriction base="xs:NCName"/>
     </xs:simpleType>
 
+    <xs:simpleType name="LinkPath">
+        <xs:restriction base="xs:Name"/>
+    </xs:simpleType>
+
     <xs:simpleType name="Value">
         <xs:restriction base="xs:anyType"/>
     </xs:simpleType>
@@ -122,6 +126,7 @@
     <xs:complexType name="Type">
         <xs:sequence>
             <xs:element name="name" type="TypeName"/>
+            <xs:element default="tlm:Type" name="parent" type="TypeName"/>
             <xs:element minOccurs="0" ref="description"/>
             <xs:element minOccurs="0" name="plural" type="TypeName"/>
         </xs:sequence>
@@ -143,6 +148,28 @@
             <xs:element minOccurs="0" name="mandatory" type="xs:boolean"/>
             <xs:element minOccurs="0" name="singularTo" type="xs:boolean"/>
             <xs:element minOccurs="0" name="mandatoryTo" type="xs:boolean"/>
+            <xs:element minOccurs="0" name="examples" type="Examples"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Examples">
+        <xs:annotation>
+            <xs:documentation>
+                A collection of partial TLM facts that shows how to use a Link.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="from" type="LinkPath"/>
+            <xs:element name="to" type="LinkPath"/>
+            <xs:element maxOccurs="unbounded" name="Example" type="Example"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Example">
+        <xs:sequence>
+            <xs:element name="from" type="Value"/>
+            <xs:element name="to" type="Value"/>
+            <xs:element name="invalid" default="false" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>
