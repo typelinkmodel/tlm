@@ -25,4 +25,6 @@ export interface IModeler {
     addStatement(statement: string): Promise<void>;
 
     getValueTypeForLink(link: TlmLink): TlmType;
+
+    getTypeByName(type: string): TlmType;
 }

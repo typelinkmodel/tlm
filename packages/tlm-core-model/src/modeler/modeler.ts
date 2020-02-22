@@ -11,7 +11,6 @@ import {OidGenerator} from "./oid";
 import {TypeModel} from "./type";
 
 export class Modeler implements IModeler {
-
     private readonly _oidGenerator: OidGenerator;
     private readonly _namespaceModel: NamespaceModel;
     private readonly _typeModel: TypeModel;
@@ -95,6 +94,16 @@ export class Modeler implements IModeler {
 
     public getValueTypeForLink(link: TlmLink): TlmType {
         return this._typeModel.findTypeByOid(link.toType);
+    }
+
+    public getTypeByName(type: string): TlmType {
+        let ns: string = this._namespaceModel.activeNamespace?.prefix || "tlm";
+        let name: string = type;
+
+        if (type.includes(":")) {
+            [ns, name] = type.split(":", 2);
+        }
+        return this._typeModel.typeMap[ns][name];
     }
 
     private async processLinkDefinitionStatement(match: RegExpMatchArray): Promise<void> {

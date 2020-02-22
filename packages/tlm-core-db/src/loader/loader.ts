@@ -94,9 +94,9 @@ export class Loader implements ILoader {
             throw new Error(`Encountered object ${i} without type!`);
         }
         const id = object.id;
-        const type = object.type;
-        // const typeObj: TlmType = await this._modeler.getTypeByName(type);
-        // const namespace = this._modeler.getNamespaceById(typeObj.namespace);
+        const type: string = String(object.type);
+        const typeObj: TlmType = this._modeler.getTypeByName(type);
+        // const namespace = this._modeler.getNamespaceForType(typeObj);
         // const linkObj: TlmLink = await this._modeler.getPrimaryIdLink(typeObj);
         // const link = linkObj.name;
         // const currentObject: TlmObject|undefined = await this._searcher.findUnique(
