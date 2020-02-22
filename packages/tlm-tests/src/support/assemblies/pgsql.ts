@@ -1,4 +1,4 @@
-import {Loader as CoreLoader} from "@typelinkmodel/tlm-core-db";
+import {Loader as CoreLoader} from "./memory";
 import {Reader as CoreReader} from "@typelinkmodel/tlm-core-db";
 import {Searcher as CoreSearcher} from "@typelinkmodel/tlm-core-db";
 import {Modeler as PgSqlModeler} from "@typelinkmodel/tlm-pgsql";
@@ -34,32 +34,8 @@ export class Modeler extends PgSqlModeler {
     }
 }
 
-export class Loader extends CoreLoader {
-    private _world: World;
+export class Loader extends CoreLoader {}
 
-    // noinspection JSUnusedGlobalSymbols
-    constructor(world: World) {
-        super();
-        this._world = world;
-    }
-}
+export class Reader extends CoreReader {}
 
-export class Reader extends CoreReader {
-    private _world: World;
-
-    // noinspection JSUnusedGlobalSymbols
-    constructor(world: World) {
-        super();
-        this._world = world;
-    }
-}
-
-export class Searcher extends CoreSearcher {
-    private _world: World;
-
-    // noinspection JSUnusedGlobalSymbols
-    constructor(world: World) {
-        super();
-        this._world = world;
-    }
-}
+export class Searcher extends CoreSearcher {}

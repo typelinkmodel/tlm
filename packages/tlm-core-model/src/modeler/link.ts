@@ -140,4 +140,17 @@ export class LinkModel {
         this._linkMapCache = undefined;
         return newLink;
     }
+
+    public async addToggleLink(fromType: string, name: string): Promise<TlmLink> {
+        // todo should toggle be tracked as being a toggle?
+        return this.addLink(
+            fromType,
+            "boolean",
+            name,
+            undefined,
+            undefined,
+            true,
+            false,
+            false);
+    }
 }

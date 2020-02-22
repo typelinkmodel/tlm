@@ -3,7 +3,7 @@ import {TlmFact, TlmObject} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
 import {Given, TableDefinition, Then} from "cucumber";
 
-Given(/^these facts are loaded:$/,
+Given(/^this file is loaded:$/,
     async function(statements: TableDefinition) {
         const loader: ILoader = this.loader;
         for (const row of statements.raw()) {

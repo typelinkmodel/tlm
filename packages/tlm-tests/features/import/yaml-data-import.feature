@@ -20,7 +20,7 @@ Feature: YAML Data Import
       | A Team has at least one lead which must be a Person.         |
 
   Scenario: load HR facts from a YAML file
-    When these facts are loaded:
+    When this file is loaded:
       | ../../docs/design/sample-hr-facts.yaml |
     Then the hr:Person with id "mailto:leo@example.com" should exist
     And the hr:Person with id "mailto:leo@example.com" should have name "Leo Simons"

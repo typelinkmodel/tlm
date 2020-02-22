@@ -18,14 +18,18 @@ export class Modeler implements IModeler {
     private _initialized = false;
 
     private readonly _statementProcessors = [
-        /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+identified\s+by|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+([A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        /\s*An?\s+(?<fromType>[A-Za-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[A-Za-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<otherType>[A-Za-z0-9_-]+)\s*(?:,\s*the\s+(?<otherName>[A-Za-z0-9_-]+)\s*,\s*)?\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processLinkDefinitionStatement(st),
         /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processReverseLinkDefinitionStatement(st),
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+(has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        async (st: RegExpMatchArray) => await this.processToggleDefinitionStatement(st),
         /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processSuperTypeDefinitionStatement(st),
-        /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+"([^"]+)"\s*\.?\s*/i,
+        /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processTypeDescriptionStatement(st),
+        /\s*The\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        async (st: RegExpMatchArray) => await this.processTypePluralNameStatement(st),
     ];
 
     constructor(
@@ -54,12 +58,18 @@ export class Modeler implements IModeler {
         return this._linkModel.linkMap;
     }
 
-    public get activeNamespace(): string {
-        return this._namespaceModel.activeNamespacePrefix;
+    public get activeNamespace(): string | undefined {
+        if (this._namespaceModel.activeNamespace) {
+            return this._namespaceModel.activeNamespacePrefix;
+        } else {
+            return undefined;
+        }
     }
 
-    public set activeNamespace(value: string) {
-        this._namespaceModel.activeNamespacePrefix = value;
+    public set activeNamespace(value: string | undefined) {
+        if (value) {
+            this._namespaceModel.activeNamespacePrefix = value;
+        }
     }
 
     public initialize(): void {
@@ -107,17 +117,25 @@ export class Modeler implements IModeler {
     }
 
     private async processLinkDefinitionStatement(match: RegExpMatchArray): Promise<void> {
-        // noinspection JSUnusedLocalSymbols
-        const [_, type, rel, link, otherType] = match;
+        if (!match.groups) {
+            throw new Error("No matching groups!");
+        }
+        const fromType = match.groups.fromType;
+        const fromName = match.groups.fromName;
+        const rel = match.groups.rel;
+        const link = match.groups.link;
+        const otherType = match.groups.otherType;
+        const otherName = match.groups.otherName;
+
         const processedRel = rel.replace(/\s+/g, " ").trim();
         switch (processedRel) {
             case "is identified by":
                 await this._linkModel.addLink(
-                    type,
+                    fromType,
                     otherType,
                     link,
-                    undefined,
-                    undefined,
+                    fromName,
+                    otherName,
                     true,
                     true,
                     true,
@@ -125,11 +143,11 @@ export class Modeler implements IModeler {
                 break;
             case "has exactly one":
                 await this._linkModel.addLink(
-                    type,
+                    fromType,
                     otherType,
                     link,
-                    undefined,
-                    undefined,
+                    fromName,
+                    otherName,
                     true,
                     true,
                     false,
@@ -137,11 +155,11 @@ export class Modeler implements IModeler {
                 break;
             case "has at most one":
                 await this._linkModel.addLink(
-                    type,
+                    fromType,
                     otherType,
                     link,
-                    undefined,
-                    undefined,
+                    fromName,
+                    otherName,
                     true,
                     false,
                     false,
@@ -149,11 +167,11 @@ export class Modeler implements IModeler {
                 break;
             case "has at least one":
                 await this._linkModel.addLink(
-                    type,
+                    fromType,
                     otherType,
                     link,
-                    undefined,
-                    undefined,
+                    fromName,
+                    otherName,
                     false,
                     true,
                     false,
@@ -161,11 +179,11 @@ export class Modeler implements IModeler {
                 break;
             case "can have some":
                 await this._linkModel.addLink(
-                    type,
+                    fromType,
                     otherType,
                     link,
-                    undefined,
-                    undefined,
+                    fromName,
+                    otherName,
                     false,
                     false,
                     false,
@@ -202,6 +220,13 @@ export class Modeler implements IModeler {
         }
     }
 
+    private async processToggleDefinitionStatement(match: RegExpMatchArray): Promise<void> {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, toggle] = match;
+        const typeObj = await this._typeModel.addType(type);
+        await this._linkModel.addToggleLink(type, toggle);
+    }
+
     private async processSuperTypeDefinitionStatement(match: RegExpMatchArray): Promise<void> {
         // noinspection JSUnusedLocalSymbols
         const [_, type, superType] = match;
@@ -218,5 +243,12 @@ export class Modeler implements IModeler {
         const typeObj = await this._typeModel.addType(type);
         const newTypeObj = new TlmType(typeObj.oid, typeObj.namespace, typeObj.name, typeObj.oid, description);
         await this._typeModel.replaceType(newTypeObj);
+    }
+
+    // noinspection JSMethodCanBeStatic
+    private async processTypePluralNameStatement(match: RegExpMatchArray): Promise<void> {
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, plural] = match;
+        console.log(`TODO: Add that the plural of ${type} is ${plural}`);
     }
 }

@@ -20,7 +20,7 @@ export class Loader extends CoreLoader {
 
     // noinspection JSUnusedGlobalSymbols
     constructor(world: World) {
-        super();
+        super(world.modeler, world.reader, world.searcher);
         this._world = world;
     }
 }
