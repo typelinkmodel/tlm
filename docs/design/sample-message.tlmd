@@ -1,0 +1,15 @@
+# TLM Message
+Namespace hr: https://type.link.model.tools/ns/tlm-sample-hr/
+
+The tlm:Message with id          urn:uuid:def5b225-3e0d-4d6e-8f48-9b8cd17bc35e
+
+--- Subject
+The hr:Person with id            mailto:leo@example.com
+  has coach:                     mailto:simon@example.com
+
+--- Delivery
+The delivery for this message:
+  has sender:                    mailto:simon@example.com
+  has receiver:                  mailto:hr@example.com
+  has sendTime:                  2018-06-11 at 20:09:01 UTC
+  has receiveTime:               2018-06-11 at 20:09:27 UTC

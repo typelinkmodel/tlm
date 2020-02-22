@@ -1,4 +1,7 @@
 tlm:Data:
+  namespaces:
+  - hr:            https://type.link.model.tools/ns/tlm-sample-hr/
+  objects:
   # People
   - id:            mailto:leo@example.com
     type:          hr:Person

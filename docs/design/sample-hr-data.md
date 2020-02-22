@@ -36,7 +36,7 @@ The hr:Department with id mailto:hr@example.com
 * has name: HR
 
 ## Teams
-The hr:Team with id mailto:content-management-eng@example.com:
+The hr:Team with id mailto:content-management-eng@example.com
 * has name: Content Management Engineering
 * has lead:
   - mailto:leo@example.com

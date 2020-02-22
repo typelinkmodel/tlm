@@ -25,25 +25,24 @@
             <!-- A Person has exactly one name which must be a string. -->
             <xs:element ref="tlm:name"/>
             <!-- A Person, the coachee, can have some coach which must be a Person, the coach.
-                Examples:
-
-                coachee/name    | coach/name
-                =============== | ==============
-                Leo Simons      | Simon Lucy
-                Leo Simons      | Dirk van Gulik
-                Michael Jackson | Diana Ross
+                  Examples:
+                    coachee/name    | coach/name
+                    ================================
+                    Leo Simons      | Simon Lucy
+                    Leo Simons      | Dirk van Gulik
+                    Michael Jackson | Diana Ross
             -->
-            <xs:element minOccurs="0" name="coachedBy" type="tlm:URI">
+            <xs:element minOccurs="0" name="coachedBy" type="tlm:URI"/>
             <!-- A Person has toggle coaches. -->
             <xs:element default="false" name="coaches" type="xs:boolean"/>
             <!-- A Person has at most one department which must be a Department.
-                Examples:
-
-                name            | department/name
-                =============== | ===============
-                Dirk van Gulik  | Engineering
-                Leo Simons      | Engineering
-                Simon Lucy      | Engineering
+                  Examples:
+                    ok | name            | department/name
+                    ======================================
+                       | Dirk van Gulik  | Engineering
+                       | Leo Simons      | Engineering
+                       | Simon Lucy      | Engineering
+                    no | Leo Simons      | HR
             -->
             <xs:element minOccurs="0" name="department" type="tlm:URI"/>
             <!-- A Person can have some team which must be a Team. -->
@@ -62,11 +61,11 @@
             <!-- A Department has exactly one name which must be a string. -->
             <xs:element ref="tlm:name"/>
             <!-- A Department has exactly one manager which must be a Person.
-                Examples:
-
-                department/name | manager/name
-                =============== | ==============
-                Engineering     | Dirk van Gulik
+              Examples:
+                ok | department/name | manager/name
+                =====================================
+                   | Engineering     | Dirk van Gulik
+                no | Engineering     | Simon Lucy
             -->
             <xs:element minOccurs="0" name="manager" type="tlm:URI"/>
         </xs:sequence>

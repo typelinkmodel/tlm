@@ -12,7 +12,7 @@
         <id>mailto:leo@example.com</id>
         <type>hr:Person</type>
         <Fact>
-            <tlm:link>coachedBy</tlm:link>
+            <tlm:link>coach</tlm:link>
             <tlm:target>mailto:simon@example.com</tlm:target>
         </Fact>
     </subject>

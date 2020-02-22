@@ -15,7 +15,7 @@ A Person is a being regarded as an individual.
   * Examples:
 
     coachee/name    | coach/name    
-    --------------- | --------------
+    ----------------|---------------
     Leo Simons      | Simon Lucy    
     Leo Simons      | Dirk van Gulik
     Michael Jackson | Diana Ross    
@@ -31,7 +31,7 @@ A Department is a division of an organization.
   * Examples:
   
     department/name | manager/name
-    --------------- | --------------
+    ----------------|---------------
     Engineering     | Dirk van Gulik
     ~~Engineering~~ | ~~Simon Lucy~~
 
@@ -39,7 +39,7 @@ A Department is a division of an organization.
   * Examples:
   
     name            | department/name
-    --------------- | ---------------
+    ----------------|----------------
     Dirk van Gulik  | Engineering
     Leo Simons      | Engineering
     Simon Lucy      | Engineering

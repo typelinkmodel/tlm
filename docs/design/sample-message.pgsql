@@ -17,7 +17,7 @@ VALUES
     'Person',
     'hr',
     'mailto:leo@example.com'
-    'coachedBy',
+    'coach',
     'mailto:simon@example.com',
     'mailto:dirk@example.com',
     'mailto:hr-dept@example.com',

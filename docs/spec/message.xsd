@@ -19,7 +19,21 @@
         <xs:sequence>
             <xs:element name="id" type="tlm:ID"/>
             <xs:element name="type" type="tlm:TypeName"/>
-            <xs:element maxOccurs="unbounded" name="Fact" type="tlm:Fact"/>
+            <xs:element name="Fact" type="tlm:Fact"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MessageFact">
+        <xs:sequence>
+            <xs:element name="link" type="tlm:LinkName"/>
+            <xs:choice>
+                <!-- link to value type -->
+                <xs:sequence>
+                    <xs:element name="value" type="tlm:Value"/>
+                    <xs:element name="type" type="tlm:TypeName"/>
+                </xs:sequence>
+                <!-- link to singular type -->
+                <xs:element name="target" type="tlm:Target"/>
+            </xs:choice>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="Delivery">

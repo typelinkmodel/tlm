@@ -3,7 +3,7 @@ message:Message:
   subject:
     type:          hr:Person
     id:            mailto:leo@example.com
-    coachedBy:     mailto:simon@example.com
+    coach:         mailto:simon@example.com
   delivery:
     - sender:      mailto:dirk@example.com
       receiver:    mailto:hr-dept@example.com
