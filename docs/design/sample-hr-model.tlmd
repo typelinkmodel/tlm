@@ -21,7 +21,7 @@ A Person, the coachee, can have some coach which must be a Person, the coach.
     Michael Jackson | Diana Ross
     Dirk van Gulik  |
 
-The plural of Person is People.
+A plural of Person is People.
 
 
 --- Department
@@ -45,7 +45,7 @@ A Person has at most one department which must be a Department.
        | Michael Jackson |
     no | Leo Simons      | HR
 
-The plural of Department is Departments.
+A plural of Department is Departments.
 
 
 --- Team
@@ -56,4 +56,4 @@ A Team has at most one name which must be a Name.
 A Team has at least one lead which must be a Person.
 A Person can have some team which must be a Team.
 
-The plural of Team is Teams.
+A plural of Team is Teams.

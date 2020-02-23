@@ -5,7 +5,16 @@ import {ILoader, IReader, ISearcher} from "../api";
 import {Reader} from "../reader";
 import {Searcher} from "../searcher";
 
-enum STATE { INITIAL, MAIN, EXAMPLE_START, EXAMPLE_HEADER, EXAMPLE_DIVIDER, EXAMPLE }
+enum STATE {
+    INITIAL,
+    MAIN,
+    EXAMPLE_START,
+    EXAMPLE_HEADER,
+    EXAMPLE_DIVIDER,
+    EXAMPLE,
+    DATA,
+    DATA_MULTI_FACT,
+}
 
 enum TLMD_TYPE { MODEL, DATA, MESSAGE, UNKNOWN}
 
@@ -22,7 +31,7 @@ export class TlmdLoader implements ILoader {
     }
 
     public async loadFile(filename: string): Promise<void> {
-        const handler = new TlmdStreamHandler(this._modeler, true);
+        const handler = new TlmdStreamHandler(this._modeler);
         const loader = new TlmdFileLoader(filename, handler);
         await loader.loadFile();
     }
@@ -31,56 +40,23 @@ export class TlmdLoader implements ILoader {
 export class TlmdStreamHandler {
     private readonly _modeler: IModeler;
     private readonly _continueOnError: boolean;
+    private readonly _debug: boolean;
 
-    constructor(modeler: IModeler, continueOnError: boolean = false) {
+    constructor(modeler: IModeler, continueOnError: boolean = false, debug: boolean = false) {
         this._modeler = modeler;
         this._continueOnError = continueOnError;
+        this._debug = debug;
     }
 
-    // noinspection JSUnusedLocalSymbols
-    public async handleNextLine(lineno: number, line: string): Promise<void> {
-        console.debug(`${String(lineno).padStart(4)}: ${line}` );
-    }
-
-    // noinspection JSUnusedLocalSymbols
-    public async handleStart(type: TLMD_TYPE, title: string | undefined): Promise<void> {
-        console.debug(`TLMD Document type = '${type}', title = '${title}'`);
-    }
-
-    public async handleNamespace(prefix: string, uri: string): Promise<void> {
-        console.debug(`Namespace prefix = '${prefix}', uri = '${uri}]`);
-        await this._modeler.addNamespace(prefix, uri);
-        if (!this._modeler.activeNamespace) {
-            this._modeler.activeNamespace = prefix;
+    public debug(message: string) {
+        if (this._debug) {
+            console.debug(message);
         }
     }
 
     // noinspection JSUnusedLocalSymbols
-    public async handleComment(comment: string): Promise<void> {
-        console.debug(`Comment: ${comment}`);
-    }
-
-    // noinspection JSUnusedLocalSymbols
-    public async handleSection(section: string): Promise<void> {
-        console.debug(`Section: ${section}`);
-    }
-
-    public async handleStatement(statement: string): Promise<void> {
-        console.debug(`Statement: ${statement}`);
-        await this._modeler.addStatement(statement);
-    }
-
-    // noinspection JSUnusedLocalSymbols
-    public async handleStartExample(firstColumnIsValidity: boolean, fromLinkPath: string,
-                                    toLinkPath: string): Promise<void> {
-        console.debug(`Start example: has invalid examples? ${firstColumnIsValidity},`
-            + ` from = '${fromLinkPath}', 'to = ${toLinkPath}'`);
-    }
-
-    // noinspection JSUnusedLocalSymbols
-    public async handleExample(valid: boolean,
-                               fromLinkPath: string | undefined, toLinkPath: string | undefined): Promise<void> {
-        console.debug(`Example: ok? ${valid}, from = '${fromLinkPath}', to = '${toLinkPath}'`);
+    public async handleNextLine(lineno: number, line: string): Promise<void> {
+        this.debug(`${String(lineno).padStart(4)}: ${line}` );
     }
 
     public handleError(filename: string, lineno: number, error: string): void {
@@ -90,6 +66,62 @@ export class TlmdStreamHandler {
         } else {
             throw new Error(message);
         }
+    }
+
+    public async handleStart(type: TLMD_TYPE, title: string | undefined): Promise<void> {
+        this.debug(`TLMD Document type = '${type}', title = '${title}'`);
+    }
+
+    public async handleNamespace(prefix: string, uri: string): Promise<void> {
+        this.debug(`Namespace prefix = '${prefix}', uri = '${uri}'`);
+        await this._modeler.addNamespace(prefix, uri);
+        if (!this._modeler.activeNamespace) {
+            this._modeler.activeNamespace = prefix;
+        }
+    }
+
+    public async handleComment(comment: string): Promise<void> {
+        this.debug(`Comment: ${comment}`);
+    }
+
+    public async handleSection(section: string): Promise<void> {
+        this.debug(`Section: ${section}`);
+    }
+
+    public async handleStatement(statement: string): Promise<void> {
+        this.debug(`Statement: ${statement}`);
+        await this._modeler.addStatement(statement);
+    }
+
+    public async handleStartExample(firstColumnIsValidity: boolean, fromLinkPath: string,
+                                    toLinkPath: string): Promise<void> {
+        this.debug(`Start example: has invalid examples? ${firstColumnIsValidity},`
+            + ` from = '${fromLinkPath}', 'to = ${toLinkPath}'`);
+    }
+
+    public async handleExample(valid: boolean,
+                               fromLinkPath: string | undefined, toLinkPath: string | undefined): Promise<void> {
+        this.debug(`Example: ok? ${valid}, from = '${fromLinkPath}', to = '${toLinkPath}'`);
+    }
+
+    public async handleObject(type: string, id: string) {
+        this.debug(`Object: type = '${type}', id = '${id}'`);
+    }
+
+    public async handleFact(link: string, value: string) {
+        this.debug(`- fact: link = '${link}', value = '${value}'`);
+    }
+
+    public async handleToggle(link: string) {
+        this.debug(`- toggle fact: link = '${link}'`);
+    }
+
+    public async handleMultiFactStart(link: string) {
+        this.debug(`- multi fact: link = '${link}'`);
+    }
+
+    public async handleMultiFact(value: string) {
+        this.debug(`  - multi fact value: value = '${value}'`);
     }
 }
 
@@ -109,7 +141,7 @@ export class TlmdFileLoader {
         async (st: RegExpMatchArray) => await this.processCommentLine(st),
         /---\s*(.*)/i,
         async (st: RegExpMatchArray) => await this.processSectionLine(st),
-        /^([A-Za-z].*\.)$/i,
+        /^(An?\s+.*\.)$/i,
         async (st: RegExpMatchArray) => await this.processStatement(st),
     ];
 
@@ -144,6 +176,13 @@ export class TlmdFileLoader {
 
     private async processLine(): Promise<void> {
         await this._handler.handleNextLine(this.lineno, this.line);
+
+        if (this.line.match(/^\s*$/i)) {
+            // empty line resets to main
+            this.state = STATE.MAIN;
+            return;
+        }
+
         let match;
         switch (this.state) {
             case STATE.INITIAL:
@@ -151,17 +190,18 @@ export class TlmdFileLoader {
                 this.processStartLine();
                 break;
             case STATE.MAIN:
-                if (this.line.match(/^\s*$/i)) {
-                    // ignore whitespace
-                } else if (this.line.match(/^\s+Examples:\s*$/i)) {
+                if (this.line.match(/^\s+Examples:\s*$/i)) {
                     this.state = STATE.EXAMPLE_START;
+                } else if (this.line.match(/^The\s/i)) {
+                    this.state = STATE.DATA;
+                    await this.processObjectLine();
                 } else {
                     await this.processBodyLine();
                 }
                 break;
             case STATE.EXAMPLE_START:
                 match = this.line.match(
-                    /^\s+(ok\s*\|\s*)?([A-Za-z0-9_\/-]+)\s*\|\s*([A-Za-z0-9_\/-]+)\s*$/i);
+                    /^\s+(ok\s*\|\s*)?([A-Z0-9_\/-]+)\s*\|\s*([A-Z0-9_\/-]+)\s*$/i);
                 if (!match) {
                     this.err("expected example header!");
                 } else {
@@ -184,14 +224,48 @@ export class TlmdFileLoader {
                 this.state = STATE.EXAMPLE;
                 break;
             case STATE.EXAMPLE:
-                if (this.line.match(/^\s*$/i)) {
-                    // empty line ends example
-                    this.state = STATE.MAIN;
-                } else if (this.line.match(/^\s+/i)) {
+                if (this.line.match(/^\s+/i)) {
                     // did not match first regex so line contains some non-whitespace
                     await this.processExampleLine();
                     // if the handler is swallowing errors, still assume examples continue next line
                     this.state = STATE.EXAMPLE;
+                } else {
+                    this.state = STATE.MAIN;
+                    await this.processBodyLine();
+                }
+                break;
+            case STATE.DATA:
+                if (this.line.match(/^The\s/i)) {
+                    await this.processObjectLine();
+                    // if the handler is swallowing errors, still assume data continues next line
+                    this.state = STATE.DATA;
+                } else if (this.line.match(/^\s+has\s+[a-z0-9_-]+\s*:\s*$/i)) {
+                    this.state = STATE.DATA_MULTI_FACT;
+                    await this.processMultiFactStart();
+                    // if the handler is swallowing errors, still assume data continues next line
+                    this.state = STATE.DATA_MULTI_FACT;
+                } else if (this.line.match(/^\s+has\s+[a-z0-9_-]+\s*:\s*[^\s].*$/i)) {
+                    await this.processFactLine();
+                    // if the handler is swallowing errors, still assume data continues next line
+                    this.state = STATE.DATA;
+                } else if (this.line.match(/^\s+[a-z0-9_-]+\s*$/i)) {
+                    await this.processToggleFactLine();
+                    // if the handler is swallowing errors, still assume data continues next line
+                    this.state = STATE.DATA;
+                } else {
+                    this.state = STATE.MAIN;
+                    await this.processBodyLine();
+                }
+                break;
+            case STATE.DATA_MULTI_FACT:
+                match = this.line.match(/^\s+(.*)$/i);
+                if (match) {
+                    await this.processMultiFact(match);
+                    // if the handler is swallowing errors, still assume data continues next line
+                    this.state = STATE.DATA_MULTI_FACT;
+                } else if (this.line.match(/^The\s/i)) {
+                    this.state = STATE.DATA;
+                    await this.processObjectLine();
                 } else {
                     this.state = STATE.MAIN;
                     await this.processBodyLine();
@@ -207,7 +281,7 @@ export class TlmdFileLoader {
             this.err("expected a '# TLM' start line!");
             return;
         }
-        const match = this.line.match(/# TLM\s+([A-Za-z]+)\s*(?::(.*))?/i);
+        const match = this.line.match(/# TLM\s+([A-Z]+)\s*(?::(.*))?/i);
         if (!match) {
             this.err("missing TLMD type!");
             return;
@@ -281,6 +355,78 @@ export class TlmdFileLoader {
         }
     }
 
+    private async processObjectLine(): Promise<void> {
+        const match = this.line.match(/^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i);
+        if (!match) {
+            this.err("should be valid object!");
+            return;
+        }
+        // noinspection JSUnusedLocalSymbols
+        const [_, type, id] = match;
+        try {
+            await this._handler.handleObject(type.trim(), id.trim());
+        } catch (e) {
+            this.err(e.message);
+        }
+    }
+
+    private async processFactLine(): Promise<void> {
+        const match = this.line.match(/^\s+has\s+([a-z0-9_-]+)\s*:\s*([^\s].*)$/i);
+        if (!match) {
+            // note: already matched above
+            this.err("should be valid link fact!");
+            return;
+        }
+        // noinspection JSUnusedLocalSymbols
+        const [_, link, value] = match;
+        try {
+            await this._handler.handleFact(link.trim(), deserialize(value.trim()));
+        } catch (e) {
+            this.err(e.message);
+        }
+    }
+
+    private async processToggleFactLine(): Promise<void> {
+        const match = this.line.match(/^\s+([a-z0-9_-]+)$/i);
+        if (!match) {
+            // note: already matched above
+            this.err("should be valid toggle fact!");
+            return;
+        }
+        // noinspection JSUnusedLocalSymbols
+        const [_, link] = match;
+        try {
+            await this._handler.handleToggle(link.trim());
+        } catch (e) {
+            this.err(e.message);
+        }
+    }
+
+    private async processMultiFactStart(): Promise<void> {
+        const match = this.line.match(/^\s+has\s+([a-z0-9_-]+)\s*:\s*$/i);
+        if (!match) {
+            // note: already matched above
+            this.err("should be valid multi value fact!");
+            return;
+        }
+        // noinspection JSUnusedLocalSymbols
+        const [_, link] = match;
+        try {
+            await this._handler.handleMultiFactStart(link.trim());
+        } catch (e) {
+            this.err(e.message);
+        }
+    }
+
+    private async processMultiFact(match: RegExpMatchArray): Promise<void> {
+        const value = this.line.trim();
+        try {
+            await this._handler.handleMultiFact(deserialize(value));
+        } catch (e) {
+            this.err(e.message);
+        }
+    }
+
     private async processNamespaceLine(match: RegExpMatchArray): Promise<void> {
         // noinspection JSUnusedLocalSymbols
         const [_, prefix, uri] = match;
@@ -342,4 +488,18 @@ function trim(str: string | undefined): string | undefined {
         return str.trim();
     }
     return str;
+}
+
+function deserialize(value: string): string {
+    let result = value;
+    if (result.match(/^\\\s/) || result.match(/\\r/) || result.match(/\\n/)) {
+        if (result.match(/^\\\s/)) {
+            result = result.substring(1);
+        }
+        result = value
+            .replace(/\\r/g, "\r")
+            .replace(/\\n/g, "\n")
+            .replace(/\\\\/g, "\\");
+    }
+    return result;
 }

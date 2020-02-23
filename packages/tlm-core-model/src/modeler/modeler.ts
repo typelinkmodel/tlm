@@ -28,7 +28,7 @@ export class Modeler implements IModeler {
         async (st: RegExpMatchArray) => await this.processSuperTypeDefinitionStatement(st),
         /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processTypeDescriptionStatement(st),
-        /\s*The\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+        /\s*A\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
         async (st: RegExpMatchArray) => await this.processTypePluralNameStatement(st),
     ];
 
