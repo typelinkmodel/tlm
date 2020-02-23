@@ -202,15 +202,17 @@ A line in a model file that starts with one or more whitespace characters and ot
 ### Examples header
 A line in a model file that starts with one or more whitespace characters and follows an examples line is an examples header.
 
-It optionally starts with the keyword `ok` followed by a vertical bar `|`. After that follows one or more whitespace characters, the `link path` for the from side of the examples, one or more whitespace characters, another vertical bar `|`, one or more whitespace characters, and finally the `link path` for the to side of the examples.
+It optionally starts with the keyword `ok`, followed by 0 or more whitespace characters, followed by a vertical bar `|`. After that follows 0 or more whitespace characters, the `link path` for the from side of the examples, 0 or more whitespace characters, another vertical bar `|`, 0 or more whitespace characters, and finally the `link path` for the to side of the examples.
 
-It must be follows by an examples divider line.
+It must be followed by an examples divider line or an example line.
 
 ### Examples divider
 A line in a model file that starts with one or more whitespace characters and then is a series of one or more equals characters `=` is an examples divider. It must be followed by one or more example lines.
 
+The divider should be a line of equals characters, but any combination of equals `=`, dash `-` and vertical bar `|` is also allowed. 
+
 ### Example
-A line in a model file that starts with one or more whitespace characters that follows an examples divider is an example line. If the examples header for these examples started with the keyword `ok`, the example line starts with the keyword `no` if the example is invalid, and is then followed by a vertical bar `|`, followed by one or more whitespace cahracters followed by an `example value` for the from side link path, followed by one or more whitespace characters, followed by a vertical bar `|`, followed by one or more whitespace characters, and finally the `example value` for the to side link path.
+A line in a model file that starts with one or more whitespace characters that follows an examples divider is an example line. If the examples header for these examples started with the keyword `ok`, the example line starts with the keyword `no` if the example is invalid, and is then followed by 0 or more whitespace characters and a vertical bar `|`, followed by 0 or more whitespace characters followed by an `example value` for the from side link path, followed by 0 or more whitespace characters, followed by a vertical bar `|`, followed by 0 or more whitespace characters, and finally the `example value` for the to side link path.
 
 Example values consist of 0 or more characters except for newlines or the vertical bar character `|`. Instead of a newline character or vertical bar character, it is recommended comments are added for statements that have these as valid values. For example:
 

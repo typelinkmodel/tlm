@@ -12,13 +12,13 @@ Feature: TLMD Model Import
     When this file is loaded:
       | ../../docs/design/sample-hr-model.tlmd |
     Then the model should contain the type Person
-#    Then the model should contain the type Department
-#    Then the model should contain the type Team
-#    Then the link name from type Team should be singular
-#    Then the link name from type Team should be optional
-#    Then the link team from type Person should be constrained to values of type Team
-#    Then the link team from type Person should be plural
-#    Then the link team from type Person should be optional
-#    Then the link lead from type Team should be constrained to values of type Person
-#    Then the link lead from type Team should be plural
-#    Then the link lead from type Team should be mandatory
+    Then the model should contain the type Department
+    Then the model should contain the type Team
+    Then the link name from type Team should be singular
+    Then the link name from type Team should be optional
+    Then the link team from type Person should be constrained to values of type Team
+    Then the link team from type Person should be plural
+    Then the link team from type Person should be optional
+    Then the link lead from type Team should be constrained to values of type Person
+    Then the link lead from type Team should be plural
+    Then the link lead from type Team should be mandatory

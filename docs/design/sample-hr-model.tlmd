@@ -19,6 +19,7 @@ A Person, the coachee, can have some coach which must be a Person, the coach.
     Leo Simons      | Simon Lucy
     Leo Simons      | Dirk van Gulik
     Michael Jackson | Diana Ross
+    Dirk van Gulik  |
 
 The plural of Person is People.
 
@@ -31,17 +32,17 @@ A Department has exactly one name which must be a Name.
 A Department has exactly one manager which must be a Person.
   Examples:
     ok | department/name | manager/name
-    =====================================
+    ---|-----------------|---------------
        | Engineering     | Dirk van Gulik
     no | Engineering     | Simon Lucy
 
 A Person has at most one department which must be a Department.
   Examples:
     ok | name            | department/name
-    ======================================
        | Dirk van Gulik  | Engineering
        | Leo Simons      | Engineering
        | Simon Lucy      | Engineering
+       | Michael Jackson |
     no | Leo Simons      | HR
 
 The plural of Department is Departments.
