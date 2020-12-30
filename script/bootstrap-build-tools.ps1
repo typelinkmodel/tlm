@@ -10,7 +10,7 @@ Write-Notice "Bootstrapping tools…"
 Push-Location $WorkDir
 try
 {
-    pnpm install -r
+    ./node_modules/.bin/pnpm install -r
 }
 finally
 {

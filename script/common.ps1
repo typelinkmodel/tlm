@@ -6,9 +6,9 @@ if (! (Test-Path variable:script:__CommonLoaded))
 
     function Initialize-Preferences
     {
-        # Set-PSDebug -Trace 1
-        # Set-Variable -Name DebugPreference       -Value "Continue" -Scope Script -Force
-        # Set-Variable -Name VerbosePreference     -Value "Continue" -Scope Script -Force
+        Set-PSDebug -Trace 1
+        Set-Variable -Name DebugPreference       -Value "Continue" -Scope Script -Force
+        Set-Variable -Name VerbosePreference     -Value "Continue" -Scope Script -Force
         Set-Variable -Name InformationPreference -Value "Continue" -Scope Script -Force
         Set-Variable -Name WarningPreference     -Value "Continue" -Scope Script -Force
         Set-Variable -Name ErrorActionPreference -Value "Stop"     -Scope Script -Force
@@ -93,8 +93,15 @@ if (! (Test-Path variable:script:__CommonLoaded))
     {
         Write-Information "Waiting for connection to ${HostName}:${Port}…"
         if ($IsWindows) {
+            $Waited = 0
             while (!(Test-NetConnection -ComputerName $HostName -Port $Port -InformationLevel Quiet)) {
+                Write-InformationColored "." -NoNewline
                 Start-Sleep -ms 200
+                $Waited = $Waited + 1
+                if ($Waited -ge 20) {
+                    Write-InformationColored "X" -NoNewline -ForegroundColor Red
+                    break
+                }
             }
             Write-Progress -Completed -Activity "Done waiting"
         } else {

@@ -19,7 +19,7 @@ function Install-Node-Library ([string]$Library, [string]$Command)
 {
     if(!(Get-Command $Command))
     {
-        npm install -g $Library
+        npm install --no-save $Library
     }
 }
 
@@ -31,7 +31,7 @@ Test-Command-Available docker
 Test-Command-Available node
 # Test-Command-Available nvm
 
-Install-Node-Library pnpm pnpm
+Install-Node-Library pnpm ./node_modules/.bin/pnpm
 
 Install-Module "PSScriptAnalyzer" -Repository "PSGallery" -Force
 
