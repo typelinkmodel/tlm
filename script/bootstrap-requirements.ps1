@@ -33,7 +33,7 @@ Test-Command-Available node
 
 Install-Node-Library pnpm pnpm
 
-Install-Module "PSScriptAnalyzer"
+Install-Module "PSScriptAnalyzer" -Repository "PSGallery" -Force
 
 if ($script:MissingDependency)
 {
