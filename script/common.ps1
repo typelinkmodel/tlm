@@ -6,9 +6,9 @@ if (! (Test-Path variable:script:__CommonLoaded))
 
     function Initialize-Preferences
     {
-        Set-PSDebug -Trace 1
-        Set-Variable -Name DebugPreference       -Value "Continue" -Scope Script -Force
-        Set-Variable -Name VerbosePreference     -Value "Continue" -Scope Script -Force
+#        Set-PSDebug -Trace 1
+#        Set-Variable -Name DebugPreference       -Value "Continue" -Scope Script -Force
+#        Set-Variable -Name VerbosePreference     -Value "Continue" -Scope Script -Force
         Set-Variable -Name InformationPreference -Value "Continue" -Scope Script -Force
         Set-Variable -Name WarningPreference     -Value "Continue" -Scope Script -Force
         Set-Variable -Name ErrorActionPreference -Value "Stop"     -Scope Script -Force
