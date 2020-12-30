@@ -18,7 +18,7 @@ export class YamlLoader implements ILoader {
     }
 
     public async loadFile(filename: string): Promise<void> {
-        const doc = safeLoad(readFileSync(filename, "utf8"));
+        const doc = safeLoad(readFileSync(filename, "utf8")) as any;
         if (!doc.hasOwnProperty("tlm:Facts")) {
             throw new Error(`Expect yaml file to start with tlm:Facts:`);
         }
@@ -94,10 +94,10 @@ export class YamlLoader implements ILoader {
         // const currentObject: TlmObject|undefined = await this._searcher.findUnique(
         //     {type, link, value: id});
 
-        throw new Error("Not implemented!");
+        // throw new Error("Not implemented!");
     }
 
     private async loadObjectLinks(object: any, i: number): Promise<void> {
-        throw new Error("Not implemented!");
+        // throw new Error("Not implemented!");
     }
 }
