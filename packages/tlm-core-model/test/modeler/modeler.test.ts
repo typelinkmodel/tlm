@@ -35,7 +35,7 @@ test("activeNamespace: basic usage", async () => {
 
 test("activeNamespace: Initially no namespace is active", async () => {
     const modeler: Modeler = new Modeler();
-    expect(() => modeler.activeNamespace).toThrowError(/not set/);
+    expect(modeler.activeNamespace).toBeUndefined();
 });
 
 test("activeNamespace: Can't activate an unknown namespace", async () => {
@@ -43,13 +43,15 @@ test("activeNamespace: Can't activate an unknown namespace", async () => {
     expect(() => modeler.activeNamespace = "foo").toThrowError(/foo/);
 });
 
-test("activeNamespace: Can't deactivate namespace", async () => {
+test("activeNamespace: Namespace deactivation ignored", async () => {
     const modeler: Modeler = new Modeler();
     await modeler.addNamespace("foo", "https://example.com/ns/foo");
     modeler.activeNamespace = "foo";
     const untypedModeler = modeler as any;
-    expect(() => untypedModeler.activeNamespace = undefined).toThrowError(/deactivate/);
-    expect(() => untypedModeler.activeNamespace = null).toThrowError(/deactivate/);
+    untypedModeler.activeNamespace = undefined
+    expect(modeler.activeNamespace).toBeDefined()
+    untypedModeler.activeNamespace = null
+    expect(modeler.activeNamespace).toBeDefined()
 });
 
 test("activeNamespace: Can't activate built-in namespaces", async () => {
@@ -324,13 +326,14 @@ test("getValueTypeForLink: basic usage", async () => {
 test("processLinkDefinitionStatement: cover unreachable default case", async () => {
     const modeler: Modeler = new Modeler();
     try {
-        await (modeler as any).processLinkDefinitionStatement([
-            "A Person flub-boxes things which must be a Team.",
-            "Person",
-            "flub-boxes",
-            "things",
-            "Team",
-        ]);
+        await (modeler as any).processLinkDefinitionStatement({
+            groups: {
+                fromType: "Person",
+                rel: "flub-boxes",
+                link: "things",
+                othertype: "Team"
+            }
+        });
         fail();
     } catch (e) {
         expect(e.message).toMatch(/Cannot process statement relationship/);
