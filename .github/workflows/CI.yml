@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  Ubuntu:
+    name: CI build on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: bootstrap
+        run: ./script/cibuild.ps1
+        shell: pwsh
+  Windows:
+    name: CI build on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: bootstrap
+        run: ./script/cibuild.ps1
+        shell: pwsh
