@@ -119,7 +119,7 @@ const LINKS_DATA: string = `
 "77","76","7","toggle",,,"true","false","true","false","true","true","false","Whether the specific toggle is set or not for this Object."
 `;
 
-export function parseNamespaceData(data: Array<{ [key: string]: any }>): TlmNamespace[] {
+export function parseNamespaceData(data: any): TlmNamespace[] {
     const result = [];
     for (const row of data) {
         const {oid, prefix, uri, description} = row;
@@ -128,7 +128,7 @@ export function parseNamespaceData(data: Array<{ [key: string]: any }>): TlmName
     return result;
 }
 
-export function parseTypeData(data: Array<{ [key: string]: any }>): TlmType[] {
+export function parseTypeData(data: any): TlmType[] {
     const result = [];
     for (const row of data) {
         const {oid, namespace, name, super_type, description} = row;
@@ -137,7 +137,7 @@ export function parseTypeData(data: Array<{ [key: string]: any }>): TlmType[] {
     return result;
 }
 
-export function parseLinkData(data: Array<{ [key: string]: any }>): TlmLink[] {
+export function parseLinkData(data: any): TlmLink[] {
     const result = [];
     for (const row of data) {
         // noinspection JSUnusedLocalSymbols
