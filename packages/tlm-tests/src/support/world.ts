@@ -1,6 +1,6 @@
 import {ILoader, IReader, ISearcher} from "@typelinkmodel/tlm-core-db";
 import {IModeler} from "@typelinkmodel/tlm-core-model";
-import {setWorldConstructor} from "cucumber";
+import {setWorldConstructor} from "@cucumber/cucumber";
 
 const DEFAULT_ASSEMBLY = "memory";
 

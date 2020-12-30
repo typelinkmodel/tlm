@@ -2,7 +2,7 @@
 
 import {IModeler, TlmLink, TlmType} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
-import {Given, TableDefinition, Then, When} from "cucumber";
+import {Given, DataTable, Then, When} from "@cucumber/cucumber";
 import {findType} from "../support/util";
 
 Given(/^an empty type-link model is set up$/,
@@ -129,7 +129,7 @@ Then(/^the link ([^ ]+) from type ([^ ]+) should be optional for the target type
     });
 
 Given(/^this model:$/,
-    async function(statements: TableDefinition) {
+    async function(statements: DataTable) {
         const modeler: IModeler = this.modeler;
         for (const row of statements.raw()) {
             for (const cell of row) {

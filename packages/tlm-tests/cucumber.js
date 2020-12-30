@@ -2,7 +2,8 @@ const common = [
     'features/**/*.feature',
     '--require-module ts-node/register',
     '--require src/step-definitions/**/*.ts',
-    '--require src/support/**/*.ts'
+    '--require src/support/**/*.ts',
+    '--publish-quiet'
 ].join(' ');
 
 function getWorldParameters(assembly) {

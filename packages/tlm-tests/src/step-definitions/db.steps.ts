@@ -1,10 +1,10 @@
 import {ILoader, IReader, ISearcher} from "@typelinkmodel/tlm-core-db";
 import {TlmFact, TlmObject} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
-import {Given, TableDefinition, Then} from "cucumber";
+import {Given, DataTable, Then} from "@cucumber/cucumber";
 
 Given(/^this file is loaded:$/,
-    async function(statements: TableDefinition) {
+    async function(statements: DataTable) {
         const loader: ILoader = this.loader;
         for (const row of statements.raw()) {
             for (const cell of row) {
