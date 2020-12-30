@@ -1,5 +1,4 @@
-/* tslint:disable:only-arrow-functions */
-
+/* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion */
 import {IModeler, TlmLink, TlmType} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";
 import {Given, DataTable, Then, When} from "@cucumber/cucumber";

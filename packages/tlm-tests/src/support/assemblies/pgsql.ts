@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins,@typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-return */
 import {Loader as CoreLoader} from "./memory";
 import {Reader as CoreReader} from "@typelinkmodel/tlm-core-db";
 import {Searcher as CoreSearcher} from "@typelinkmodel/tlm-core-db";
@@ -33,8 +34,11 @@ export class Modeler extends PgSqlModeler {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 export class Loader extends CoreLoader {}
 
+// noinspection JSUnusedGlobalSymbols
 export class Reader extends CoreReader {}
 
+// noinspection JSUnusedGlobalSymbols
 export class Searcher extends CoreSearcher {}

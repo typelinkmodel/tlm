@@ -5,7 +5,7 @@ import {OidGenerator} from "./oid";
 export class NamespaceModel {
     private _namespaces: TlmNamespace[] = [];
     private _namespaceMapCache?: ITlmNamespaceMap = undefined;
-    private _initialized: boolean = false;
+    private _initialized = false;
     private _tlmNamespace: TlmNamespace | undefined = undefined;
     private _xsNamespace: TlmNamespace | undefined = undefined;
     private _activeNamespace?: TlmNamespace;
@@ -33,11 +33,13 @@ export class NamespaceModel {
 
     public get tlm(): TlmNamespace {
         this.initialize();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this._tlmNamespace!;
     }
 
     public get xs(): TlmNamespace {
         this.initialize();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this._xsNamespace!;
     }
 

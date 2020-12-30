@@ -82,9 +82,9 @@ export class LinkModel {
         name: string,
         fromName?: string,
         toName?: string,
-        isSingular: boolean = false,
-        isMandatory: boolean = false,
-        isPrimaryId: boolean = false,
+        isSingular = false,
+        isMandatory = false,
+        isPrimaryId = false,
     ): Promise<TlmLink> {
         const fromTypeObj: TlmType = await this._typeModel.addType(fromType);
         const toTypeObj: TlmType = await this._typeModel.addType(toType);
@@ -113,7 +113,7 @@ export class LinkModel {
         toType: string,
         fromType: string,
         name: string,
-        isSingularTo: boolean = false,
+        isSingularTo = false,
     ): Promise<TlmLink> {
         const toTypeObj = this._typeModel.findTypeByName(toType);
         const fromTypeObj = this._typeModel.findTypeByName(fromType);

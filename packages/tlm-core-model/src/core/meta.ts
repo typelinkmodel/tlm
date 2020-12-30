@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-unsafe-assignment */
 import * as parse from "csv-parse/lib/sync";
 import {TlmLink, TlmNamespace, TlmType} from "./schema";
 
@@ -29,13 +30,13 @@ const CSV_OPTIONS = {
     cast: csv_cast,
 };
 
-const NAMESPACE_DATA: string = `
+const NAMESPACE_DATA = `
 oid,prefix,uri,description
 1,tlm,https://type.link.model.tools/ns/tlm/,The Core TLM namespace.
 2,xs,http://www.w3.org/2001/XMLSchema,Namespaces for XML Schema DataTypes.
 `;
 
-const TYPES_DATA: string = `
+const TYPES_DATA = `
 oid,namespace,name,super_type,description
 3,1,Namespace,4,The special Type for Namespaces.
 4,1,Type,4,The special Type for Types (the meta-Type).
@@ -85,7 +86,7 @@ oid,namespace,name,super_type,description
 48,2,ENTITY,45,XML Schema compatible ENTITY.
 49,1,URI,17,An ASCII uniform resource identifier per RFC3986.
 50,1,URL,49,An ASCII uniform resource locator per WHATWG URL Standard.
-51,1,URN,49,An ASCII uniforn resource name per RFC8141.
+51,1,URN,49,An ASCII uniform resource name per RFC8141.
 52,1,UUID,51,An ASCII universally unique identifier per RFC4122.
 53,1,Link,4,A relation between types.
 71,1,Fact,4,A statement about an identified Object in the world considered to be true.
@@ -94,7 +95,7 @@ oid,namespace,name,super_type,description
 78,1,ValueFact,74,A fact about an object that has as its target a primitive value.
 `;
 
-const LINKS_DATA: string = `
+const LINKS_DATA = `
 "oid","from_type","to_type","name","from_name","to_name","is_singular_from","is_singular_to","is_mandatory_from","is_mandatory_to","is_toggle","is_value","is_primary_id","description"
 "54","53","4","from type",,,"true","false","true","false","false","false","false","The type this link belongs to."
 "55","53","4","to type",,,"true","false","true","false","false","false","false","The type this link points to."

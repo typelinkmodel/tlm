@@ -25,6 +25,7 @@ export class Loader extends CoreLoader {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 export class Reader extends CoreReader {
     private _world: World;
 
@@ -35,6 +36,7 @@ export class Reader extends CoreReader {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 export class Searcher extends CoreSearcher {
     private _world: World;
 

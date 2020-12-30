@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types */
 import {ILoader, IReader, ISearcher} from "@typelinkmodel/tlm-core-db";
 import {IModeler} from "@typelinkmodel/tlm-core-model";
 import {setWorldConstructor} from "@cucumber/cucumber";

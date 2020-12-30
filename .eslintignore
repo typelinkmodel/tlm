@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+dist/
+*.log
+*.js
+
+packages/*/node_modules/
+packages/*/coverage/
+packages/*/lib/
+.idea/
+/pnpm-lock.yaml
+**/package-lock.json

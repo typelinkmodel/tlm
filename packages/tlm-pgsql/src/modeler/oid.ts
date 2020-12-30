@@ -20,6 +20,7 @@ export class OidGenerator extends CoreGenerator {
         try {
             const a = await client.query("BEGIN");
             const b = await client.query("CALL tlm__insert_object($1);", [TlmType.TYPE_TYPE]);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const result: QueryResult<IOidResultRow> = await client.query<IOidResultRow, any>(
                 "SELECT tlm__current_oid()::int AS oid;");
             const c = await client.query("COMMIT");

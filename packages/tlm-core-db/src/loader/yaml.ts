@@ -1,4 +1,4 @@
-import {IModeler, Modeler, TlmFact, TlmLink, TlmObject, TlmType} from "@typelinkmodel/tlm-core-model";
+import {IModeler, Modeler} from "@typelinkmodel/tlm-core-model";
 import { readFileSync } from "fs";
 import { safeLoad } from "js-yaml";
 import {ILoader, IReader, ISearcher} from "../api";
@@ -18,19 +18,25 @@ export class YamlLoader implements ILoader {
     }
 
     public async loadFile(filename: string): Promise<void> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-assignment
         const doc = safeLoad(readFileSync(filename, "utf8")) as any;
+        // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         if (!doc.hasOwnProperty("tlm:Facts")) {
             throw new Error(`Expect yaml file to start with tlm:Facts:`);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
         const facts = doc["tlm:Facts"];
         await this.loadNamespaces(facts);
         await this.loadObjects(facts);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async loadNamespaces(facts: any): Promise<void> {
         let defaultNs;
 
+        // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         if (facts.hasOwnProperty("namespaces")) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             for (const [prefixObject, uriObject] of Object.entries(facts.namespaces)) {
                 if (uriObject !== null && uriObject !== undefined) {
                     const prefix = String(prefixObject);
@@ -61,16 +67,20 @@ export class YamlLoader implements ILoader {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async loadObjects(facts: any): Promise<void> {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
         if (facts.hasOwnProperty("objects")) {
             // ids and value links
             let i = 0;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             for (const object of facts.objects) {
                 await this.loadObjectBasic(object, i);
                 i++;
             }
             // links targeting other objects
             i = 0;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             for (const object of facts.objects) {
                 await this.loadObjectLinks(object, i);
                 i++;
@@ -78,16 +88,19 @@ export class YamlLoader implements ILoader {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async loadObjectBasic(object: any, i: number): Promise<void> {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,no-prototype-builtins
         if (!object.hasOwnProperty("id")) {
             throw new Error(`Encountered object ${i} without id!`);
         }
+        // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         if (!object.hasOwnProperty("type")) {
             throw new Error(`Encountered object ${i} without type!`);
         }
-        const id = object.id;
-        const type: string = String(object.type);
-        const typeObj: TlmType = this._modeler.getTypeByName(type);
+        // const id = object.id;
+        // const type = String(object.type);
+        // const typeObj: TlmType = this._modeler.getTypeByName(type);
         // const namespace = this._modeler.getNamespaceForType(typeObj);
         // const linkObj: TlmLink = await this._modeler.getPrimaryIdLink(typeObj);
         // const link = linkObj.name;
@@ -97,6 +110,7 @@ export class YamlLoader implements ILoader {
         // throw new Error("Not implemented!");
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async loadObjectLinks(object: any, i: number): Promise<void> {
         // throw new Error("Not implemented!");
     }

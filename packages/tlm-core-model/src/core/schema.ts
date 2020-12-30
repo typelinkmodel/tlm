@@ -103,11 +103,11 @@ export class TlmLink extends TlmObject {
         name: string,
         fromName?: string,
         toName?: string,
-        isSingular: boolean = false,
-        isMandatory: boolean = false,
-        isPrimaryId: boolean = false,
-        isSingularTo: boolean = false,
-        isMandatoryTo: boolean = false,
+        isSingular = false,
+        isMandatory = false,
+        isPrimaryId = false,
+        isSingularTo = false,
+        isMandatoryTo = false,
     ) {
         super(oid, TlmLink.LINK_TYPE);
         if (isPrimaryId) {

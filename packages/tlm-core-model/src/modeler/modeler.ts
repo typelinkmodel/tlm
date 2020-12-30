@@ -223,7 +223,7 @@ export class Modeler implements IModeler {
     private async processToggleDefinitionStatement(match: RegExpMatchArray): Promise<void> {
         // noinspection JSUnusedLocalSymbols
         const [_, type, toggle] = match;
-        const typeObj = await this._typeModel.addType(type);
+        await this._typeModel.addType(type);
         await this._linkModel.addToggleLink(type, toggle);
     }
 

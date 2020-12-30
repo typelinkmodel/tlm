@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion */
 import {ILoader, IReader, ISearcher} from "@typelinkmodel/tlm-core-db";
 import {TlmFact, TlmObject} from "@typelinkmodel/tlm-core-model";
 import {assert} from "chai";

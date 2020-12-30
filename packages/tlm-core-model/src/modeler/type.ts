@@ -1,12 +1,12 @@
 import {ITlmTypeMap} from "../api";
-import {loadCoreSchema, TLM_CORE_LINKS, TLM_CORE_TYPES, TlmType} from "../core";
+import {loadCoreSchema, TLM_CORE_TYPES, TlmType} from "../core";
 import {NamespaceModel} from "./namespace";
 import {OidGenerator} from "./oid";
 
 export class TypeModel {
     private _types: TlmType[] = [];
     private _typeMapCache?: ITlmTypeMap = undefined;
-    private _initialized: boolean = false;
+    private _initialized = false;
     private readonly _oidGenerator: OidGenerator;
     private readonly _namespaceModel: NamespaceModel;
 

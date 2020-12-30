@@ -42,13 +42,13 @@ export class TlmdStreamHandler {
     private readonly _continueOnError: boolean;
     private readonly _debug: boolean;
 
-    constructor(modeler: IModeler, continueOnError: boolean = false, debug: boolean = false) {
+    constructor(modeler: IModeler, continueOnError = false, debug = false) {
         this._modeler = modeler;
         this._continueOnError = continueOnError;
         this._debug = debug;
     }
 
-    public debug(message: string) {
+    public debug(message: string): void {
         if (this._debug) {
             console.debug(message);
         }
@@ -104,23 +104,23 @@ export class TlmdStreamHandler {
         this.debug(`Example: ok? ${valid}, from = '${fromLinkPath}', to = '${toLinkPath}'`);
     }
 
-    public async handleObject(type: string, id: string) {
+    public async handleObject(type: string, id: string): Promise<void> {
         this.debug(`Object: type = '${type}', id = '${id}'`);
     }
 
-    public async handleFact(link: string, value: string) {
+    public async handleFact(link: string, value: string): Promise<void> {
         this.debug(`- fact: link = '${link}', value = '${value}'`);
     }
 
-    public async handleToggle(link: string) {
+    public async handleToggle(link: string): Promise<void> {
         this.debug(`- toggle fact: link = '${link}'`);
     }
 
-    public async handleMultiFactStart(link: string) {
+    public async handleMultiFactStart(link: string): Promise<void> {
         this.debug(`- multi fact: link = '${link}'`);
     }
 
-    public async handleMultiFact(value: string) {
+    public async handleMultiFact(value: string): Promise<void> {
         this.debug(`  - multi fact value: value = '${value}'`);
     }
 }
@@ -130,9 +130,9 @@ export class TlmdFileLoader {
     private readonly _filename: string;
 
     private state: STATE = STATE.INITIAL;
-    private lineno: number = 0;
-    private line: string = "";
-    private exampleFirstColumnIsValidity: boolean = false;
+    private lineno = 0;
+    private line = "";
+    private exampleFirstColumnIsValidity = false;
 
     private readonly _lineProcessors = [
         /Namespace\s+([^:]+):\s*(.*)/i,
@@ -169,8 +169,8 @@ export class TlmdFileLoader {
         }
     }
 
-    private err(error: string): void {
-        this._handler.handleError(this._filename, this.lineno, error);
+    private err(error: Error | string): void {
+        this._handler.handleError(this._filename, this.lineno, error.toString());
         this.state = STATE.MAIN;
     }
 
@@ -187,7 +187,7 @@ export class TlmdFileLoader {
         switch (this.state) {
             case STATE.INITIAL:
                 this.state = STATE.MAIN;
-                this.processStartLine();
+                await this.processStartLine();
                 break;
             case STATE.MAIN:
                 if (this.line.match(/^\s+Examples:\s*$/i)) {
@@ -201,7 +201,7 @@ export class TlmdFileLoader {
                 break;
             case STATE.EXAMPLE_START:
                 match = this.line.match(
-                    /^\s+(ok\s*\|\s*)?([A-Z0-9_\/-]+)\s*\|\s*([A-Z0-9_\/-]+)\s*$/i);
+                    /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i);
                 if (!match) {
                     this.err("expected example header!");
                 } else {
@@ -305,7 +305,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleStart(tlmdType, tlmdTitle);
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -336,7 +336,7 @@ export class TlmdFileLoader {
             try {
                 await this._handler.handleExample(valid, trim(fromLinkPath), trim(toLinkPath));
             } catch (e) {
-                this.err(e.message);
+                this.err(e);
             }
         } else {
             const match = this.line.match(
@@ -350,7 +350,7 @@ export class TlmdFileLoader {
             try {
                 await this._handler.handleExample(true, trim(fromLinkPath), trim(toLinkPath));
             } catch (e) {
-                this.err(e.message);
+                this.err(e);
             }
         }
     }
@@ -366,7 +366,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleObject(type.trim(), id.trim());
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -382,7 +382,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleFact(link.trim(), deserialize(value.trim()));
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -398,7 +398,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleToggle(link.trim());
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -414,16 +414,17 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleMultiFactStart(link.trim());
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
+    // noinspection JSUnusedLocalSymbols
     private async processMultiFact(match: RegExpMatchArray): Promise<void> {
         const value = this.line.trim();
         try {
             await this._handler.handleMultiFact(deserialize(value));
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -433,7 +434,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleNamespace(prefix, uri);
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -444,7 +445,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleComment(trimmedComment);
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -455,7 +456,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleSection(trimmedSection);
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -466,7 +467,7 @@ export class TlmdFileLoader {
         try {
             await this._handler.handleStatement(trimmedStatement);
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 
@@ -478,7 +479,7 @@ export class TlmdFileLoader {
             await this._handler.handleStartExample(this.exampleFirstColumnIsValidity,
                 fromLinkPath.trim(), toLinkPath.trim());
         } catch (e) {
-            this.err(e.message);
+            this.err(e);
         }
     }
 }
