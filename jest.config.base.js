@@ -7,12 +7,7 @@ let config = {
         "ts",
         "js",
         "json"
-    ],
-    globals: {
-        'ts-jest': {
-            packageJson: 'package.json'
-        }
-    }
+    ]
 };
 
 const debug = typeof v8debug === 'object'
