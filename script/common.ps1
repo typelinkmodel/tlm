@@ -77,6 +77,15 @@ if (! (Test-Path variable:script:__CommonLoaded))
         . $SettingsScript
     }
 
+    function Initialize-Env-Vars
+    {
+        New-Item -Name POSTGRES_USER -Value $PostgresUser -ItemType Variable -Path Env: -Force > $null
+        New-Item -Name POSTGRES_PASSWORD -Value $PostgresPassword -ItemType Variable -Path Env: -Force > $null
+        New-Item -Name POSTGRES_DATABASE -Value $PostgresDatabase -ItemType Variable -Path Env: -Force > $null
+        New-Item -Name POSTGRES_PORT -Value $PostgresPort -ItemType Variable -Path Env: -Force > $null
+        New-Item -Name POSTGRES_HOST -Value $PostgresHost -ItemType Variable -Path Env: -Force > $null
+    }
+
     function Test-Docker-Is-Running ([string]$ContainerName)
     {
         if (docker ps -q -f "name=${ContainerName}")
@@ -122,4 +131,5 @@ if (! (Test-Path variable:script:__CommonLoaded))
 
     Initialize-Preferences
     Initialize-Settings
+    Initialize-Env-Vars
 }

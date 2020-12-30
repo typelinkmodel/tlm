@@ -28,6 +28,7 @@ Initialize-Default-Variable PostgresUser       postgres
 Initialize-Default-Variable PostgresPassword   postgres
 Initialize-Default-Variable PostgresDatabase   tlm
 Initialize-Default-Variable PostgresPort       5432
+Initialize-Default-Variable PostgresHost       localhost
 Initialize-Default-Variable PostgresContainer  ${ENV}-${STACK}-psql-${PostgresDatabase}
 Initialize-Default-Variable PostgresImage      postgres
 Initialize-Default-Variable PostgresScriptsDir $(Join-Path `

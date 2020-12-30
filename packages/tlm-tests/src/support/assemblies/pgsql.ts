@@ -12,12 +12,11 @@ function getPool(world: World) {
     }
     // @ts-ignore
     world.pool = new Pool({
-        // TODO get variables from environment
-        host: "localhost",
-        port: 5432,
-        user: "postgres",
-        password: "postgres",
-        database: "tlm",
+        host: process.env.POSTGRES_HOST || "localhost",
+        port: parseInt(process.env.POSTGRES_PORT || "5432", 10),
+        user: process.env.POSTGRES_USER || "postgres",
+        password: process.env.POSTGRES_PASSWORD || "postgres",
+        database: process.env.POSTGRES_DATABASE || "tlm",
     });
     // @ts-ignore
     return world.pool;
