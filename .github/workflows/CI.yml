@@ -1,13 +1,10 @@
 name: CI
 
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   CI:
-    name: CI build on Ubuntu
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v2
