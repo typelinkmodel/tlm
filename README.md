@@ -2,6 +2,10 @@ Type Link Model (TLM) Monorepo
 
 https://type.link.model.tools/
 
+## Build
+
+![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
+
 Use [PowerShell Core 6+](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6):
 
 ```powershell
@@ -12,6 +16,10 @@ Use [PowerShell Core 6+](https://docs.microsoft.com/en-us/powershell/scripting/i
 ```
 
 (also on linux or mac)
+
+## Code
+
+Code style follows [Prettier](https://prettier.io/).
 
 Follow
 
@@ -33,4 +41,6 @@ with types:
 - chore: Changes that take care of some other kind of chore that doesn't impact the main code
   (based on angular conventions https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
 
-See docs/.
+## More
+
+See [docs/](docs/).
