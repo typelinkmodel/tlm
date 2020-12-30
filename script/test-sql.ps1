@@ -18,7 +18,7 @@ if (! (Test-Docker-Is-Running ${PostgresContainer}))
 
 $SqlScriptDir = Join-Path $WorkDir $PgTapTestsDir
 
-docker run -it --rm `
+docker run -i --rm `
     --name ${PgTapContainer} `
     --link "${PostgresContainer}:db" `
     -v "${SqlScriptDir}:/test" `
