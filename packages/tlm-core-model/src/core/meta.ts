@@ -1,33 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-unsafe-assignment */
 import * as parse from "csv-parse/lib/sync";
-import {TlmLink, TlmNamespace, TlmType} from "./schema";
+import { TlmLink, TlmNamespace, TlmType } from "./schema";
 
-export function csv_cast(value: string, context: {[key: string]: any}): any {
-    switch (context.column) {
-        case "oid":
-        case "namespace":
-        case "super_type":
-        case "from_type":
-        case "to_type":
-            return parseInt(value, 10);
-        // case /^is_/.test(context.column):
-        case "is_singular_from":
-        case "is_singular_to":
-        case "is_mandatory_from":
-        case "is_mandatory_to":
-        case "is_toggle":
-        case "is_value":
-        case "is_primary_id":
-            return value !== "false";
-        default:
-            return value;
-    }
+export function csv_cast(value: string, context: { [key: string]: any }): any {
+  switch (context.column) {
+    case "oid":
+    case "namespace":
+    case "super_type":
+    case "from_type":
+    case "to_type":
+      return parseInt(value, 10);
+    // case /^is_/.test(context.column):
+    case "is_singular_from":
+    case "is_singular_to":
+    case "is_mandatory_from":
+    case "is_mandatory_to":
+    case "is_toggle":
+    case "is_value":
+    case "is_primary_id":
+      return value !== "false";
+    default:
+      return value;
+  }
 }
 
 const CSV_OPTIONS = {
-    columns: true,
-    skip_empty_lines: true,
-    cast: csv_cast,
+  columns: true,
+  skip_empty_lines: true,
+  cast: csv_cast,
 };
 
 const NAMESPACE_DATA = `
@@ -121,47 +121,58 @@ const LINKS_DATA = `
 `;
 
 export function parseNamespaceData(data: any): TlmNamespace[] {
-    const result = [];
-    for (const row of data) {
-        const {oid, prefix, uri, description} = row;
-        result.push(new TlmNamespace(oid, prefix, uri, description));
-    }
-    return result;
+  const result = [];
+  for (const row of data) {
+    const { oid, prefix, uri, description } = row;
+    result.push(new TlmNamespace(oid, prefix, uri, description));
+  }
+  return result;
 }
 
 export function parseTypeData(data: any): TlmType[] {
-    const result = [];
-    for (const row of data) {
-        const {oid, namespace, name, super_type, description} = row;
-        result.push(new TlmType(oid, namespace, name, super_type, description));
-    }
-    return result;
+  const result = [];
+  for (const row of data) {
+    const { oid, namespace, name, super_type, description } = row;
+    result.push(new TlmType(oid, namespace, name, super_type, description));
+  }
+  return result;
 }
 
 export function parseLinkData(data: any): TlmLink[] {
-    const result = [];
-    for (const row of data) {
-        // noinspection JSUnusedLocalSymbols
-        const {
-            oid,
-            from_type,
-            to_type,
-            name,
-            from_name,
-            to_name,
-            is_singular_from,
-            is_singular_to,
-            is_mandatory_from,
-            is_mandatory_to,
-            is_toggle,
-            is_value,
-            is_primary_id,
-            description,
-        } = row;
-        result.push(new TlmLink(oid, from_type, to_type, name, from_name, to_name,
-          is_singular_from, is_mandatory_from, is_primary_id));
-    }
-    return result;
+  const result = [];
+  for (const row of data) {
+    // noinspection JSUnusedLocalSymbols
+    const {
+      oid,
+      from_type,
+      to_type,
+      name,
+      from_name,
+      to_name,
+      is_singular_from,
+      is_singular_to,
+      is_mandatory_from,
+      is_mandatory_to,
+      is_toggle,
+      is_value,
+      is_primary_id,
+      description,
+    } = row;
+    result.push(
+      new TlmLink(
+        oid,
+        from_type,
+        to_type,
+        name,
+        from_name,
+        to_name,
+        is_singular_from,
+        is_mandatory_from,
+        is_primary_id
+      )
+    );
+  }
+  return result;
 }
 
 export const TLM_CORE_NAMESPACES: TlmNamespace[] = [];
@@ -171,28 +182,28 @@ export const TLM_CORE_LINKS: TlmLink[] = [];
 let initialized = false;
 
 export function loadCoreSchema(): void {
-    if (initialized) {
-        return;
-    }
-    initialized = true;
+  if (initialized) {
+    return;
+  }
+  initialized = true;
 
-    // parsing takes about 10ms, so we do it lazily
+  // parsing takes about 10ms, so we do it lazily
 
-    const namespaceData = parse(NAMESPACE_DATA, CSV_OPTIONS);
-    const namespaces = parseNamespaceData(namespaceData);
-    for (const ns of namespaces) {
-        TLM_CORE_NAMESPACES.push(ns);
-    }
+  const namespaceData = parse(NAMESPACE_DATA, CSV_OPTIONS);
+  const namespaces = parseNamespaceData(namespaceData);
+  for (const ns of namespaces) {
+    TLM_CORE_NAMESPACES.push(ns);
+  }
 
-    const typesData = parse(TYPES_DATA, CSV_OPTIONS);
-    const types = parseTypeData(typesData);
-    for (const t of types) {
-        TLM_CORE_TYPES.push(t);
-    }
+  const typesData = parse(TYPES_DATA, CSV_OPTIONS);
+  const types = parseTypeData(typesData);
+  for (const t of types) {
+    TLM_CORE_TYPES.push(t);
+  }
 
-    const linksData = parse(LINKS_DATA, CSV_OPTIONS);
-    const links = parseLinkData(linksData);
-    for (const l of links) {
-        TLM_CORE_LINKS.push(l);
-    }
+  const linksData = parse(LINKS_DATA, CSV_OPTIONS);
+  const links = parseLinkData(linksData);
+  for (const l of links) {
+    TLM_CORE_LINKS.push(l);
+  }
 }

@@ -1,12 +1,12 @@
 $ErrorActionPreference = "Stop"
-$ScriptPath            = $MyInvocation.MyCommand.Path
-$ScriptDir             = Split-Path $ScriptPath
-$CommonScript          = Join-Path $ScriptDir "common.ps1"
+$ScriptPath = $MyInvocation.MyCommand.Path
+$ScriptDir = Split-Path $ScriptPath
+$CommonScript = Join-Path $ScriptDir "common.ps1"
 . $CommonScript
 
-if (! (Test-Docker-Is-Running ${PostgresContainer}))
+if (!(Test-Docker-Is-Running ${PostgresContainer}))
 {
-    Write-Warning "Container ${PostgresContainer} is not running, try setup.ps1."
+  Write-Warning "Container ${PostgresContainer} is not running, try setup.ps1."
 }
 
 Write-Notice "Running 'psql ${Args}' for ${PostgresContainer}/${PostgresDatabase}…"

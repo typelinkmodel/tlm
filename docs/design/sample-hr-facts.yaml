@@ -1,93 +1,93 @@
 tlm:Facts:
   namespaces:
-    default:   https://type.link.model.tools/ns/tlm/
-    tlm:       https://type.link.model.tools/ns/tlm/
-    xs:        http://www.w3.org/2001/XMLSchema
-    hr:        https://type.link.model.tools/ns/tlm-sample-hr/
+    default: https://type.link.model.tools/ns/tlm/
+    tlm: https://type.link.model.tools/ns/tlm/
+    xs: http://www.w3.org/2001/XMLSchema
+    hr: https://type.link.model.tools/ns/tlm-sample-hr/
   objects:
-    - id:        mailto:leo@example.com
-      type:      hr:Person
+    - id: mailto:leo@example.com
+      type: hr:Person
       facts:
-        - link:      name
-          value:     Leo Simons
-          type:      xs:string
-        - link:      department
-          target:    mailto:engineering@example.com
-        - link:      team
+        - link: name
+          value: Leo Simons
+          type: xs:string
+        - link: department
+          target: mailto:engineering@example.com
+        - link: team
           targets:
-            -        mailto:content-management-eng@example.com
-            -        mailto:transcoding-eng@example.com
-            -        mailto:eng-management@example.com
-    - id:        mailto:simon@example.com
-      type:      hr:Person
+            - mailto:content-management-eng@example.com
+            - mailto:transcoding-eng@example.com
+            - mailto:eng-management@example.com
+    - id: mailto:simon@example.com
+      type: hr:Person
       facts:
-        - link:      name
-          value:     Simon Lucy
-          type:      xs:string
-        - link:      coachedBy
-          target:    mailto:dirk@example.com
-        - link:      coaches
-          value:     true
-          type:      xs:boolean
-        - link:      department
-          target:    mailto:engineering@example.com
-        - link:      team
+        - link: name
+          value: Simon Lucy
+          type: xs:string
+        - link: coachedBy
+          target: mailto:dirk@example.com
+        - link: coaches
+          value: true
+          type: xs:boolean
+        - link: department
+          target: mailto:engineering@example.com
+        - link: team
           targets:
-            -        mailto:content-management-eng@example.com
-            -        mailto:eng-management@example.com
-    - id:        mailto:dirk@example.com
-      type:      hr:Person
+            - mailto:content-management-eng@example.com
+            - mailto:eng-management@example.com
+    - id: mailto:dirk@example.com
+      type: hr:Person
       facts:
-        - link:      name
-          value:     Dirk van Gulik
-          type:      xs:string
-        - link:      coaches
-          value:     true
-          type:      xs:boolean
-        - link:      department
-          target:    mailto:engineering@example.com
-        - link:      team
+        - link: name
+          value: Dirk van Gulik
+          type: xs:string
+        - link: coaches
+          value: true
+          type: xs:boolean
+        - link: department
+          target: mailto:engineering@example.com
+        - link: team
           targets:
-            -        mailto:eng-management@example.com
-    - id:        mailto:engineering@example.com
-      type:      hr:Department
+            - mailto:eng-management@example.com
+    - id: mailto:engineering@example.com
+      type: hr:Department
       facts:
-        - link:      name
-          value:     Engineering
-          type:      xs:string
-        - link:      manager
-          target:    mailto:dirk@example.com
-    - id:        mailto:hr@example.com
-      type:      hr:Department
+        - link: name
+          value: Engineering
+          type: xs:string
+        - link: manager
+          target: mailto:dirk@example.com
+    - id: mailto:hr@example.com
+      type: hr:Department
       facts:
-        - link:      name
-          value:     HR
-          type:      xs:string
-    - id:        mailto:content-management-eng@example.com
-      type:      hr:Team
+        - link: name
+          value: HR
+          type: xs:string
+    - id: mailto:content-management-eng@example.com
+      type: hr:Team
       facts:
-        - link:      name
-          value:     Content Management Engineering
-          type:      xs:string
-        - link:      lead
+        - link: name
+          value: Content Management Engineering
+          type: xs:string
+        - link: lead
           targets:
-            -        mailto:leo@example.com
-    - id:        mailto:transcoding-eng@example.com
-      type:      hr:Team
+            - mailto:leo@example.com
+    - id: mailto:transcoding-eng@example.com
+      type: hr:Team
       facts:
-        - link:      name
-          value:     Transcoding Engineering
-          type:      xs:string
-        - link:      lead
+        - link: name
+          value: Transcoding Engineering
+          type: xs:string
+        - link: lead
           targets:
-            -        mailto:leo@example.com
-    - id:        mailto:eng-management@example.com
-      type:      hr:Team
+            - mailto:leo@example.com
+    - id: mailto:eng-management@example.com
+      type: hr:Team
       facts:
-        - link:      name
-          value:     Engineering Management
-          type:      xs:string
-        - link:      lead
+        - link: name
+          value: Engineering Management
+          type: xs:string
+        - link: lead
           targets:
-            -        mailto:dirk@example.com
-            -        mailto:simon@example.com
+            - mailto:dirk@example.com
+            - mailto:simon@example.com

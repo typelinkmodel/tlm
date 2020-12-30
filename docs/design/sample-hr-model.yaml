@@ -1,64 +1,64 @@
 tlm:Model:
   namespaces:
-    - default:   https://type.link.model.tools/ns/tlm/
-    - xs:        http://www.w3.org/2001/XMLSchema
-    - tlm:       https://type.link.model.tools/ns/tlm/
-    - message:   https://type.link.model.tools/ns/message/
-    - hr:        https://type.link.model.tools/ns/tlm-sample-hr/
-  namespace:     hr
+    - default: https://type.link.model.tools/ns/tlm/
+    - xs: http://www.w3.org/2001/XMLSchema
+    - tlm: https://type.link.model.tools/ns/tlm/
+    - message: https://type.link.model.tools/ns/message/
+    - hr: https://type.link.model.tools/ns/tlm-sample-hr/
+  namespace: hr
   links:
     # Facts about people
-    - from:      hr:Person
-      to:        tlm:URI
-      name:      id
-      primary:   true
-    - from:      hr:Person
-      to:        tlm:Name
-      name:      name
-      singular:  true
+    - from: hr:Person
+      to: tlm:URI
+      name: id
+      primary: true
+    - from: hr:Person
+      to: tlm:Name
+      name: name
+      singular: true
       mandatory: true
-    - from:      hr:Person
-      to:        hr:Person
-      name:      coachedBy
-    - from:      hr:Person
-      to:        xs:boolean
-      name:      coaches
-      singular:  true
+    - from: hr:Person
+      to: hr:Person
+      name: coachedBy
+    - from: hr:Person
+      to: xs:boolean
+      name: coaches
+      singular: true
     # Facts about departments
-    - from:      hr:Department
-      to:        tlm:URI
-      name:      id
-      primary:   true
-    - from:      hr:Department
-      to:        tlm:Name
-      name:      name
-      singular:  true
+    - from: hr:Department
+      to: tlm:URI
+      name: id
+      primary: true
+    - from: hr:Department
+      to: tlm:Name
+      name: name
+      singular: true
       mandatory: true
-    - from:      hr:Department
-      to:        hr:Person
-      name:      manager
-      singular:  true
+    - from: hr:Department
+      to: hr:Person
+      name: manager
+      singular: true
       mandatory: true
-    - from:      hr:Person
-      to:        hr:Department
-      name:      department
-      singular:  true
+    - from: hr:Person
+      to: hr:Department
+      name: department
+      singular: true
       mandatory: false
     # Facts about teams
-    - from:      hr:Team
-      to:        tlm:URI
-      name:      id
-      primary:   true
-    - from:      hr:Team
-      to:        tlm:Name
-      name:      name
-      singular:  true
+    - from: hr:Team
+      to: tlm:URI
+      name: id
+      primary: true
+    - from: hr:Team
+      to: tlm:Name
+      name: name
+      singular: true
       mandatory: false
-    - from:      hr:Team
-      to:        hr:Person
-      name:      lead
-      singular:  false
+    - from: hr:Team
+      to: hr:Person
+      name: lead
+      singular: false
       mandatory: true
-    - from:      hr:Person
-      to:        hr:Team
-      name:      team
+    - from: hr:Person
+      to: hr:Team
+      name: team

@@ -1,20 +1,20 @@
 {
-    "type":                "message:Message",
-    "namespaces": {
-        "message":         "https://type.link.model.tools/ns/message/",
-        "hr":              "https://type.link.model.tools/ns/tlm-sample-hr/"
-    },
-    "subject": {
-        "type":            "hr:Person",
-        "id":              "mailto:leo@example.com",
-        "coachedBy":       "mailto:simon@example.com"
-    },
-    "delivery": [
-        {
-            "sender":      "mailto:dirk@example.com",
-            "receiver":    "mailto:hr-dept@example.com",
-            "sendTime":    "20180611T20:09:01Z",
-            "receiveTime": "20180611T20:09:27Z"
-        }
-    ]
+  "type": "message:Message",
+  "namespaces": {
+    "message": "https://type.link.model.tools/ns/message/",
+    "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+  },
+  "subject": {
+    "type": "hr:Person",
+    "id": "mailto:leo@example.com",
+    "coachedBy": "mailto:simon@example.com"
+  },
+  "delivery": [
+    {
+      "sender": "mailto:dirk@example.com",
+      "receiver": "mailto:hr-dept@example.com",
+      "sendTime": "20180611T20:09:01Z",
+      "receiveTime": "20180611T20:09:27Z"
+    }
+  ]
 }

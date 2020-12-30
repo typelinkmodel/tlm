@@ -1,11 +1,11 @@
-if (! (Test-Path variable:script:ENV))
+if (!(Test-Path variable:script:ENV))
 {
-    Set-Variable -Name ENV -Value ci -Scope Script
+  Set-Variable -Name ENV -Value ci -Scope Script
 }
 
-$ScriptPath            = $MyInvocation.MyCommand.Path
-$ScriptDir             = Split-Path $ScriptPath
-$CommonScript          = Join-Path $ScriptDir "common.ps1"
+$ScriptPath = $MyInvocation.MyCommand.Path
+$ScriptDir = Split-Path $ScriptPath
+$CommonScript = Join-Path $ScriptDir "common.ps1"
 . $CommonScript
 
 Write-Notice "==> cibuild"

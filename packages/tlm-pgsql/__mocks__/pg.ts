@@ -1,22 +1,21 @@
-
 export const mockClientQuery = jest.fn();
 export const mockClientRelease = jest.fn();
 
 export const mockClientInstance = {
-    query: mockClientQuery,
-    release: mockClientRelease,
+  query: mockClientQuery,
+  release: mockClientRelease,
 };
 
 export const mockPoolConnect = jest.fn(() => {
-    return mockClientInstance;
+  return mockClientInstance;
 });
 
 export const mockPoolInstance = {
-    connect: mockPoolConnect,
+  connect: mockPoolConnect,
 };
 
 export const mockPoolConstructor = jest.fn(() => {
-    return mockPoolInstance;
+  return mockPoolInstance;
 });
 
 // tslint:disable-next-line:variable-name
