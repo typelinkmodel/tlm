@@ -4,5 +4,6 @@ $ScriptDir             = Split-Path $ScriptPath
 $CommonScript          = Join-Path $ScriptDir "common.ps1"
 . $CommonScript
 
-Write-Notice "==> server"
+Write-Section-Start "server"
 Write-Notice "server.sh: nothing to do yet."
+Write-Section-End

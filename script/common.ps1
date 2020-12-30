@@ -40,9 +40,19 @@ if (! (Test-Path variable:script:__CommonLoaded))
         Write-InformationColored $Message -ForegroundColor Green
     }
 
+    function Write-Section-Start ([string]$Section)
+    {
+        Write-InformationColored "${SectionStartPrefix}${Section}" -ForegroundColor Green
+    }
+
+    function Write-Section-End
+    {
+        Write-InformationColored "${SectionEndMessage}" -ForegroundColor Green
+    }
+
     function Write-ErrorNotice ([string]$Message)
     {
-        Write-InformationColored $Message -ForegroundColor Red
+        Write-InformationColored "${ErrorPrefix}${Message}" -ForegroundColor Red
     }
 
     function Invoke-Script ([string]$ScriptName)

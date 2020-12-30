@@ -43,3 +43,7 @@ Initialize-Default-Variable PgTapTestsDir      $(Join-Path `
         -ChildPath tlm-pgsql `
         -AdditionalChildPath test-sql)
 Initialize-Default-Variable PgTapTestsPattern  *.sql
+
+Initialize-Default-Variable SectionStartPrefix "==> "
+Initialize-Default-Variable SectionEndMessage  ""
+Initialize-Default-Variable ErrorPrefix        "ERROR: "
