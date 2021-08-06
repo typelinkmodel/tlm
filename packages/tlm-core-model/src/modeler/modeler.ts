@@ -14,23 +14,19 @@ export class Modeler implements IModeler {
 
   private readonly _statementProcessors = [
     /\s*An?\s+(?<fromType>[A-Za-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[A-Za-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<otherType>[A-Za-z0-9_-]+)\s*(?:,\s*the\s+(?<otherName>[A-Za-z0-9_-]+)\s*,\s*)?\.?\s*/i,
-    async (st: RegExpMatchArray) =>
-      await this.processLinkDefinitionStatement(st),
+    async (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
-      await this.processReverseLinkDefinitionStatement(st),
+      this.processReverseLinkDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+(has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) =>
-      await this.processToggleDefinitionStatement(st),
+    async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
-      await this.processSuperTypeDefinitionStatement(st),
+      this.processSuperTypeDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) =>
-      await this.processTypeDescriptionStatement(st),
+    async (st: RegExpMatchArray) => this.processTypeDescriptionStatement(st),
     /\s*A\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) =>
-      await this.processTypePluralNameStatement(st),
+    async (st: RegExpMatchArray) => this.processTypePluralNameStatement(st),
   ];
 
   constructor(
@@ -95,7 +91,7 @@ export class Modeler implements IModeler {
     uri: string,
     description?: string
   ): Promise<TlmNamespace> {
-    return await this._namespaceModel.addNamespace(prefix, uri, description);
+    return this._namespaceModel.addNamespace(prefix, uri, description);
   }
 
   public async addStatement(statement: string): Promise<void> {

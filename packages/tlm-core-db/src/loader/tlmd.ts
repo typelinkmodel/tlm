@@ -156,13 +156,13 @@ export class TlmdFileLoader {
 
   private readonly _lineProcessors = [
     /Namespace\s+([^:]+):\s*(.*)/i,
-    async (st: RegExpMatchArray) => await this.processNamespaceLine(st),
+    async (st: RegExpMatchArray) => this.processNamespaceLine(st),
     /\/\/\s*(.*)/i,
-    async (st: RegExpMatchArray) => await this.processCommentLine(st),
+    async (st: RegExpMatchArray) => this.processCommentLine(st),
     /---\s*(.*)/i,
-    async (st: RegExpMatchArray) => await this.processSectionLine(st),
+    async (st: RegExpMatchArray) => this.processSectionLine(st),
     /^(An?\s+.*\.)$/i,
-    async (st: RegExpMatchArray) => await this.processStatement(st),
+    async (st: RegExpMatchArray) => this.processStatement(st),
   ];
 
   constructor(filename: string, handler: TlmdStreamHandler) {
@@ -520,7 +520,7 @@ function deserialize(value: string): string {
     if (result.match(/^\\\s/)) {
       result = result.substring(1);
     }
-    result = value
+    result = result
       .replace(/\\r/g, "\r")
       .replace(/\\n/g, "\n")
       .replace(/\\\\/g, "\\");
