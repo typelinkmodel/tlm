@@ -17,7 +17,7 @@ function Wait-For-PSQL
             $PostgresContainer `
             psql `
             -b `
-            -v ON_ERROR_STOP = 1 `
+            -v ON_ERROR_STOP=1 `
             -U $PostgresUser `
             -h localhost `
             -p 5432 `
@@ -44,7 +44,7 @@ function Invoke-SQL([string]$Database, [Object]$File)
         $PostgresContainer `
         psql `
         -b `
-        -v ON_ERROR_STOP = 1 `
+        -v ON_ERROR_STOP=1 `
         -U $PostgresUser `
         -h localhost `
         -p 5432 `
