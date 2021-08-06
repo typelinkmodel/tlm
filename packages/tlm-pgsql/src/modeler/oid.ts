@@ -18,16 +18,14 @@ export class OidGenerator extends CoreGenerator {
     // todo this is creating 'broken' tlm__object entries
     const client = await this._pool.connect();
     try {
-      const a = await client.query("BEGIN");
-      const b = await client.query("CALL tlm__insert_object($1);", [
-        TlmType.TYPE_TYPE,
-      ]);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await client.query("BEGIN");
+      await client.query("CALL tlm__insert_object($1);", [TlmType.TYPE_TYPE]);
       const result: QueryResult<IOidResultRow> = await client.query<
         IOidResultRow,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         any
       >("SELECT tlm__current_oid()::int AS oid;");
-      const c = await client.query("COMMIT");
+      await client.query("COMMIT");
       return result.rows[0].oid;
     } catch (e) {
       try {
