@@ -29,3 +29,17 @@ test("addReverseMandatoryLink(): reject link rewiring", async () => {
     (() => linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"))()
   ).rejects.toThrowError(/Existing relationship/);
 });
+
+// test("addToggleLink()", async () => {
+//   const oidGenerator = new OidGenerator();
+//   const namespaceModel = new NamespaceModel(oidGenerator);
+//   const typeModel = new TypeModel(oidGenerator, namespaceModel);
+//   const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
+//   linkModel.initialize();
+//
+//   await namespaceModel.addNamespace("foo", "example://foo");
+//   namespaceModel.activeNamespacePrefix = "foo";
+//   await typeModel.addType("Foo");
+//
+//   linkModel.addToggleLink()
+// });

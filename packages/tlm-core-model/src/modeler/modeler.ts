@@ -18,7 +18,7 @@ export class Modeler implements IModeler {
     /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
       this.processReverseLinkDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+(has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([A-Za-z0-9_-]+)\s+(?:has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
@@ -126,15 +126,14 @@ export class Modeler implements IModeler {
   private async processLinkDefinitionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    if (!match.groups) {
-      throw new Error("No matching groups!");
-    }
-    const fromType = match.groups.fromType;
-    const fromName = match.groups.fromName;
-    const rel = match.groups.rel;
-    const link = match.groups.link;
-    const otherType = match.groups.otherType;
-    const otherName = match.groups.otherName;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const groups = match.groups!;
+    const fromType = groups.fromType;
+    const fromName = groups.fromName;
+    const rel = groups.rel;
+    const link = groups.link;
+    const otherType = groups.otherType;
+    const otherName = groups.otherName;
 
     const processedRel = rel.replace(/\s+/g, " ").trim();
     switch (processedRel) {
