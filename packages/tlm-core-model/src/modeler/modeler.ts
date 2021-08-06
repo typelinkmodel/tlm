@@ -212,8 +212,7 @@ export class Modeler implements IModeler {
   private async processReverseLinkDefinitionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, rel, link, otherType] = match;
+    const [, type, rel, link, otherType] = match;
     const processedRel = rel.replace(/\s+/g, " ").trim();
     switch (processedRel) {
       case "is exactly one":
@@ -242,8 +241,7 @@ export class Modeler implements IModeler {
   private async processToggleDefinitionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, toggle] = match;
+    const [, type, toggle] = match;
     await this._typeModel.addType(type);
     await this._linkModel.addToggleLink(type, toggle);
   }
@@ -251,8 +249,7 @@ export class Modeler implements IModeler {
   private async processSuperTypeDefinitionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, superType] = match;
+    const [, type, superType] = match;
     const typeObj = await this._typeModel.addType(type);
     const superTypeObj = await this._typeModel.addType(superType);
     const newTypeObj = new TlmType(
@@ -268,8 +265,7 @@ export class Modeler implements IModeler {
   private async processTypeDescriptionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, description] = match;
+    const [, type, description] = match;
     const typeObj = await this._typeModel.addType(type);
     const newTypeObj = new TlmType(
       typeObj.oid,
@@ -285,8 +281,7 @@ export class Modeler implements IModeler {
   private async processTypePluralNameStatement(
     match: RegExpMatchArray
   ): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, plural] = match;
+    const [, type, plural] = match;
     console.log(`TODO: Add that the plural of ${type} is ${plural}`);
   }
 }

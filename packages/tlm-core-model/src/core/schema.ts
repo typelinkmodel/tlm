@@ -95,6 +95,9 @@ export class TlmLink extends TlmObject {
   private readonly _isPrimaryId: boolean;
   private readonly _isSingularTo: boolean;
   private readonly _isMandatoryTo: boolean;
+  private readonly _isValue: boolean;
+  private readonly _isToggle: boolean;
+  private readonly _description?: string;
 
   constructor(
     oid: number,
@@ -107,7 +110,10 @@ export class TlmLink extends TlmObject {
     isMandatory = false,
     isPrimaryId = false,
     isSingularTo = false,
-    isMandatoryTo = false
+    isMandatoryTo = false,
+    isValue = false,
+    isToggle = false,
+    description: string | undefined = undefined
   ) {
     super(oid, TlmLink.LINK_TYPE);
     if (isPrimaryId) {
@@ -116,6 +122,17 @@ export class TlmLink extends TlmObject {
       }
       if (!isMandatory) {
         throw new Error("Primary ID links must be mandatory");
+      }
+    }
+    if (isToggle) {
+      if (!isSingular) {
+        throw new Error("Toggle links must be singular");
+      }
+      if (!isMandatory) {
+        throw new Error("Toggle links must be mandatory");
+      }
+      if (!isValue) {
+        throw new Error("Toggle links must be to a value");
       }
     }
     this._fromType = fromType;
@@ -128,6 +145,9 @@ export class TlmLink extends TlmObject {
     this._isPrimaryId = isPrimaryId;
     this._isSingularTo = isSingularTo;
     this._isMandatoryTo = isMandatoryTo;
+    this._isValue = isValue;
+    this._isToggle = isToggle;
+    this._description = description;
   }
 
   get fromType(): number {
@@ -168,5 +188,17 @@ export class TlmLink extends TlmObject {
 
   get isMandatoryTo(): boolean {
     return this._isMandatoryTo;
+  }
+
+  get isValue(): boolean {
+    return this._isValue;
+  }
+
+  get isToggle(): boolean {
+    return this._isToggle;
+  }
+
+  get description(): string | undefined {
+    return this._description;
   }
 }
