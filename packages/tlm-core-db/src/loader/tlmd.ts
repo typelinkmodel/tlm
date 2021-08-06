@@ -62,7 +62,6 @@ export class TlmdStreamHandler {
     }
   }
 
-  // noinspection JSUnusedLocalSymbols
   public async handleNextLine(lineno: number, line: string): Promise<void> {
     this.debug(`${String(lineno).padStart(4)}: ${line}`);
   }
@@ -282,7 +281,7 @@ export class TlmdFileLoader {
       case STATE.DATA_MULTI_FACT:
         match = this.line.match(/^\s+(.*)$/i);
         if (match) {
-          await this.processMultiFact(match);
+          await this.processMultiFact();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA_MULTI_FACT;
         } else if (this.line.match(/^The\s/i)) {
@@ -308,8 +307,7 @@ export class TlmdFileLoader {
       this.err("missing TLMD type!");
       return;
     }
-    // noinspection JSUnusedLocalSymbols
-    const [_, tlmdTypeString, titleString] = match;
+    const [, tlmdTypeString, titleString] = match;
 
     let tlmdType;
     if (tlmdTypeString.match(/^Model$/i)) {
@@ -355,8 +353,7 @@ export class TlmdFileLoader {
         this.err("should be example with validity!");
         return;
       }
-      // noinspection JSUnusedLocalSymbols
-      const [_, validColumn, fromLinkPath, toLinkPath] = match;
+      const [, validColumn, fromLinkPath, toLinkPath] = match;
       const valid = !validColumn;
       try {
         await this._handler.handleExample(
@@ -373,8 +370,7 @@ export class TlmdFileLoader {
         this.err("should be example without validity!");
         return;
       }
-      // noinspection JSUnusedLocalSymbols
-      const [_, fromLinkPath, toLinkPath] = match;
+      const [, fromLinkPath, toLinkPath] = match;
       try {
         await this._handler.handleExample(
           true,
@@ -395,8 +391,7 @@ export class TlmdFileLoader {
       this.err("should be valid object!");
       return;
     }
-    // noinspection JSUnusedLocalSymbols
-    const [_, type, id] = match;
+    const [, type, id] = match;
     try {
       await this._handler.handleObject(type.trim(), id.trim());
     } catch (e) {
@@ -411,8 +406,7 @@ export class TlmdFileLoader {
       this.err("should be valid link fact!");
       return;
     }
-    // noinspection JSUnusedLocalSymbols
-    const [_, link, value] = match;
+    const [, link, value] = match;
     try {
       await this._handler.handleFact(link.trim(), deserialize(value.trim()));
     } catch (e) {
@@ -427,8 +421,7 @@ export class TlmdFileLoader {
       this.err("should be valid toggle fact!");
       return;
     }
-    // noinspection JSUnusedLocalSymbols
-    const [_, link] = match;
+    const [, link] = match;
     try {
       await this._handler.handleToggle(link.trim());
     } catch (e) {
@@ -443,8 +436,7 @@ export class TlmdFileLoader {
       this.err("should be valid multi value fact!");
       return;
     }
-    // noinspection JSUnusedLocalSymbols
-    const [_, link] = match;
+    const [, link] = match;
     try {
       await this._handler.handleMultiFactStart(link.trim());
     } catch (e) {
@@ -452,8 +444,7 @@ export class TlmdFileLoader {
     }
   }
 
-  // noinspection JSUnusedLocalSymbols
-  private async processMultiFact(match: RegExpMatchArray): Promise<void> {
+  private async processMultiFact(): Promise<void> {
     const value = this.line.trim();
     try {
       await this._handler.handleMultiFact(deserialize(value));
@@ -463,8 +454,7 @@ export class TlmdFileLoader {
   }
 
   private async processNamespaceLine(match: RegExpMatchArray): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, prefix, uri] = match;
+    const [, prefix, uri] = match;
     try {
       await this._handler.handleNamespace(prefix, uri);
     } catch (e) {
@@ -473,8 +463,7 @@ export class TlmdFileLoader {
   }
 
   private async processCommentLine(match: RegExpMatchArray): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, comment] = match;
+    const [, comment] = match;
     const trimmedComment = comment.trim();
     try {
       await this._handler.handleComment(trimmedComment);
@@ -484,8 +473,7 @@ export class TlmdFileLoader {
   }
 
   private async processSectionLine(match: RegExpMatchArray): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, section] = match;
+    const [, section] = match;
     const trimmedSection = section.trim();
     try {
       await this._handler.handleSection(trimmedSection);
@@ -495,8 +483,7 @@ export class TlmdFileLoader {
   }
 
   private async processStatement(match: RegExpMatchArray): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, statement] = match;
+    const [, statement] = match;
     const trimmedStatement = statement.trim();
     try {
       await this._handler.handleStatement(trimmedStatement);
@@ -506,8 +493,7 @@ export class TlmdFileLoader {
   }
 
   private async processStartExample(match: RegExpMatchArray): Promise<void> {
-    // noinspection JSUnusedLocalSymbols
-    const [_, validColumn, fromLinkPath, toLinkPath] = match;
+    const [, validColumn, fromLinkPath, toLinkPath] = match;
     this.exampleFirstColumnIsValidity = !!validColumn;
     try {
       await this._handler.handleStartExample(
