@@ -1,3 +1,3 @@
 export interface ILoader {
-    loadFile(filename: string): Promise<void>;
+  loadFile(filename: string): Promise<void>;
 }

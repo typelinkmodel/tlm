@@ -1,5 +1,5 @@
 BEGIN;
-SELECT plan( 7 );
+SELECT plan(7);
 
 -- link tests for toggles
 SELECT throws_ok($$ CALL tlm__insert_link(
@@ -108,5 +108,6 @@ SELECT throws_ok($$ CALL tlm__insert_link(
                  NULL,
                  'Should get constraint violation for primary id that is not mandatory');
 
-SELECT * FROM finish();
+SELECT *
+FROM finish();
 ROLLBACK;

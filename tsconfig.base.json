@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-        "declaration": true,
-        "strict": true,
-        "target": "ES2018",
-        "lib": ["ES2018", "ES2018.Intl", "ES2018.Promise", "ES2018.RegExp"],
-        "module": "commonjs"
-    },
-    "compileOnSave": true
+  "compilerOptions": {
+    "declaration": true,
+    "strict": true,
+    "target": "ES2018",
+    "lib": ["ES2018", "ES2018.Intl", "ES2018.Promise", "ES2018.RegExp"],
+    "module": "commonjs"
+  },
+  "compileOnSave": true
 }

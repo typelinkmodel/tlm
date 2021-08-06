@@ -1,77 +1,68 @@
 {
-    "type": "tlm:Data",
-    "namespaces": {
-        "hr":                "https://type.link.model.tools/ns/tlm-sample-hr/"
+  "type": "tlm:Data",
+  "namespaces": {
+    "hr": "https://type.link.model.tools/ns/tlm-sample-hr/"
+  },
+  "objects": [
+    {
+      "id": "mailto:leo@example.com",
+      "type": "hr:Person",
+      "name": "Leo Simons",
+      "department": "mailto:engineering@example.com",
+      "team": [
+        "mailto:content-management-eng@example.com",
+        "mailto:transcoding-eng@example.com",
+        "mailto:eng-management@example.com"
+      ]
     },
-    "objects": [
-        {
-            "id":            "mailto:leo@example.com",
-            "type":          "hr:Person",
-            "name":          "Leo Simons",
-            "department":    "mailto:engineering@example.com",
-            "team": [
-                             "mailto:content-management-eng@example.com",
-                             "mailto:transcoding-eng@example.com",
-                             "mailto:eng-management@example.com"
-            ]
-        },
-        {
-            "id":            "mailto:simon@example.com",
-            "type":          "hr:Person",
-            "name":          "Simon Lucy",
-            "coachedBy":     "mailto:dirk@example.com",
-            "coaches":       true,
-            "department":    "mailto:engineering@example.com",
-            "team": [
-                             "mailto:content-management-eng@example.com",
-                             "mailto:eng-management@example.com"
-            ]
-        },
-        {
-            "id":            "mailto:dirk@example.com",
-            "type":          "hr:Person",
-            "name":          "Dirk van Gulik",
-            "coaches":       true,
-            "department":    "mailto:engineering@example.com",
-            "team": [
-                             "mailto:eng-management@example.com"
-            ]
-        },
-        {
-            "id":            "mailto:engineering@example.com",
-            "type":          "hr:Department",
-            "name":          "Engineering",
-            "manager":       "mailto:dirk@example.com"
-        },
-        {
-            "id":            "mailto:hr@example.com",
-            "type":          "hr:Department",
-            "name":          "HR"
-        },
-        {
-            "id":            "mailto:content-management-eng@example.com",
-            "type":          "hr:Team",
-            "name":          "Content Management Engineering",
-            "lead": [
-                             "mailto:leo@example.com"
-            ]
-        },
-        {
-            "id":            "mailto:transcoding-eng@example.com",
-            "type":          "hr:Team",
-            "name":          "Transcoding Engineering",
-            "lead": [
-                             "mailto:leo@example.com"
-            ]
-        },
-        {
-            "id":            "mailto:eng-management@example.com",
-            "type":          "hr:Team",
-            "name":          "Engineering Management",
-            "lead": [
-                             "mailto:dirk@example.com",
-                             "mailto:simon@example.com"
-            ]
-        }
-    ]
+    {
+      "id": "mailto:simon@example.com",
+      "type": "hr:Person",
+      "name": "Simon Lucy",
+      "coachedBy": "mailto:dirk@example.com",
+      "coaches": true,
+      "department": "mailto:engineering@example.com",
+      "team": [
+        "mailto:content-management-eng@example.com",
+        "mailto:eng-management@example.com"
+      ]
+    },
+    {
+      "id": "mailto:dirk@example.com",
+      "type": "hr:Person",
+      "name": "Dirk van Gulik",
+      "coaches": true,
+      "department": "mailto:engineering@example.com",
+      "team": ["mailto:eng-management@example.com"]
+    },
+    {
+      "id": "mailto:engineering@example.com",
+      "type": "hr:Department",
+      "name": "Engineering",
+      "manager": "mailto:dirk@example.com"
+    },
+    {
+      "id": "mailto:hr@example.com",
+      "type": "hr:Department",
+      "name": "HR"
+    },
+    {
+      "id": "mailto:content-management-eng@example.com",
+      "type": "hr:Team",
+      "name": "Content Management Engineering",
+      "lead": ["mailto:leo@example.com"]
+    },
+    {
+      "id": "mailto:transcoding-eng@example.com",
+      "type": "hr:Team",
+      "name": "Transcoding Engineering",
+      "lead": ["mailto:leo@example.com"]
+    },
+    {
+      "id": "mailto:eng-management@example.com",
+      "type": "hr:Team",
+      "name": "Engineering Management",
+      "lead": ["mailto:dirk@example.com", "mailto:simon@example.com"]
+    }
+  ]
 }

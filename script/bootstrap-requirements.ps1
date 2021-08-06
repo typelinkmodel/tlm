@@ -1,26 +1,26 @@
 $ErrorActionPreference = "Stop"
-$ScriptPath            = $MyInvocation.MyCommand.Path
-$ScriptDir             = Split-Path $ScriptPath
-$CommonScript          = Join-Path $ScriptDir "common.ps1"
+$ScriptPath = $MyInvocation.MyCommand.Path
+$ScriptDir = Split-Path $ScriptPath
+$CommonScript = Join-Path $ScriptDir "common.ps1"
 . $CommonScript
 
 $script:MissingDependency = $False
 
-function Test-Command-Available ([string]$Command)
+function Test-Command-Available([string]$Command)
 {
-    if(!(Get-Command $Command))
-    {
-        Write-ErrorNotice "Missing dependency ${Command}"
-        $script:MissingDependency = $True
-    }
+  if (!(Get-Command $Command))
+  {
+    Write-ErrorNotice "Missing dependency ${Command}"
+    $script:MissingDependency = $True
+  }
 }
 
-function Install-Node-Library ([string]$Library, [string]$Command)
+function Install-Node-Library([string]$Library, [string]$Command)
 {
-    if(!(Get-Command $Command))
-    {
-        npm install --no-save $Library
-    }
+  if (!(Get-Command $Command))
+  {
+    npm install --no-save $Library
+  }
 }
 
 Write-Notice "Checking requirements are met…"
@@ -37,11 +37,11 @@ Install-Module "PSScriptAnalyzer" -Repository "PSGallery" -Force
 
 if ($script:MissingDependency)
 {
-    throw "Missing dependency!"
+  throw "Missing dependency!"
 }
 else
 {
-    Write-Notice "…requirements ok"
+  Write-Notice "…requirements ok"
 }
 
 $ErrorActionPreference = "Stop"
