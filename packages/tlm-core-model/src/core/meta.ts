@@ -141,7 +141,6 @@ export function parseTypeData(data: any): TlmType[] {
 export function parseLinkData(data: any): TlmLink[] {
   const result = [];
   for (const row of data) {
-    // noinspection JSUnusedLocalSymbols
     const {
       oid,
       from_type,
@@ -170,7 +169,10 @@ export function parseLinkData(data: any): TlmLink[] {
         is_mandatory_from,
         is_primary_id,
         is_singular_to,
-        is_mandatory_to
+        is_mandatory_to,
+        is_value,
+        is_toggle,
+        description
       )
     );
   }

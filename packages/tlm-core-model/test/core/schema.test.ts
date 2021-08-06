@@ -269,3 +269,138 @@ test("TlmLink: that is mandatory to the target", async () => {
   );
   expect(l.isMandatoryTo).toBe(true);
 });
+
+test("TlmLink: that is a toggle", async () => {
+  let l = new TlmLink(
+    101,
+    100,
+    16, // string
+    "name"
+  );
+  expect(l.isToggle).toBe(false);
+
+  l = new TlmLink(
+    101,
+    100,
+    16,
+    "name",
+    undefined,
+    undefined,
+    true,
+    true,
+    false,
+    false,
+    false,
+    true,
+    true
+  );
+  expect(l.isToggle).toBe(true);
+
+  expect(() => {
+    return new TlmLink(
+      101,
+      100,
+      16,
+      "name",
+      undefined,
+      undefined,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true
+    );
+  }).toThrowError(/must be singular/);
+
+  expect(() => {
+    return new TlmLink(
+      101,
+      100,
+      16,
+      "name",
+      undefined,
+      undefined,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    );
+  }).toThrowError(/must be mandatory/);
+
+  expect(() => {
+    return new TlmLink(
+      101,
+      100,
+      16,
+      "name",
+      undefined,
+      undefined,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      true
+    );
+  }).toThrowError(/must be to a value/);
+});
+
+test("TlmLink: that is a value", async () => {
+  let l = new TlmLink(
+    101,
+    100,
+    16, // string
+    "name"
+  );
+  expect(l.isValue).toBe(false);
+
+  l = new TlmLink(
+    101,
+    100,
+    16,
+    "name",
+    undefined,
+    undefined,
+    true,
+    true,
+    false,
+    false,
+    false,
+    true
+  );
+  expect(l.isValue).toBe(true);
+});
+
+test("TlmLink: that has a description", async () => {
+  let l = new TlmLink(
+    101,
+    100,
+    16, // string
+    "name"
+  );
+  expect(l.description).toBeUndefined();
+
+  l = new TlmLink(
+    101,
+    100,
+    16,
+    "name",
+    undefined,
+    undefined,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    "description"
+  );
+  expect(l.description).toBe("description");
+});
