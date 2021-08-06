@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
@@ -14,5 +15,12 @@ jobs:
     steps:
       - uses: actions/setup-node@v2
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of sonar analysis
       - run: ./script/cibuild.ps1
         shell: pwsh
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
