@@ -121,13 +121,7 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
 });
 
 test("addStatement: basic usage with 'has exactly one'", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
     "A Person has exactly one name which must be a string."
@@ -184,13 +178,8 @@ test("addStatement: can only process certain statements", async () => {
 });
 
 test("addStatement: types are namespaced", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
+
   await modeler.addStatement(
     "A Person has exactly one name which must be a string."
   );
@@ -207,13 +196,8 @@ test("addStatement: types are namespaced", async () => {
 });
 
 test("addStatement: statements can be repeated", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
+
   await modeler.addStatement(
     "A Person has exactly one name which must be a string."
   );
@@ -240,26 +224,15 @@ test("addStatement: active namespace is needed", async () => {
 });
 
 test("addStatement: 'A' and 'An' are both ok", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
+
   await modeler.addStatement(
     "An Individual has exactly one name which must be an integer."
   );
 });
 
 test("addStatement: identifier definitions", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
     "A Person is identified by id which must be a URI."
@@ -270,13 +243,7 @@ test("addStatement: identifier definitions", async () => {
 });
 
 test("addStatement: has at most one", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
     "A Team has at most one name which must be a string."
@@ -289,13 +256,7 @@ test("addStatement: has at most one", async () => {
 });
 
 test("addStatement: has at least one", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
     "A Team has at least one lead which must be a Person."
@@ -308,13 +269,7 @@ test("addStatement: has at least one", async () => {
 });
 
 test("addStatement: can have some", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler = await newHrModeler();
 
   await modeler.addStatement(
     "A Person can have some team each of which must be a Team."
@@ -343,13 +298,7 @@ test("addStatement: is a kind of", async () => {
 });
 
 test("addStatement: is exactly one for", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "media",
-    "https://type.link.model.tools/ns/tlm-sample-media/"
-  );
-  modeler.activeNamespace = "media";
+  const modeler = await newMediaModeler();
 
   await modeler.addStatement(
     "An Album has at least one track which must be a Track."
@@ -364,13 +313,7 @@ test("addStatement: is exactly one for", async () => {
 });
 
 test("addStatement: must be for", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "media",
-    "https://type.link.model.tools/ns/tlm-sample-media/"
-  );
-  modeler.activeNamespace = "media";
+  const modeler: Modeler = await newMediaModeler();
 
   await modeler.addStatement(
     "A Song can have some rendition which must be a Track."
@@ -384,13 +327,7 @@ test("addStatement: must be for", async () => {
 });
 
 test("addStatement: type description", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "media",
-    "https://type.link.model.tools/ns/tlm-sample-media/"
-  );
-  modeler.activeNamespace = "media";
+  const modeler: Modeler = await newMediaModeler();
 
   await modeler.addStatement('An Album is a "collection of songs".');
   const type = modeler.types.media.Album;
@@ -398,13 +335,7 @@ test("addStatement: type description", async () => {
 });
 
 test("addStatement: support extra whitespace", async () => {
-  const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  await modeler.addNamespace(
-    "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
-  );
-  modeler.activeNamespace = "hr";
+  const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(`
     A  Person  has
@@ -421,6 +352,40 @@ test("addStatement: support extra whitespace", async () => {
   expect(modeler.links.hr.Person.name.toType).toBe(modeler.types.xs.string.oid);
 });
 
+test("addStatement: has toggle", async () => {
+  const modeler: Modeler = await newHrModeler();
+
+  await modeler.addStatement("A Person has toggle coaches.");
+  const link = modeler.links.hr.Person.coaches;
+  expect(link).toBeDefined();
+  expect(link.isMandatory).toBe(true);
+  expect(link.isSingular).toBe(true);
+  expect(link.isPrimaryId).toBe(false);
+  expect(link.isValue).toBe(true);
+  expect(link.isToggle).toBe(true);
+});
+
+test("addStatement: plural", async () => {
+  const modeler: Modeler = await newHrModeler();
+
+  await modeler.addStatement("A plural of Person is People.");
+  // todo plural implementation
+});
+
+test("getTypeByName: basic usage", async () => {
+  let modeler: Modeler = await newHrModeler();
+
+  expect(modeler.getTypeByName("Person")).toBeUndefined();
+  await modeler.addStatement("A Person is a being regarded as an individual.");
+  expect(modeler.getTypeByName("Person")).toBeDefined();
+  expect(modeler.getTypeByName("hr:Person")).toBeDefined();
+
+  // test case of no active NS
+  modeler = new Modeler();
+  modeler.initialize();
+  expect(modeler.getTypeByName("Person")).toBeUndefined();
+});
+
 test("getValueTypeForLink: basic usage", async () => {
   const modeler: Modeler = new Modeler();
   modeler.initialize();
@@ -432,14 +397,14 @@ test("getValueTypeForLink: basic usage", async () => {
 test("processLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
   try {
-    await (modeler as any).processLinkDefinitionStatement({
-      groups: {
-        fromType: "Person",
-        rel: "flub-boxes",
-        link: "things",
-        othertype: "Team",
-      },
-    });
+    let match: RegExpMatchArray = [];
+    match.groups = {
+      fromType: "Person",
+      rel: "flub-boxes",
+      link: "things",
+      othertype: "Team",
+    };
+    await (modeler as any).processLinkDefinitionStatement(match);
     fail();
   } catch (e) {
     expect(e.message).toMatch(/Cannot process statement relationship/);
@@ -471,3 +436,22 @@ test("constructor: inject dependencies", async () => {
     new Modeler(oidGenerator, namespaceModel, typeModel, linkModel)
   ).toBeDefined();
 });
+
+async function newHrModeler() {
+  return newModeler("hr", "https://type.link.model.tools/ns/tlm-sample-hr/");
+}
+
+async function newMediaModeler() {
+  return newModeler(
+    "media",
+    "https://type.link.model.tools/ns/tlm-sample-media/"
+  );
+}
+
+async function newModeler(prefix: string, uri: string) {
+  const modeler: Modeler = new Modeler();
+  modeler.initialize();
+  await modeler.addNamespace(prefix, uri);
+  modeler.activeNamespace = prefix;
+  return modeler;
+}

@@ -87,7 +87,12 @@ export class LinkModel {
     toName?: string,
     isSingular = false,
     isMandatory = false,
-    isPrimaryId = false
+    isPrimaryId = false,
+    isSingularTo = false,
+    isMandatoryTo = false,
+    isValue = false,
+    isToggle = false,
+    description: string | undefined = undefined
   ): Promise<TlmLink> {
     const fromTypeObj: TlmType = await this._typeModel.addType(fromType);
     const toTypeObj: TlmType = await this._typeModel.addType(toType);
@@ -106,7 +111,12 @@ export class LinkModel {
       toName,
       isSingular,
       isMandatory,
-      isPrimaryId
+      isPrimaryId,
+      isSingularTo,
+      isMandatoryTo,
+      isValue,
+      isToggle,
+      description
     );
     this._links.push(newLink);
     this._linkMapCache = undefined;
@@ -149,7 +159,6 @@ export class LinkModel {
   }
 
   public async addToggleLink(fromType: string, name: string): Promise<TlmLink> {
-    // todo should toggle be tracked as being a toggle?
     return this.addLink(
       fromType,
       "boolean",
@@ -157,8 +166,12 @@ export class LinkModel {
       undefined,
       undefined,
       true,
+      true,
       false,
-      false
+      false,
+      false,
+      true,
+      true
     );
   }
 }
