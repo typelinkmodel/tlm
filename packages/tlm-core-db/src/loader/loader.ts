@@ -27,9 +27,9 @@ export class Loader implements ILoader {
 
   public async loadFile(filename: string): Promise<void> {
     if (filename.endsWith(".yml") || filename.endsWith(".yaml")) {
-      return await this._yamlLoader.loadFile(filename);
+      return this._yamlLoader.loadFile(filename);
     } else if (filename.endsWith(".tlmd")) {
-      return await this._tlmdLoader.loadFile(filename);
+      return this._tlmdLoader.loadFile(filename);
     } else {
       throw new Error(`Cannot recognize file type of ${filename}`);
     }
