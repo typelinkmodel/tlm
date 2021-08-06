@@ -1,6 +1,6 @@
 import { IModeler, Modeler } from "@typelinkmodel/tlm-core-model";
 import { readFileSync } from "fs";
-import { safeLoad } from "js-yaml";
+import { load } from "js-yaml";
 import { ILoader, IReader, ISearcher } from "../api";
 import { Reader } from "../reader";
 import { Searcher } from "../searcher";
@@ -22,7 +22,7 @@ export class YamlLoader implements ILoader {
 
   public async loadFile(filename: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-assignment
-    const doc = safeLoad(readFileSync(filename, "utf8")) as any;
+    const doc = load(readFileSync(filename, "utf8")) as any;
     // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     if (!doc.hasOwnProperty("tlm:Facts")) {
       throw new Error(`Expect yaml file to start with tlm:Facts:`);
