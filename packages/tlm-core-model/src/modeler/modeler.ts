@@ -13,12 +13,12 @@ export class Modeler implements IModeler {
   private _initialized = false;
 
   private readonly _statementProcessors = [
-    /\s*An?\s+(?<fromType>[A-Za-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[A-Za-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<otherType>[A-Za-z0-9_-]+)\s*(?:,\s*the\s+(?<otherName>[A-Za-z0-9_-]+)\s*,\s*)?\.?\s*/i,
+    /\s*An?\s+(?<fromType>[A-Za-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[A-Za-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[A-Za-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[A-Za-z0-9_-]+)\s*,\s*)?\.?\s*/i,
     async (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
       this.processReverseLinkDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+(?:has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([A-Za-z0-9_-]+)\s+has\s+toggle\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
@@ -131,71 +131,61 @@ export class Modeler implements IModeler {
     const fromType = groups.fromType;
     const fromName = groups.fromName;
     const rel = groups.rel;
-    const link = groups.link;
-    const otherType = groups.otherType;
-    const otherName = groups.otherName;
+    const name = groups.link;
+    const toType = groups.toType;
+    const toName = groups.toName;
 
     const processedRel = rel.replace(/\s+/g, " ").trim();
     switch (processedRel) {
       case "is identified by":
-        await this._linkModel.addLink(
+        await this._linkModel.addLink({
           fromType,
-          otherType,
-          link,
+          toType,
+          name,
           fromName,
-          otherName,
-          true,
-          true,
-          true
-        );
+          toName,
+          isPrimaryId: true,
+        });
         break;
       case "has exactly one":
-        await this._linkModel.addLink(
+        await this._linkModel.addLink({
           fromType,
-          otherType,
-          link,
+          toType,
+          name,
           fromName,
-          otherName,
-          true,
-          true,
-          false
-        );
+          toName,
+          isSingular: true,
+          isMandatory: true,
+        });
         break;
       case "has at most one":
-        await this._linkModel.addLink(
+        await this._linkModel.addLink({
           fromType,
-          otherType,
-          link,
+          toType,
+          name,
           fromName,
-          otherName,
-          true,
-          false,
-          false
-        );
+          toName,
+          isSingular: true,
+        });
         break;
       case "has at least one":
-        await this._linkModel.addLink(
+        await this._linkModel.addLink({
           fromType,
-          otherType,
-          link,
+          toType,
+          name,
           fromName,
-          otherName,
-          false,
-          true,
-          false
-        );
+          toName,
+          isMandatory: true,
+        });
         break;
       case "can have some":
-        await this._linkModel.addLink(
+        await this._linkModel.addLink({
           fromType,
-          otherType,
-          link,
+          toType,
+          name,
           fromName,
-          otherName,
-          false,
-          false,
-          false
-        );
+          toName,
+        });
         break;
       default:
         throw new Error(
@@ -252,7 +242,8 @@ export class Modeler implements IModeler {
       typeObj.namespace,
       typeObj.name,
       superTypeObj.oid,
-      typeObj.description
+      typeObj.description,
+      typeObj.plural
     );
     await this._typeModel.replaceType(newTypeObj);
   }
@@ -267,7 +258,8 @@ export class Modeler implements IModeler {
       typeObj.namespace,
       typeObj.name,
       typeObj.oid,
-      description
+      description,
+      typeObj.plural
     );
     await this._typeModel.replaceType(newTypeObj);
   }
@@ -277,6 +269,15 @@ export class Modeler implements IModeler {
     match: RegExpMatchArray
   ): Promise<void> {
     const [, type, plural] = match;
-    console.log(`TODO: Add that the plural of ${type} is ${plural}`);
+    const typeObj = await this._typeModel.addType(type);
+    const newTypeObj = new TlmType(
+      typeObj.oid,
+      typeObj.namespace,
+      typeObj.name,
+      typeObj.oid,
+      typeObj.description,
+      plural
+    );
+    await this._typeModel.replaceType(newTypeObj);
   }
 }

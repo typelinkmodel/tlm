@@ -24,22 +24,8 @@ test("addReverseMandatoryLink(): reject link rewiring", async () => {
   await typeModel.addType("Foo");
   await typeModel.addType("Bar");
   await typeModel.addType("Bar2");
-  await linkModel.addLink("Foo", "Bar", "bar");
+  await linkModel.addLink({ fromType: "Foo", toType: "Bar", name: "bar" });
   await expect(
     (() => linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"))()
   ).rejects.toThrowError(/Existing relationship/);
 });
-
-// test("addToggleLink()", async () => {
-//   const oidGenerator = new OidGenerator();
-//   const namespaceModel = new NamespaceModel(oidGenerator);
-//   const typeModel = new TypeModel(oidGenerator, namespaceModel);
-//   const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
-//   linkModel.initialize();
-//
-//   await namespaceModel.addNamespace("foo", "example://foo");
-//   namespaceModel.activeNamespacePrefix = "foo";
-//   await typeModel.addType("Foo");
-//
-//   linkModel.addToggleLink()
-// });

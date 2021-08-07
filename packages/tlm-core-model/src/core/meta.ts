@@ -143,38 +143,37 @@ export function parseLinkData(data: any): TlmLink[] {
   for (const row of data) {
     const {
       oid,
-      from_type,
-      to_type,
+      from_type: fromType,
+      to_type: toType,
       name,
-      from_name,
-      to_name,
-      is_singular_from,
-      is_singular_to,
-      is_mandatory_from,
-      is_mandatory_to,
-      is_toggle,
-      is_value,
-      is_primary_id,
+      from_name: fromName,
+      to_name: toName,
+      is_singular_from: isSingular,
+      is_singular_to: isSingularTo,
+      is_mandatory_from: isMandatory,
+      is_mandatory_to: isMandatoryTo,
+      is_toggle: isToggle,
+      is_value: isValue,
+      is_primary_id: isPrimaryId,
       description,
     } = row;
-    result.push(
-      new TlmLink(
-        oid,
-        from_type,
-        to_type,
-        name,
-        from_name,
-        to_name,
-        is_singular_from,
-        is_mandatory_from,
-        is_primary_id,
-        is_singular_to,
-        is_mandatory_to,
-        is_value,
-        is_toggle,
-        description
-      )
-    );
+    const link = new TlmLink({
+      oid,
+      fromType,
+      toType,
+      name,
+      fromName,
+      toName,
+      isSingular,
+      isSingularTo,
+      isMandatory,
+      isMandatoryTo,
+      isToggle,
+      isValue,
+      isPrimaryId,
+      description,
+    });
+    result.push(link);
   }
   return result;
 }

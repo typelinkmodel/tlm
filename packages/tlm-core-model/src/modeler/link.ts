@@ -80,44 +80,29 @@ export class LinkModel {
   }
 
   public async addLink(
-    fromType: string,
-    toType: string,
-    name: string,
-    fromName?: string,
-    toName?: string,
-    isSingular = false,
-    isMandatory = false,
-    isPrimaryId = false,
-    isSingularTo = false,
-    isMandatoryTo = false,
-    isValue = false,
-    isToggle = false,
-    description: string | undefined = undefined
+    o: Pick<
+      Partial<TlmLink>,
+      Exclude<keyof TlmLink, "oid" | "fromType" | "toType" | "name">
+    > & {
+      fromType: string;
+      toType: string;
+      name: string;
+    }
   ): Promise<TlmLink> {
-    const fromTypeObj: TlmType = await this._typeModel.addType(fromType);
-    const toTypeObj: TlmType = await this._typeModel.addType(toType);
+    const fromTypeObj: TlmType = await this._typeModel.addType(o.fromType);
+    const toTypeObj: TlmType = await this._typeModel.addType(o.toType);
 
-    const existingLink = this.findLinkByNameOptional(fromTypeObj.oid, name);
+    const existingLink = this.findLinkByNameOptional(fromTypeObj.oid, o.name);
     if (existingLink) {
       return existingLink;
     }
 
-    const newLink = new TlmLink(
-      await this._oidGenerator.nextOid(),
-      fromTypeObj.oid,
-      toTypeObj.oid,
-      name,
-      fromName,
-      toName,
-      isSingular,
-      isMandatory,
-      isPrimaryId,
-      isSingularTo,
-      isMandatoryTo,
-      isValue,
-      isToggle,
-      description
-    );
+    const newLink = new TlmLink({
+      ...o,
+      oid: await this._oidGenerator.nextOid(),
+      fromType: fromTypeObj.oid,
+      toType: toTypeObj.oid,
+    });
     this._links.push(newLink);
     this._linkMapCache = undefined;
     return newLink;
@@ -139,19 +124,22 @@ export class LinkModel {
       );
     }
 
-    const newLink = new TlmLink(
-      existingLink.oid,
-      existingLink.fromType,
-      existingLink.toType,
-      existingLink.name,
-      existingLink.fromName,
-      existingLink.toName,
-      existingLink.isSingular,
-      existingLink.isMandatory,
-      existingLink.isPrimaryId,
+    const newLink = new TlmLink({
+      oid: existingLink.oid,
+      fromType: existingLink.fromType,
+      toType: existingLink.toType,
+      name: existingLink.name,
+      fromName: existingLink.fromName,
+      toName: existingLink.toName,
+      isSingular: existingLink.isSingular,
+      isMandatory: existingLink.isMandatory,
+      isPrimaryId: existingLink.isPrimaryId,
       isSingularTo,
-      true
-    );
+      isMandatoryTo: true,
+      isValue: existingLink.isValue,
+      isToggle: existingLink.isToggle,
+      description: existingLink.description,
+    });
     const i = this._links.indexOf(existingLink);
     this._links.splice(i, 1, newLink);
     this._linkMapCache = undefined;
@@ -159,19 +147,11 @@ export class LinkModel {
   }
 
   public async addToggleLink(fromType: string, name: string): Promise<TlmLink> {
-    return this.addLink(
+    return this.addLink({
       fromType,
-      "boolean",
+      toType: "boolean",
       name,
-      undefined,
-      undefined,
-      true,
-      true,
-      false,
-      false,
-      false,
-      true,
-      true
-    );
+      isToggle: true,
+    });
   }
 }
