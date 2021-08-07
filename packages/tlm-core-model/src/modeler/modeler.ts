@@ -242,7 +242,8 @@ export class Modeler implements IModeler {
       typeObj.namespace,
       typeObj.name,
       superTypeObj.oid,
-      typeObj.description
+      typeObj.description,
+      typeObj.plural
     );
     await this._typeModel.replaceType(newTypeObj);
   }
@@ -257,7 +258,8 @@ export class Modeler implements IModeler {
       typeObj.namespace,
       typeObj.name,
       typeObj.oid,
-      description
+      description,
+      typeObj.plural
     );
     await this._typeModel.replaceType(newTypeObj);
   }
@@ -267,6 +269,15 @@ export class Modeler implements IModeler {
     match: RegExpMatchArray
   ): Promise<void> {
     const [, type, plural] = match;
-    console.log(`TODO: Add that the plural of ${type} is ${plural}`);
+    const typeObj = await this._typeModel.addType(type);
+    const newTypeObj = new TlmType(
+      typeObj.oid,
+      typeObj.namespace,
+      typeObj.name,
+      typeObj.oid,
+      typeObj.description,
+      plural
+    );
+    await this._typeModel.replaceType(newTypeObj);
   }
 }

@@ -55,6 +55,7 @@ export class TlmType extends TlmObject {
   private readonly _name: string;
   private readonly _superType: number;
   private readonly _description?: string;
+  private readonly _plural?: string;
 
   get namespace(): number {
     return this._namespace;
@@ -72,18 +73,24 @@ export class TlmType extends TlmObject {
     return this._description;
   }
 
+  get plural(): string | undefined {
+    return this._plural;
+  }
+
   constructor(
     oid: number,
     namespace: number,
     name: string,
     superType: number = TlmType.TYPE_TYPE,
-    description?: string
+    description?: string,
+    plural?: string
   ) {
     super(oid, TlmType.TYPE_TYPE);
     this._namespace = namespace;
     this._name = name;
     this._superType = superType;
     this._description = description;
+    this._plural = plural;
   }
 }
 

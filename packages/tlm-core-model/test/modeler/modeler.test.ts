@@ -376,7 +376,9 @@ test("addStatement: plural", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement("A plural of Person is People.");
-  // todo plural implementation
+  const type = modeler.types.hr.Person;
+  expect(type).toBeDefined();
+  expect(type.plural).toBe("People");
 });
 
 test("getTypeByName: basic usage", async () => {

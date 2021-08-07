@@ -21,13 +21,21 @@ test("TlmNamespace", () => {
 });
 
 test("TlmType", () => {
-  const t = new TlmType(100, 99, "SampleType", TlmType.TYPE_TYPE, "Test type");
+  const t = new TlmType(
+    100,
+    99,
+    "SampleType",
+    TlmType.TYPE_TYPE,
+    "Test type",
+    "SampleTypes"
+  );
   expect(t.oid).toBe(100);
   expect(t.type).toBe(TlmType.TYPE_TYPE);
   expect(t.namespace).toBe(99);
   expect(t.name).toBe("SampleType");
   expect(t.superType).toBe(TlmType.TYPE_TYPE);
   expect(t.description).toBe("Test type");
+  expect(t.plural).toBe("SampleTypes");
 });
 
 const nameLink: any = {
