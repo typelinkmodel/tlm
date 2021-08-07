@@ -18,7 +18,7 @@ export class Modeler implements IModeler {
     /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
       this.processReverseLinkDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+(?:has\s+toggle)\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([A-Za-z0-9_-]+)\s+has\s+toggle\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
     /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>

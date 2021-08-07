@@ -102,10 +102,10 @@ export class LinkModel {
       return existingLink;
     }
 
-    const newLink = new TlmLink(
-      await this._oidGenerator.nextOid(),
-      fromTypeObj.oid,
-      toTypeObj.oid,
+    const newLink = new TlmLink({
+      oid: await this._oidGenerator.nextOid(),
+      fromType: fromTypeObj.oid,
+      toType: toTypeObj.oid,
       name,
       fromName,
       toName,
@@ -116,8 +116,8 @@ export class LinkModel {
       isMandatoryTo,
       isValue,
       isToggle,
-      description
-    );
+      description,
+    });
     this._links.push(newLink);
     this._linkMapCache = undefined;
     return newLink;
@@ -139,19 +139,19 @@ export class LinkModel {
       );
     }
 
-    const newLink = new TlmLink(
-      existingLink.oid,
-      existingLink.fromType,
-      existingLink.toType,
-      existingLink.name,
-      existingLink.fromName,
-      existingLink.toName,
-      existingLink.isSingular,
-      existingLink.isMandatory,
-      existingLink.isPrimaryId,
+    const newLink = new TlmLink({
+      oid: existingLink.oid,
+      fromType: existingLink.fromType,
+      toType: existingLink.toType,
+      name: existingLink.name,
+      fromName: existingLink.fromName,
+      toName: existingLink.toName,
+      isSingular: existingLink.isSingular,
+      isMandatory: existingLink.isMandatory,
+      isPrimaryId: existingLink.isPrimaryId,
       isSingularTo,
-      true
-    );
+      isMandatoryTo: true,
+    });
     const i = this._links.indexOf(existingLink);
     this._links.splice(i, 1, newLink);
     this._linkMapCache = undefined;

@@ -1,3 +1,8 @@
+type OptionalExceptFor<T, TRequired extends keyof T = keyof T> = Partial<
+  Pick<T, Exclude<keyof T, TRequired>>
+> &
+  Required<Pick<T, TRequired>>;
+
 export class TlmObject {
   private readonly _oid: number;
   private readonly _type: number;
@@ -100,54 +105,41 @@ export class TlmLink extends TlmObject {
   private readonly _description?: string;
 
   constructor(
-    oid: number,
-    fromType: number,
-    toType: number,
-    name: string,
-    fromName?: string,
-    toName?: string,
-    isSingular = false,
-    isMandatory = false,
-    isPrimaryId = false,
-    isSingularTo = false,
-    isMandatoryTo = false,
-    isValue = false,
-    isToggle = false,
-    description: string | undefined = undefined
+    o: OptionalExceptFor<TlmLink, "oid" | "fromType" | "toType" | "name">
   ) {
-    super(oid, TlmLink.LINK_TYPE);
-    if (isPrimaryId) {
-      if (!isSingular) {
+    super(o.oid, TlmLink.LINK_TYPE);
+    if (o.isPrimaryId === true) {
+      if (o.isSingular === false) {
         throw new Error("Primary ID links must be singular");
       }
-      if (!isMandatory) {
+      if (o.isMandatory === false) {
         throw new Error("Primary ID links must be mandatory");
       }
     }
-    if (isToggle) {
-      if (!isSingular) {
+    if (o.isToggle === true) {
+      if (o.isSingular === false) {
         throw new Error("Toggle links must be singular");
       }
-      if (!isMandatory) {
+      if (o.isMandatory === false) {
         throw new Error("Toggle links must be mandatory");
       }
-      if (!isValue) {
+      if (o.isValue === false) {
         throw new Error("Toggle links must be to a value");
       }
     }
-    this._fromType = fromType;
-    this._toType = toType;
-    this._name = name;
-    this._fromName = fromName;
-    this._toName = toName;
-    this._isSingular = isSingular;
-    this._isMandatory = isMandatory;
-    this._isPrimaryId = isPrimaryId;
-    this._isSingularTo = isSingularTo;
-    this._isMandatoryTo = isMandatoryTo;
-    this._isValue = isValue;
-    this._isToggle = isToggle;
-    this._description = description;
+    this._fromType = o.fromType;
+    this._toType = o.toType;
+    this._name = o.name;
+    this._fromName = o.fromName;
+    this._toName = o.toName;
+    this._isSingular = o.isSingular || o.isPrimaryId || o.isToggle || false;
+    this._isMandatory = o.isMandatory || o.isPrimaryId || o.isToggle || false;
+    this._isPrimaryId = o.isPrimaryId || false;
+    this._isSingularTo = o.isSingularTo || false;
+    this._isMandatoryTo = o.isMandatoryTo || false;
+    this._isValue = o.isValue || o.isToggle || false;
+    this._isToggle = o.isToggle || false;
+    this._description = o.description;
   }
 
   get fromType(): number {
