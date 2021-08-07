@@ -115,6 +115,9 @@ export class TlmLink extends TlmObject {
       if (o.isMandatory === false) {
         throw new Error("Primary ID links must be mandatory");
       }
+      if (o.isValue === false) {
+        throw new Error("Primary ID links must be to a value");
+      }
     }
     if (o.isToggle === true) {
       if (o.isSingular === false) {
@@ -137,7 +140,7 @@ export class TlmLink extends TlmObject {
     this._isPrimaryId = o.isPrimaryId || false;
     this._isSingularTo = o.isSingularTo || false;
     this._isMandatoryTo = o.isMandatoryTo || false;
-    this._isValue = o.isValue || o.isToggle || false;
+    this._isValue = o.isValue || o.isPrimaryId || o.isToggle || false;
     this._isToggle = o.isToggle || false;
     this._description = o.description;
   }

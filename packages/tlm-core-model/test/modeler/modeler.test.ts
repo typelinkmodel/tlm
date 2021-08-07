@@ -303,8 +303,15 @@ test("addStatement: is exactly one for", async () => {
   await modeler.addStatement(
     "An Album has at least one track which must be a Track."
   );
+  let link = modeler.links.media.Album.track;
+  expect(link.isMandatory).toBe(true);
+  expect(link.isSingular).toBe(false);
+  expect(link.isPrimaryId).toBe(false);
+  expect(link.isMandatoryTo).toBe(false);
+  expect(link.isSingularTo).toBe(false);
+
   await modeler.addStatement("A Track is exactly one track for an Album.");
-  const link = modeler.links.media.Album.track;
+  link = modeler.links.media.Album.track;
   expect(link.isMandatory).toBe(true);
   expect(link.isSingular).toBe(false);
   expect(link.isPrimaryId).toBe(false);
