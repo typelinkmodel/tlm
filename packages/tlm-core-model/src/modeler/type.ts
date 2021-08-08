@@ -109,11 +109,11 @@ export class TypeModel {
       return existingType;
     }
 
-    const newType = new TlmType(
-      await this._oidGenerator.nextOid(),
-      this._namespaceModel.getActiveNamespaceOid(),
-      name
-    );
+    const newType = new TlmType({
+      oid: await this._oidGenerator.nextOid(),
+      namespace: this._namespaceModel.getActiveNamespaceOid(),
+      name: name,
+    });
     this._types.push(newType);
     this._typeMapCache = undefined;
     return newType;

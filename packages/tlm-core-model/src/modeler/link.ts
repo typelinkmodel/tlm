@@ -4,6 +4,15 @@ import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";
 import { TypeModel } from "./type";
 
+export type LinkOptions = Pick<
+  Partial<TlmLink>,
+  Exclude<keyof TlmLink, "oid" | "fromType" | "toType" | "name">
+> & {
+  fromType: string;
+  toType: string;
+  name: string;
+};
+
 export class LinkModel {
   private _links: TlmLink[] = [];
   private _linkMapCache?: ITlmLinkMap = undefined;
@@ -79,16 +88,7 @@ export class LinkModel {
     }
   }
 
-  public async addLink(
-    o: Pick<
-      Partial<TlmLink>,
-      Exclude<keyof TlmLink, "oid" | "fromType" | "toType" | "name">
-    > & {
-      fromType: string;
-      toType: string;
-      name: string;
-    }
-  ): Promise<TlmLink> {
+  public async addLink(o: LinkOptions): Promise<TlmLink> {
     const fromTypeObj: TlmType = await this._typeModel.addType(o.fromType);
     const toTypeObj: TlmType = await this._typeModel.addType(o.toType);
 
@@ -124,21 +124,9 @@ export class LinkModel {
       );
     }
 
-    const newLink = new TlmLink({
-      oid: existingLink.oid,
-      fromType: existingLink.fromType,
-      toType: existingLink.toType,
-      name: existingLink.name,
-      fromName: existingLink.fromName,
-      toName: existingLink.toName,
-      isSingular: existingLink.isSingular,
-      isMandatory: existingLink.isMandatory,
-      isPrimaryId: existingLink.isPrimaryId,
+    const newLink = existingLink.update({
       isSingularTo,
       isMandatoryTo: true,
-      isValue: existingLink.isValue,
-      isToggle: existingLink.isToggle,
-      description: existingLink.description,
     });
     const i = this._links.indexOf(existingLink);
     this._links.splice(i, 1, newLink);

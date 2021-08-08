@@ -21,14 +21,14 @@ test("TlmNamespace", () => {
 });
 
 test("TlmType", () => {
-  const t = new TlmType(
-    100,
-    99,
-    "SampleType",
-    TlmType.TYPE_TYPE,
-    "Test type",
-    "SampleTypes"
-  );
+  const t = new TlmType({
+    oid: 100,
+    namespace: 99,
+    name: "SampleType",
+    superType: TlmType.TYPE_TYPE,
+    description: "Test type",
+    plural: "SampleTypes",
+  });
   expect(t.oid).toBe(100);
   expect(t.type).toBe(TlmType.TYPE_TYPE);
   expect(t.namespace).toBe(99);

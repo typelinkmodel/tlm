@@ -1,9 +1,13 @@
 import { IModeler, ITlmLinkMap, ITlmNamespaceMap, ITlmTypeMap } from "../api";
 import { loadCoreSchema, TlmLink, TlmNamespace, TlmType } from "../core";
-import { LinkModel } from "./link";
+import { LinkModel, LinkOptions } from "./link";
 import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";
 import { TypeModel } from "./type";
+
+declare type Mutable<T> = {
+  -readonly [K in keyof T]: T[K];
+};
 
 export class Modeler implements IModeler {
   private readonly _oidGenerator: OidGenerator;
@@ -128,70 +132,35 @@ export class Modeler implements IModeler {
   ): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const groups = match.groups!;
-    const fromType = groups.fromType;
-    const fromName = groups.fromName;
-    const rel = groups.rel;
-    const name = groups.link;
-    const toType = groups.toType;
-    const toName = groups.toName;
+    const rel = groups.rel.replace(/\s+/g, " ").trim();
+    const o: Mutable<LinkOptions> = {
+      fromType: groups.fromType,
+      fromName: groups.fromName,
+      name: groups.link,
+      toType: groups.toType,
+      toName: groups.toName,
+    };
 
-    const processedRel = rel.replace(/\s+/g, " ").trim();
-    switch (processedRel) {
+    switch (rel) {
       case "is identified by":
-        await this._linkModel.addLink({
-          fromType,
-          toType,
-          name,
-          fromName,
-          toName,
-          isPrimaryId: true,
-        });
+        o.isPrimaryId = true;
         break;
       case "has exactly one":
-        await this._linkModel.addLink({
-          fromType,
-          toType,
-          name,
-          fromName,
-          toName,
-          isSingular: true,
-          isMandatory: true,
-        });
+        o.isSingular = true;
+        o.isMandatory = true;
         break;
       case "has at most one":
-        await this._linkModel.addLink({
-          fromType,
-          toType,
-          name,
-          fromName,
-          toName,
-          isSingular: true,
-        });
+        o.isSingular = true;
         break;
       case "has at least one":
-        await this._linkModel.addLink({
-          fromType,
-          toType,
-          name,
-          fromName,
-          toName,
-          isMandatory: true,
-        });
+        o.isMandatory = true;
         break;
       case "can have some":
-        await this._linkModel.addLink({
-          fromType,
-          toType,
-          name,
-          fromName,
-          toName,
-        });
         break;
       default:
-        throw new Error(
-          `Cannot process statement relationship '${processedRel}'`
-        );
+        throw new Error(`Cannot process statement relationship '${rel}'`);
     }
+    await this._linkModel.addLink(o);
   }
 
   private async processReverseLinkDefinitionStatement(
@@ -237,14 +206,7 @@ export class Modeler implements IModeler {
     const [, type, superType] = match;
     const typeObj = await this._typeModel.addType(type);
     const superTypeObj = await this._typeModel.addType(superType);
-    const newTypeObj = new TlmType(
-      typeObj.oid,
-      typeObj.namespace,
-      typeObj.name,
-      superTypeObj.oid,
-      typeObj.description,
-      typeObj.plural
-    );
+    const newTypeObj = typeObj.update({ superType: superTypeObj.oid });
     await this._typeModel.replaceType(newTypeObj);
   }
 
@@ -253,14 +215,7 @@ export class Modeler implements IModeler {
   ): Promise<void> {
     const [, type, description] = match;
     const typeObj = await this._typeModel.addType(type);
-    const newTypeObj = new TlmType(
-      typeObj.oid,
-      typeObj.namespace,
-      typeObj.name,
-      typeObj.oid,
-      description,
-      typeObj.plural
-    );
+    const newTypeObj = typeObj.update({ description });
     await this._typeModel.replaceType(newTypeObj);
   }
 
@@ -270,14 +225,7 @@ export class Modeler implements IModeler {
   ): Promise<void> {
     const [, type, plural] = match;
     const typeObj = await this._typeModel.addType(type);
-    const newTypeObj = new TlmType(
-      typeObj.oid,
-      typeObj.namespace,
-      typeObj.name,
-      typeObj.oid,
-      typeObj.description,
-      plural
-    );
+    const newTypeObj = typeObj.update({ plural });
     await this._typeModel.replaceType(newTypeObj);
   }
 }

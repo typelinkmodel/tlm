@@ -28,6 +28,13 @@ export class TlmNamespace extends TlmObject {
   private readonly _uri: string;
   private readonly _description?: string;
 
+  constructor(oid: number, prefix: string, uri: string, description?: string) {
+    super(oid, TlmNamespace.NAMESPACE_TYPE);
+    this._prefix = prefix;
+    this._uri = uri;
+    this._description = description;
+  }
+
   get prefix(): string {
     return this._prefix;
   }
@@ -39,13 +46,6 @@ export class TlmNamespace extends TlmObject {
   get description(): string | undefined {
     return this._description;
   }
-
-  constructor(oid: number, prefix: string, uri: string, description?: string) {
-    super(oid, TlmNamespace.NAMESPACE_TYPE);
-    this._prefix = prefix;
-    this._uri = uri;
-    this._description = description;
-  }
 }
 
 export class TlmType extends TlmObject {
@@ -56,6 +56,28 @@ export class TlmType extends TlmObject {
   private readonly _superType: number;
   private readonly _description?: string;
   private readonly _plural?: string;
+
+  constructor(o: OptionalExceptFor<TlmType, "oid" | "namespace" | "name">) {
+    super(o.oid, TlmType.TYPE_TYPE);
+    this._namespace = o.namespace;
+    this._name = o.name;
+    this._superType = o.superType || TlmType.TYPE_TYPE;
+    this._description = o.description;
+    this._plural = o.plural;
+  }
+
+  public update(updates: Partial<TlmType>): TlmType {
+    const original = {
+      oid: this.oid,
+      namespace: this.namespace,
+      name: this.name,
+      superType: this.superType,
+      description: this.description,
+      plural: this.plural,
+    };
+    const updated = { ...original, ...updates };
+    return new TlmType(updated);
+  }
 
   get namespace(): number {
     return this._namespace;
@@ -75,22 +97,6 @@ export class TlmType extends TlmObject {
 
   get plural(): string | undefined {
     return this._plural;
-  }
-
-  constructor(
-    oid: number,
-    namespace: number,
-    name: string,
-    superType: number = TlmType.TYPE_TYPE,
-    description?: string,
-    plural?: string
-  ) {
-    super(oid, TlmType.TYPE_TYPE);
-    this._namespace = namespace;
-    this._name = name;
-    this._superType = superType;
-    this._description = description;
-    this._plural = plural;
   }
 }
 
@@ -150,6 +156,28 @@ export class TlmLink extends TlmObject {
     this._isValue = o.isValue || o.isPrimaryId || o.isToggle || false;
     this._isToggle = o.isToggle || false;
     this._description = o.description;
+  }
+
+  public update(updates: Partial<TlmLink>): TlmLink {
+    const original = {
+      oid: this.oid,
+      type: this.type,
+      fromType: this.fromType,
+      toType: this.toType,
+      name: this.name,
+      fromName: this.fromName,
+      toName: this.toName,
+      isSingular: this.isSingular,
+      isMandatory: this.isMandatory,
+      isPrimaryId: this.isPrimaryId,
+      isSingularTo: this.isSingularTo,
+      isMandatoryTo: this.isMandatoryTo,
+      isValue: this.isValue,
+      isToggle: this.isToggle,
+      description: this.description,
+    };
+    const updated = { ...original, ...updates };
+    return new TlmLink(updated);
   }
 
   get fromType(): number {
