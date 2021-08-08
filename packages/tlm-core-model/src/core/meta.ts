@@ -133,7 +133,14 @@ export function parseTypeData(data: any): TlmType[] {
   const result = [];
   for (const row of data) {
     const { oid, namespace, name, super_type, description } = row;
-    result.push(new TlmType(oid, namespace, name, super_type, description));
+    const type = new TlmType({
+      oid,
+      namespace,
+      name,
+      superType: super_type,
+      description,
+    });
+    result.push(type);
   }
   return result;
 }

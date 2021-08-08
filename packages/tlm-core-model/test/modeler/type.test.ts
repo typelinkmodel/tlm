@@ -1,4 +1,4 @@
-import { TlmType } from "../../src/core";
+import { TlmType } from "../../src";
 import { NamespaceModel } from "../../src/modeler/namespace";
 import { OidGenerator } from "../../src/modeler/oid";
 import { TypeModel } from "../../src/modeler/type";
@@ -22,7 +22,7 @@ test("findTypeByOid: error on unknown oid", () => {
 
 test("replaceType: no active namespace", async () => {
   const model = new TypeModel();
-  const newType = new TlmType(42, 42, "foo");
+  const newType = new TlmType({ oid: 42, namespace: 42, name: "foo" });
 
   await expect((() => model.replaceType(newType))()).rejects.toThrowError(
     /Active namespace not set/
@@ -40,11 +40,11 @@ test("replaceType: outside active namespace", async () => {
   namespaceModel.activeNamespacePrefix = "foo";
   const model = new TypeModel(oidGenerator, namespaceModel);
 
-  const newType = new TlmType(
-    await oidGenerator.nextOid(),
-    otherNamespace.oid,
-    "Foo"
-  );
+  const newType = new TlmType({
+    oid: await oidGenerator.nextOid(),
+    namespace: otherNamespace.oid,
+    name: "Foo",
+  });
 
   await expect((() => model.replaceType(newType))()).rejects.toThrowError(
     /Can only replace types in the active namespace/
@@ -66,7 +66,11 @@ test("replaceType: wrong namespace", async () => {
   );
   namespaceModel.activeNamespacePrefix = "bar";
 
-  const newType = new TlmType(origType.oid, otherNamespace.oid, "Foo");
+  const newType = new TlmType({
+    oid: origType.oid,
+    namespace: otherNamespace.oid,
+    name: "Foo",
+  });
 
   await expect((() => model.replaceType(newType))()).rejects.toThrowError(
     /Cannot move types to a new namespace/
