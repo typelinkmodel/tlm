@@ -7,17 +7,17 @@ export class TlmObject {
   private readonly _oid: number;
   private readonly _type: number;
 
+  constructor(oid: number, type: number) {
+    this._oid = oid;
+    this._type = type;
+  }
+
   get oid(): number {
     return this._oid;
   }
 
   get type(): number {
     return this._type;
-  }
-
-  constructor(oid: number, type: number) {
-    this._oid = oid;
-    this._type = type;
   }
 }
 
@@ -66,19 +66,6 @@ export class TlmType extends TlmObject {
     this._plural = o.plural;
   }
 
-  public update(updates: Partial<TlmType>): TlmType {
-    const original = {
-      oid: this.oid,
-      namespace: this.namespace,
-      name: this.name,
-      superType: this.superType,
-      description: this.description,
-      plural: this.plural,
-    };
-    const updated = { ...original, ...updates };
-    return new TlmType(updated);
-  }
-
   get namespace(): number {
     return this._namespace;
   }
@@ -98,7 +85,25 @@ export class TlmType extends TlmObject {
   get plural(): string | undefined {
     return this._plural;
   }
+
+  public update(updates: Partial<TlmType>): TlmType {
+    const original = {
+      oid: this.oid,
+      namespace: this.namespace,
+      name: this.name,
+      superType: this.superType,
+      description: this.description,
+      plural: this.plural,
+    };
+    const updated = { ...original, ...updates };
+    return new TlmType(updated);
+  }
 }
+
+type TlmLinkOptions = OptionalExceptFor<
+  TlmLink,
+  "oid" | "fromType" | "toType" | "name"
+>;
 
 export class TlmLink extends TlmObject {
   public static readonly LINK_TYPE = 53;
@@ -117,32 +122,10 @@ export class TlmLink extends TlmObject {
   private readonly _isToggle: boolean;
   private readonly _description?: string;
 
-  constructor(
-    o: OptionalExceptFor<TlmLink, "oid" | "fromType" | "toType" | "name">
-  ) {
+  constructor(o: TlmLinkOptions) {
     super(o.oid, TlmLink.LINK_TYPE);
-    if (o.isPrimaryId === true) {
-      if (o.isSingular === false) {
-        throw new Error("Primary ID links must be singular");
-      }
-      if (o.isMandatory === false) {
-        throw new Error("Primary ID links must be mandatory");
-      }
-      if (o.isValue === false) {
-        throw new Error("Primary ID links must be to a value");
-      }
-    }
-    if (o.isToggle === true) {
-      if (o.isSingular === false) {
-        throw new Error("Toggle links must be singular");
-      }
-      if (o.isMandatory === false) {
-        throw new Error("Toggle links must be mandatory");
-      }
-      if (o.isValue === false) {
-        throw new Error("Toggle links must be to a value");
-      }
-    }
+    TlmLink.checkPrimaryIdOptionIsValid(o);
+    TlmLink.checkToggleOptionIsValid(o);
     this._fromType = o.fromType;
     this._toType = o.toType;
     this._name = o.name;
@@ -156,28 +139,6 @@ export class TlmLink extends TlmObject {
     this._isValue = o.isValue || o.isPrimaryId || o.isToggle || false;
     this._isToggle = o.isToggle || false;
     this._description = o.description;
-  }
-
-  public update(updates: Partial<TlmLink>): TlmLink {
-    const original = {
-      oid: this.oid,
-      type: this.type,
-      fromType: this.fromType,
-      toType: this.toType,
-      name: this.name,
-      fromName: this.fromName,
-      toName: this.toName,
-      isSingular: this.isSingular,
-      isMandatory: this.isMandatory,
-      isPrimaryId: this.isPrimaryId,
-      isSingularTo: this.isSingularTo,
-      isMandatoryTo: this.isMandatoryTo,
-      isValue: this.isValue,
-      isToggle: this.isToggle,
-      description: this.description,
-    };
-    const updated = { ...original, ...updates };
-    return new TlmLink(updated);
   }
 
   get fromType(): number {
@@ -230,5 +191,55 @@ export class TlmLink extends TlmObject {
 
   get description(): string | undefined {
     return this._description;
+  }
+
+  private static checkPrimaryIdOptionIsValid(o: TlmLinkOptions) {
+    if (o.isPrimaryId === true) {
+      if (o.isSingular === false) {
+        throw new Error("Primary ID links must be singular");
+      }
+      if (o.isMandatory === false) {
+        throw new Error("Primary ID links must be mandatory");
+      }
+      if (o.isValue === false) {
+        throw new Error("Primary ID links must be to a value");
+      }
+    }
+  }
+
+  private static checkToggleOptionIsValid(o: TlmLinkOptions) {
+    if (o.isToggle === true) {
+      if (o.isSingular === false) {
+        throw new Error("Toggle links must be singular");
+      }
+      if (o.isMandatory === false) {
+        throw new Error("Toggle links must be mandatory");
+      }
+      if (o.isValue === false) {
+        throw new Error("Toggle links must be to a value");
+      }
+    }
+  }
+
+  public update(updates: Partial<TlmLink>): TlmLink {
+    const original = {
+      oid: this.oid,
+      type: this.type,
+      fromType: this.fromType,
+      toType: this.toType,
+      name: this.name,
+      fromName: this.fromName,
+      toName: this.toName,
+      isSingular: this.isSingular,
+      isMandatory: this.isMandatory,
+      isPrimaryId: this.isPrimaryId,
+      isSingularTo: this.isSingularTo,
+      isMandatoryTo: this.isMandatoryTo,
+      isValue: this.isValue,
+      isToggle: this.isToggle,
+      description: this.description,
+    };
+    const updated = { ...original, ...updates };
+    return new TlmLink(updated);
   }
 }
