@@ -1,7 +1,7 @@
 import { ILoader } from "../api";
 
 function getExtension(filename: string): string {
-  const re = /(?:\.(?<ext>[^.]+)?)?$/;
+  const re = /\.(?<ext>[^.]+)?$/;
   return re.exec(filename)?.groups?.ext || "";
 }
 

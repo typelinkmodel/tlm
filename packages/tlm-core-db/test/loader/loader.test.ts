@@ -35,7 +35,7 @@ const noop = new NoopDelegate();
 const error = new ErrorDelegate();
 
 test("Loader supports plugging in delegate loaders", () => {
-  const loader = new Loader([noop]);
+  const loader = new Loader([unsupportive, noop]);
   expect(loader.supportsExtension("tlmd")).toBe(true);
 });
 
@@ -56,11 +56,29 @@ test("Loader for file without extension", async () => {
   await expect(async () => {
     await loader.loadFile("foo");
   }).rejects.toThrowError(/file type/);
+
+  await expect(async () => {
+    await loader.loadFile("foo.");
+  }).rejects.toThrowError(/file type/);
+
+  await expect(async () => {
+    await loader.loadFile("");
+  }).rejects.toThrowError(/file type/);
+
+  await expect(async () => {
+    await loader.loadFile(null as unknown as string);
+  }).rejects.toThrowError(/file type/);
 });
 
-test("Loader delegates", async () => {
+test("Loader delegates loadFile", async () => {
+  // no support, error
+  let loader = new Loader([]);
+  await expect(async () => {
+    await loader.loadFile("foo.tlmd");
+  }).rejects.toThrowError(/file type/);
+
   // noop, no error
-  let loader = new Loader([unsupportive, noop, error]);
+  loader = new Loader([unsupportive, noop, error]);
   await loader.loadFile(".././bar/foo.tlmd");
 
   // error!
