@@ -33,6 +33,10 @@ export class YamlLoader implements ILoader {
     await this.loadObjects(facts);
   }
 
+  supportsExtension(extension: string): boolean {
+    return extension === "yaml";
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async loadNamespaces(facts: any): Promise<void> {
     let defaultNs;

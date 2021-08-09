@@ -15,7 +15,7 @@
   "scripts": {
     "prepare": "pnpm run compile",
     "compile": "tsc",
-    "test": "echo run no jest tests yet",
+    "test": "jest",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
