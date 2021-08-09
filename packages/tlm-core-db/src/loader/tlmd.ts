@@ -43,6 +43,10 @@ export class TlmdLoader implements ILoader {
     const loader = new TlmdFileLoader(filename, handler);
     await loader.loadFile();
   }
+
+  supportsExtension(extension: string): boolean {
+    return extension === "tlmd";
+  }
 }
 
 export class TlmdStreamHandler {
