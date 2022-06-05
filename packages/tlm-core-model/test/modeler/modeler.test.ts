@@ -91,18 +91,12 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
   expect(fooNs.description).toBeUndefined();
 
   // can't modify namespace after adding
-  try {
+  await expect(async () => {
     await modeler.addNamespace("foo", "https://example.com/ns/bar");
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/already exists/);
-  }
-  try {
+  }).rejects.toThrowError(/already exists/);
+  await expect(async () => {
     await modeler.addNamespace("bar", "https://example.com/ns/foo");
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/already exists/);
-  }
+  }).rejects.toThrowError(/already exists/);
 
   // but if the values are the same, ignore the api call
   const resultNs = await modeler.addNamespace(
@@ -167,14 +161,11 @@ test("addStatement: basic usage with 'has exactly one'", async () => {
 
 test("addStatement: can only process certain statements", async () => {
   const modeler: Modeler = new Modeler();
-  try {
+  await expect(async () => {
     await modeler.addStatement(
       "Thousands of monkeys might write something nice but I don't know how to read it"
     );
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/statement/);
-  }
+  }).rejects.toThrowError(/statement/);
 });
 
 test("addStatement: types are namespaced", async () => {
@@ -213,14 +204,11 @@ test("addStatement: active namespace is needed", async () => {
     "hr",
     "https://type.link.model.tools/ns/tlm-sample-hr/"
   );
-  try {
+  await expect(async () => {
     await modeler.addStatement(
       "A Person has exactly one name which must be a string."
     );
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/Active namespace/i);
-  }
+  }).rejects.toThrowError(/Active namespace/i);
 });
 
 test("addStatement: 'A' and 'An' are both ok", async () => {
@@ -405,7 +393,8 @@ test("getValueTypeForLink: basic usage", async () => {
 
 test("processLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
-  try {
+
+  await expect(async () => {
     let match: RegExpMatchArray = [];
     match.groups = {
       fromType: "Person",
@@ -414,15 +403,12 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
       othertype: "Team",
     };
     await (modeler as any).processLinkDefinitionStatement(match);
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/Cannot process statement relationship/);
-  }
+  }).rejects.toThrowError(/Cannot process statement relationship/);
 });
 
 test("processReverseLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
-  try {
+  await expect(async () => {
     await (modeler as any).processReverseLinkDefinitionStatement([
       "A Track flub-boxes rendition for a Song.",
       "Track",
@@ -430,10 +416,7 @@ test("processReverseLinkDefinitionStatement: cover unreachable default case", as
       "rendition",
       "Song",
     ]);
-    fail();
-  } catch (e) {
-    expect(e.message).toMatch(/Cannot process reverse statement relationship/);
-  }
+  }).rejects.toThrowError(/Cannot process reverse statement relationship/);
 });
 
 test("constructor: inject dependencies", async () => {

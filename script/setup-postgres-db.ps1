@@ -40,7 +40,8 @@ function Wait-For-PSQL
 function Invoke-SQL([string]$Database, [Object]$File)
 {
   Write-Notice "Running SQL script $( $File.Name ) on ${PostgresContainer}/${Database}…"
-  Get-Content $File.FullName -Raw | docker exec -i `
+  docker cp $( $File.FullName ) ${PostgresContainer}:/tmp/$( $File.Name )
+  docker exec -i `
         $PostgresContainer `
         psql `
         -b `
@@ -48,7 +49,8 @@ function Invoke-SQL([string]$Database, [Object]$File)
         -U $PostgresUser `
         -h localhost `
         -p 5432 `
-        -d $Database > $null
+        -d $Database `
+        -f /tmp/$( $File.Name ) > $null
 }
 
 Wait-For-TCP localhost $PostgresPort

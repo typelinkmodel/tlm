@@ -6,6 +6,6 @@ $CommonScript = Join-Path $ScriptDir "common.ps1"
 
 Write-Notice "Running js unit tests…"
 
-./node_modules/.bin/pnpm run -r prepare
-./node_modules/.bin/pnpm run -r lint
-./node_modules/.bin/pnpm run -r test
+pnpm run -r prepare
+pnpm run -r lint
+pnpm run -r test
