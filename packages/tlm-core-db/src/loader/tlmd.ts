@@ -193,8 +193,16 @@ export class TlmdFileLoader {
     }
   }
 
-  private err(error: Error | string): void {
-    this._handler.handleError(this._filename, this.lineno, error.toString());
+  private err(error: Error | string | unknown): void {
+    let errorString: string;
+    if (error instanceof Error) {
+      errorString = error.toString();
+    } else if (typeof(error) === 'string') {
+      errorString = error;
+    } else {
+      errorString = "unknown";
+    }
+    this._handler.handleError(this._filename, this.lineno, errorString);
     this.state = STATE.MAIN;
   }
 
