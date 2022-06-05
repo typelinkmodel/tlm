@@ -51,11 +51,9 @@ describe("OidGenerator", () => {
     const pool: Pool = new Pool();
     const oidGenerator: OidGenerator = new OidGenerator(pool);
     oidGenerator.initialize();
-    try {
+    await expect(async () => {
       await oidGenerator.nextOid();
-    } catch (e) {
-      expect(e.toString().match(/mock error/));
-    }
+    }).rejects.toThrowError(/mock error/);
     expect(mockClientRelease).toHaveBeenCalled();
   });
 });
