@@ -15,11 +15,11 @@ function Test-Command-Available([string]$Command)
   }
 }
 
-function Install-Node-Library([string]$Library, [string]$Command)
+function Install-PNPM()
 {
-  if (!(Get-Command $Command))
+  if (!(Get-Command pnpm))
   {
-    npm install --no-save $Library
+    corepack enable
   }
 }
 
@@ -31,7 +31,7 @@ Test-Command-Available docker
 Test-Command-Available node
 # Test-Command-Available nvm
 
-Install-Node-Library pnpm ./node_modules/.bin/pnpm
+Install-PNPM
 
 Install-Module "PSScriptAnalyzer" -Repository "PSGallery" -Force
 
