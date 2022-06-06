@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-unsafe-assignment */
-import * as parse from "csv-parse/lib/sync";
+import { parse } from "csv-parse/sync";
 import { TlmLink, TlmNamespace, TlmType } from "./schema";
 
 export function csv_cast(value: string, context: { [key: string]: any }): any {
@@ -124,6 +124,7 @@ export function parseNamespaceData(data: any): TlmNamespace[] {
   const result = [];
   for (const row of data) {
     const { oid, prefix, uri, description } = row;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     result.push(new TlmNamespace(oid, prefix, uri, description));
   }
   return result;
