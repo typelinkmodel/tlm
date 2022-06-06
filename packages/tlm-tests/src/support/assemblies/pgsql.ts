@@ -6,7 +6,7 @@ import { Modeler as PgSqlModeler } from "@typelinkmodel/tlm-pgsql";
 import { Pool } from "pg";
 import { World } from "../world";
 
-function getPool(world: World) {
+function getPool(world: World): Pool {
   if (world.hasOwnProperty("pool")) {
     // @ts-ignore
     return world.pool;
