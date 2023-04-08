@@ -1,6 +1,7 @@
 {
 	"folders": [
 		{
+			"name": "tlm",
 			"path": "."
 		},
 		{
@@ -22,7 +23,9 @@
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
+			"tlm",
 			"tlm-tests"
-		]
+		],
+		"editor.tabSize": 2
 	}
 }
