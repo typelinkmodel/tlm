@@ -17,19 +17,19 @@ export class Modeler implements IModeler {
   private _initialized = false;
 
   private readonly _statementProcessors = [
-    /\s*An?\s+(?<fromType>[A-Za-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[A-Za-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[A-Za-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[A-Za-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[A-Za-z0-9_-]+)\s*,\s*)?\.?\s*/i,
+    /\s*An?\s+(?<fromType>[a-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[a-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[a-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[a-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[a-z0-9_-]+)\s*,\s*)?\.?\s*/i,
     async (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([A-Za-z0-9_-]+)\s+for\s+an?\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([a-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([a-z0-9_-]+)\s+for\s+an?\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
       this.processReverseLinkDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+has\s+toggle\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([a-z0-9_-]+)\s+has\s+toggle\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*An?\s+([a-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) =>
       this.processSuperTypeDefinitionStatement(st),
-    /\s*An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
+    /\s*An?\s+([a-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processTypeDescriptionStatement(st),
-    /\s*A\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.?\s*/i,
+    /\s*A\s+plural\s+of\s+([a-z0-9_-]+)\s+is\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processTypePluralNameStatement(st),
   ];
 
