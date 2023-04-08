@@ -40,7 +40,7 @@
     </xs:simpleType>
 
     <xs:simpleType name="LinkPath">
-        <xs:restriction base="xs:Name"/>
+        <xs:restriction base="xs:token"/>
     </xs:simpleType>
 
     <xs:simpleType name="Value">
