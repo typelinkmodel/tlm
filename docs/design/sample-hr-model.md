@@ -8,7 +8,7 @@ it.
 
 ## Statements about People
 
-A Person is a being regarded as an individual.
+A Person is a "being regarded as an individual".
 
 - A Person is identified by id which must be a URI.
 - A Person has exactly one name which must be a Name.
@@ -27,7 +27,7 @@ The plural of Person is People.
 
 ## Statements about Departments
 
-A Department is a division of an organization.
+A Department is a "division of an organization".
 
 - A Department is identified by id which must be a URI.
 - A Department has exactly one name which must be a Name.
@@ -55,7 +55,7 @@ The plural of Department is Departments.
 
 ## Statements about Teams
 
-A Team is a group of several people associated together.
+A Team is a "group of several people associated together".
 
 - A Team is identified by id which must be a URI.
 - A Team has at most one name which must be a Name.

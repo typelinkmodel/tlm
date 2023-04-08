@@ -122,7 +122,7 @@ Namespace hr: https://type.link.model.tools/ns/tlm-sample-hr/
 // The Example HR Model is a simple example of using TLM for a concrete domain many people are familiar with.
 
 --- Person
-A Person is a being regarded as an individual.
+A Person is a "being regarded as an individual".
 
 A Person is identified by id which must be a URI.
 A Person has exactly one name which must be a Name.
@@ -222,7 +222,7 @@ is a super type definition statement.
 Any statement matching the regular expression
 
 ```jsregexp
-An?\s+([A-Za-z0-9_-]+)\s+is\s+a\s+(.+)\s*\.
+An?\s+([a-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.
 ```
 
 is a type description statement.

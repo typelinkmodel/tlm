@@ -7,7 +7,7 @@ Namespace hr: https://type.link.model.tools/ns/tlm-sample-hr/
 
 
 --- Person
-A Person is a being regarded as an individual.
+A Person is a "being regarded as an individual".
 
 A Person is identified by id which must be a URI.
 A Person has exactly one name which must be a Name.
@@ -25,7 +25,7 @@ A plural of Person is People.
 
 
 --- Department
-A Department is a division of an organization.
+A Department is a "division of an organization".
 
 A Department is identified by id which must be a URI.
 A Department has exactly one name which must be a Name.
@@ -49,7 +49,7 @@ A plural of Department is Departments.
 
 
 --- Team
-A Team is a group of several people associated together.
+A Team is a "group of several people associated together".
 
 A Team is identified by id which must be a URI.
 A Team has at most one name which must be a Name.
