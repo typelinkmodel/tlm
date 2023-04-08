@@ -33,6 +33,23 @@ test("TlmdLoader test 003-simple-person-model", async () => {
   expect(link.isPrimaryId).toBe(true);
 });
 
+test("TlmdLoader test 004-sample-hr-model", async () => {
+  const modeler = await loadTest("004-sample-hr-model");
+
+  const personType = modeler.types.hr.Person;
+  expect(personType).toBeDefined();
+  const departmentType = modeler.types.hr.Department;
+  expect(departmentType).toBeDefined();
+  const teamType = modeler.types.hr.Team;
+  expect(teamType).toBeDefined();
+
+  const coach = modeler.links.hr.Person.coach;
+  expect(coach).toBeDefined();
+  expect(coach.fromName).toBe("coachee");
+  expect(coach.toName).toBe("coach");
+  expect(coach.toType).toBe(personType.oid);
+});
+
 async function loadTest(testname: string): Promise<Modeler> {
   const modeler = new Modeler();
   modeler.initialize();
