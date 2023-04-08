@@ -50,8 +50,12 @@ test("TlmdLoader test 004-sample-hr-model", async () => {
   expect(coach.toType).toBe(personType.oid);
 });
 
-async function loadTest(testname: string): Promise<Modeler> {
-  const modeler = new Modeler();
+test("TlmdLoader test 005-sample-hr-data", async () => {
+  const modeler = await loadTest("004-sample-hr-model");
+  await loadTest("005-sample-hr-data", modeler);
+});
+
+async function loadTest(testname: string, modeler = new Modeler()): Promise<Modeler> {
   modeler.initialize();
   const loader = new TlmdLoader(modeler, new Reader(), new Searcher(), false, true);
   const fileName = `${testname}.tlmd`;
