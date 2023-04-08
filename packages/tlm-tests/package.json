@@ -21,25 +21,25 @@
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^8.2.2",
-    "@types/chai": "^4.2.21",
-    "@types/jest": "^28.1.1",
-    "@types/node": "^16.11.38",
-    "@typescript-eslint/eslint-plugin": "^5.27.0",
-    "@typescript-eslint/parser": "^5.27.0",
-    "chai": "^4.3.4",
-    "eslint": "^8.17.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^26.5.3",
-    "prettier": "^2.3.2",
-    "ts-node": "^10.1.0",
-    "typescript": "^4.3.5"
+    "@cucumber/cucumber": "^9.1.0",
+    "@types/chai": "^4.3.4",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "chai": "^4.3.7",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "prettier": "^2.8.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@typelinkmodel/tlm-core-db": "workspace:^0.0.0",
     "@typelinkmodel/tlm-core-model": "workspace:^0.0.0",
     "@typelinkmodel/tlm-pgsql": "workspace:^0.0.0",
-    "@types/pg": "^8.6.1",
-    "pg": "^8.7.1"
+    "@types/pg": "^8.6.6",
+    "pg": "^8.10.0"
   }
 }

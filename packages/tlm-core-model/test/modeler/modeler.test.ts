@@ -395,7 +395,7 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
   const modeler: Modeler = new Modeler();
 
   await expect(async () => {
-    let match: RegExpMatchArray = [];
+    let match: RegExpMatchArray = "a".match(/(a)/)!;
     match.groups = {
       fromType: "Person",
       rel: "flub-boxes",
