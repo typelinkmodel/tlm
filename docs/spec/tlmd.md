@@ -87,7 +87,7 @@ TLM lines that start with `Namespace` are namespace references. After the keywor
 whitespace characters, followed by the namespace `prefix`, followed by a colon `:`, followed by one or more whitespace
 characters, followed by the namespace `uri`.
 
-Namespace references must occur in the main section and should occur as the first line in that section.
+Namespace references must occur in the main section and should occur as the first lines in that section.
 
 ```
 # TLM Data
@@ -200,8 +200,6 @@ A\s+plural\s+of\s+([A-Za-z0-9_-]+)\s+is\s+([A-Za-z0-9_-]+)\s*\.
 ```
 
 is a plural definition statement.
-
-TODO: implement plural support in tlm-core-model!
 
 For example:
 
@@ -388,7 +386,7 @@ The hr:Person with id            mailto:simon@example.com
   has department:                mailto:engineering@example.com
 ```
 
-**Warning**: it is not possible to define an empty values with a regular link fact expression.
+**Warning**: it is not possible to define an empty value with a regular link fact expression.
 
 ### Toggle line
 
@@ -515,9 +513,9 @@ statements that they do not accept.
 
 # Message files
 
-a TLMD Message file is a specialization of a TLMD Data file. It should have one Object line for a `message:Message` and
+A TLMD Message file is a specialization of a TLMD Data file. It should have one Object line for a `message:Message` and
 should fully contain all other facts known about the message by the sender. It may also have multiple Object lines for
-a `message:Delivery` objects belonging to that Message.
+`message:Delivery` objects belonging to that Message.
 
 The first line in the message that is not about a Message or Delivery is the message `subject`.
 
