@@ -401,6 +401,13 @@ test("getValueTypeForLink: basic usage", async () => {
   ).toBe("Namespace");
 });
 
+test("findNamespaceByOid: basic usage", async () => {
+  const modeler: Modeler = new Modeler();
+  modeler.initialize();
+  const oid = modeler.namespaces.tlm.oid;
+  expect(modeler.findNamespaceByOid(oid).prefix).toBe(modeler.namespaces.tlm.prefix);
+});
+
 test("processLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
 
