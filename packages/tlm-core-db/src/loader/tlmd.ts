@@ -1,4 +1,4 @@
-import { IModeler, Modeler } from "@typelinkmodel/tlm-core-model";
+import { IModeler, Modeler, TlmNamespace, TlmType } from "@typelinkmodel/tlm-core-model";
 import { createReadStream, ReadStream } from "fs";
 import { createInterface } from "readline";
 import { ILoader, IReader, ISearcher } from "../api";
@@ -59,11 +59,16 @@ export class TlmdStreamHandler {
   private readonly _modeler: IModeler;
   private readonly _continueOnError: boolean;
   private readonly _debug: boolean;
+  private _currentObjectType: TlmType | undefined;
+  private _currentId: string | undefined;
+  private _currentNamespace: TlmNamespace | undefined;
 
   constructor(modeler: IModeler, continueOnError = false, debug = false) {
     this._modeler = modeler;
     this._continueOnError = continueOnError;
     this._debug = debug;
+    this._currentObjectType = undefined;
+    this._currentId = undefined;
   }
 
   public debug(message: string): void {
@@ -136,10 +141,41 @@ export class TlmdStreamHandler {
 
   public async handleObject(type: string, id: string): Promise<void> {
     this.debug(`Object: type = '${type}', id = '${id}'`);
+    const objectType = this._modeler.getTypeByName(type);
+    if (objectType === undefined) {
+      throw new Error(`No type registered '${type}', cannot process object using it.`);
+    }
+    this._currentObjectType = objectType;
+    this._currentId = id;
+    this._currentNamespace = this._modeler.findNamespaceByOid(objectType.namespace);
+    const links = this._modeler.links[this._currentNamespace.prefix][type];
+    let setPrimaryId = false;
+    for (const [linkName, link] of Object.entries(links)) {
+      if(link.isPrimaryId) {
+        // todo this._db.addFact(objectType, link, id);
+        setPrimaryId = true;
+        break;
+      }
+    }
+    if (!setPrimaryId) {
+      throw new Error(`No primary ID registered for type '${type}, so cannot set its id.`);
+    }
   }
 
   public async handleFact(link: string, value: string): Promise<void> {
     this.debug(`- fact: link = '${link}', value = '${value}'`);
+    if (this._currentObjectType === undefined) {
+      throw new Error('Define object type before adding a fact for it.');
+    }
+    const ns = this._currentNamespace;
+    if (ns === undefined) {
+      throw new Error('Define object with namespace before adding a fact for it.');
+    }
+    const linkType = this._modeler.links[ns.prefix][link];
+    if (linkType === undefined) {
+      throw new Error(`Define link type ${link} before adding a fact using it.`);
+    }
+
   }
 
   public async handleToggle(link: string): Promise<void> {

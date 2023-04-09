@@ -33,4 +33,6 @@ export interface IModeler {
   getValueTypeForLink(link: TlmLink): TlmType;
 
   getTypeByName(type: string): TlmType;
+
+  findNamespaceByOid(oid: number): TlmNamespace;
 }

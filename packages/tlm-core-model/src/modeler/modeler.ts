@@ -127,6 +127,10 @@ export class Modeler implements IModeler {
     return this._typeModel.typeMap[ns][name];
   }
 
+  public findNamespaceByOid(oid: number): TlmNamespace {
+    return this._namespaceModel.findNamespaceByOid(oid);
+  }
+
   private async processLinkDefinitionStatement(
     match: RegExpMatchArray
   ): Promise<void> {
