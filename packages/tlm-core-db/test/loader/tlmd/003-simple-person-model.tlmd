@@ -1,0 +1,5 @@
+# TLM Model: HR Example
+Namespace hr: https://type.link.model.tools/ns/tlm-sample-hr/
+
+A Person is a "being regarded as an individual".
+A Person is identified by id which must be a URI.

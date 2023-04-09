@@ -27,19 +27,25 @@ export class TlmdLoader implements ILoader {
   private readonly _modeler: IModeler;
   private readonly _reader: IReader;
   private readonly _searcher: ISearcher;
+  private readonly _continueOnError: boolean;
+  private readonly _debug: boolean;
 
   constructor(
     modeler: IModeler = new Modeler(),
     reader: IReader = new Reader(),
-    searcher: ISearcher = new Searcher()
+    searcher: ISearcher = new Searcher(),
+    continueOnError: boolean = false,
+    debug: boolean = false
   ) {
     this._modeler = modeler;
     this._reader = reader;
     this._searcher = searcher;
+    this._continueOnError = continueOnError;
+    this._debug = debug;
   }
 
   public async loadFile(filename: string): Promise<void> {
-    const handler = new TlmdStreamHandler(this._modeler);
+    const handler = new TlmdStreamHandler(this._modeler, this._continueOnError, this._debug);
     const loader = new TlmdFileLoader(filename, handler);
     await loader.loadFile();
   }
@@ -83,7 +89,7 @@ export class TlmdStreamHandler {
     type: TLMD_TYPE,
     title: string | undefined
   ): Promise<void> {
-    this.debug(`TLMD Document type = '${type}', title = '${title}'`);
+    this.debug(`TLMD Document type = '${TLMD_TYPE[type]}', title = '${title}'`);
   }
 
   public async handleNamespace(prefix: string, uri: string): Promise<void> {

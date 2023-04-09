@@ -1,17 +1,17 @@
 import { ILoader, Loader } from "../../src";
 
 class UnsupportiveDelegate implements ILoader {
-  loadFile(filename: string): Promise<void> {
+  loadFile(_filename: string): Promise<void> {
     throw new Error("not called");
   }
 
-  supportsExtension(extension: string): boolean {
+  supportsExtension(_extension: string): boolean {
     return false;
   }
 }
 
 class NoopDelegate implements ILoader {
-  loadFile(filename: string): Promise<void> {
+  loadFile(_filename: string): Promise<void> {
     return Promise.resolve();
   }
 
@@ -21,11 +21,11 @@ class NoopDelegate implements ILoader {
 }
 
 class ErrorDelegate implements ILoader {
-  loadFile(filename: string): Promise<void> {
+  loadFile(_filename: string): Promise<void> {
     throw new Error("test error");
   }
 
-  supportsExtension(extension: string): boolean {
+  supportsExtension(_extension: string): boolean {
     return true;
   }
 }

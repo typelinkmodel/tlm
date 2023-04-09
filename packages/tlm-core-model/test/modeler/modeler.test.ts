@@ -369,6 +369,16 @@ test("addStatement: plural", async () => {
   expect(type.plural).toBe("People");
 });
 
+test("addStatement: link from and target names", async () => {
+  const modeler: Modeler = await newHrModeler();
+
+  await modeler.addStatement("A Person, the coachee, can have some coach which must be a Person, the coach.");
+  const link = modeler.links.hr.Person.coach;
+  expect(link).toBeDefined();
+  expect(link.fromName).toBe("coachee");
+  expect(link.toName).toBe("coach");
+});
+
 test("getTypeByName: basic usage", async () => {
   let modeler: Modeler = await newHrModeler();
 
