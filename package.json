@@ -10,6 +10,7 @@
   "packageManager": "pnpm@8.1.1",
   "scripts": {
     "recursive-test": "jest",
+    "clean": "echo run pnpm recusrive run clean",
     "test": "echo run pnpm recursive run test",
     "lint": "echo run pnpm recursive run lint",
     "prettier": "prettier -w ."

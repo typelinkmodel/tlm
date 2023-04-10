@@ -6,6 +6,7 @@ $CommonScript = Join-Path $ScriptDir "common.ps1"
 
 Write-Notice "Running js unit tests…"
 
+pnpm run -r clean
 pnpm run -r prepare
 pnpm run -r lint
 pnpm run -r test
