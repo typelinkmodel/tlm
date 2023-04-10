@@ -16,6 +16,7 @@ export class Modeler implements IModeler {
   private readonly _linkModel: LinkModel;
   private _initialized = false;
 
+  // START-NO-SONAR
   private readonly _statementProcessors = [
     /\s*An?\s+(?<fromType>[a-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[a-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[a-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[a-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[a-z0-9_-]+)\s*)?\.?\s*/i,
     async (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
@@ -32,6 +33,7 @@ export class Modeler implements IModeler {
     /\s*A\s+plural\s+of\s+([a-z0-9_-]+)\s+is\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpMatchArray) => this.processTypePluralNameStatement(st),
   ];
+  // END-NO-SONAR
 
   constructor(
     oidGenerator: OidGenerator = new OidGenerator(),
