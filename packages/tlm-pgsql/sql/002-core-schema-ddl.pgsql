@@ -195,13 +195,14 @@ VALUES (tlm__current_oid(),
 $$;
 
 -- noinspection SqlUnused
-CREATE PROCEDURE tlm__insert_namespace(prefix VARCHAR, uri VARCHAR, description TEXT)
+CREATE PROCEDURE tlm__insert_namespace(prefix VARCHAR, uri VARCHAR, description TEXT, oid INOUT INTEGER = 1)
     LANGUAGE sql
 AS
 $$
 CALL tlm__insert_object('tlm', 'Namespace');
 INSERT INTO tlm__namespaces (oid, prefix, uri, description)
 VALUES (tlm__current_oid(), prefix, uri, description);
+SELECT tlm__current_oid() AS oid;
 $$;
 
 COMMIT;

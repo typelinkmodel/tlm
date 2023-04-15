@@ -34,8 +34,8 @@ export class TlmdLoader implements ILoader {
     modeler: IModeler = new Modeler(),
     reader: IReader = new Reader(),
     searcher: ISearcher = new Searcher(),
-    continueOnError: boolean = false,
-    debug: boolean = false
+    continueOnError = false,
+    debug = false
   ) {
     this._modeler = modeler;
     this._reader = reader;

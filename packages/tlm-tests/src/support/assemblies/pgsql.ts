@@ -5,6 +5,10 @@ import { Searcher as CoreSearcher } from "@typelinkmodel/tlm-core-db";
 import { Modeler as PgSqlModeler } from "@typelinkmodel/tlm-pgsql";
 import { Pool } from "pg";
 import { World } from "../world";
+import { OidGenerator } from "@typelinkmodel/tlm-pgsql/lib/modeler/oid";
+import { NamespaceModel } from "@typelinkmodel/tlm-pgsql/lib/modeler/namespace";
+import { TypeModel } from "@typelinkmodel/tlm-core-model/lib/modeler/type";
+import { LinkModel } from "@typelinkmodel/tlm-core-model/lib/modeler/link";
 
 function getPool(world: World): Pool {
   if (world.hasOwnProperty("pool")) {
@@ -29,7 +33,12 @@ export class Modeler extends PgSqlModeler {
 
   // noinspection JSUnusedGlobalSymbols
   constructor(world: World) {
-    super(getPool(world));
+    const pool = getPool(world);
+    const oidGenerator = new OidGenerator(pool);
+    const namespaceModel = new NamespaceModel(pool, oidGenerator);
+    const typeModel = new TypeModel(oidGenerator, namespaceModel);
+    const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
+    super(pool, oidGenerator, namespaceModel, typeModel, linkModel);
     this._world = world;
   }
 }

@@ -7,9 +7,9 @@ import { TypeModel } from "../../src/modeler/type";
 
 test("initialize(): can safely be called more than once", async () => {
   const model: TypeModel = new TypeModel();
-  model.initialize();
-  model.initialize();
-  model.initialize();
+  await model.initialize();
+  await model.initialize();
+  await model.initialize();
 });
 
 test("findTypeByOid: error on unknown oid", () => {
@@ -39,6 +39,7 @@ test("replaceType: outside active namespace", async () => {
   );
   namespaceModel.activeNamespacePrefix = "foo";
   const model = new TypeModel(oidGenerator, namespaceModel);
+  await model.initialize();
 
   const newType = new TlmType({
     oid: await oidGenerator.nextOid(),
@@ -58,6 +59,8 @@ test("replaceType: wrong namespace", async () => {
   namespaceModel.activeNamespacePrefix = "foo";
 
   const model = new TypeModel(oidGenerator, namespaceModel);
+  await model.initialize();
+
   const origType = await model.addType("Foo");
 
   const otherNamespace = await namespaceModel.addNamespace(

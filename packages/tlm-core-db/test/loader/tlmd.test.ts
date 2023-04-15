@@ -52,7 +52,7 @@ test("TlmdLoader test 004-sample-hr-model", async () => {
 
 async function loadTest(testname: string): Promise<Modeler> {
   const modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   const loader = new TlmdLoader(modeler, new Reader(), new Searcher(), false, true);
   const fileName = `${testname}.tlmd`;
   const filePath = join(__dirname, "tlmd", fileName);

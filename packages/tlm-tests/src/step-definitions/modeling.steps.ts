@@ -7,7 +7,7 @@ import { findType } from "../support/util";
 Given(/^an empty type-link model is set up$/, async function () {
   // @ts-ignore
   const modeler: IModeler = this.modeler;
-  modeler.initialize();
+  await modeler.initialize();
 });
 
 Given(

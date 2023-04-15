@@ -13,7 +13,7 @@ test("initialize(): Modeler lazy loading means initially the model is empty", as
 
 test("initialize(): Modeler initialization loads the core model", async () => {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   expect(modeler.types.tlm.Namespace.name).toBe("Namespace");
   expect(modeler.types.tlm.Type.namespace).toBe(modeler.namespaces.tlm.oid);
   expect(modeler.links.tlm.Link["is singular"].fromType).toBe(
@@ -23,9 +23,9 @@ test("initialize(): Modeler initialization loads the core model", async () => {
 
 test("initialize(): can safely be called more than once", async () => {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
-  modeler.initialize();
-  modeler.initialize();
+  await modeler.initialize();
+  await modeler.initialize();
+  await modeler.initialize();
 });
 
 test("activeNamespace: basic usage", async () => {
@@ -199,7 +199,7 @@ test("addStatement: statements can be repeated", async () => {
 
 test("addStatement: active namespace is needed", async () => {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   await modeler.addNamespace(
     "hr",
     "https://type.link.model.tools/ns/tlm-sample-hr/"
@@ -271,7 +271,7 @@ test("addStatement: can have some", async () => {
 
 test("addStatement: is a kind of", async () => {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   await modeler.addNamespace(
     "req",
     "https://type.link.model.tools/ns/tlm-sample-requirements/"
@@ -389,13 +389,13 @@ test("getTypeByName: basic usage", async () => {
 
   // test case of no active NS
   modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   expect(modeler.getTypeByName("Person")).toBeUndefined();
 });
 
 test("getValueTypeForLink: basic usage", async () => {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   expect(
     modeler.getValueTypeForLink(modeler.links.tlm.Type.namespace).name
   ).toBe("Namespace");
@@ -452,7 +452,7 @@ async function newMediaModeler() {
 
 async function newModeler(prefix: string, uri: string) {
   const modeler: Modeler = new Modeler();
-  modeler.initialize();
+  await modeler.initialize();
   await modeler.addNamespace(prefix, uri);
   modeler.activeNamespace = prefix;
   return modeler;

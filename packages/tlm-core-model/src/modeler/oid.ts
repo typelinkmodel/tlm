@@ -2,7 +2,7 @@ export class OidGenerator {
   private _nextOid = 1;
   private _initialized = false;
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     if (this._initialized) {
       return;
     }
