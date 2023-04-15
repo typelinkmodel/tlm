@@ -1,7 +1,5 @@
-if (!(Test-Path variable:script:ENV))
-{
-  Set-Variable -Name ENV -Value ci -Scope Script
-}
+Set-Variable -Name ENV -Value ci -Scope Script
+Set-Item -Path Env:ENV -Value ci
 
 $ScriptPath = $MyInvocation.MyCommand.Path
 $ScriptDir = Split-Path $ScriptPath
@@ -10,7 +8,9 @@ $CommonScript = Join-Path $ScriptDir "common.ps1"
 
 Write-Notice "==> cibuild"
 
-Invoke-Script "bootstrap.ps1"
+corepack enable
+pnpm install
+pnpm run ci
 Invoke-Script "setup.ps1"
 Invoke-Script "server.ps1"
 Invoke-Script "test.ps1"

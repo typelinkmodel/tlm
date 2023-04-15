@@ -8,18 +8,17 @@ This is an unfinished hobby project. _Use at your own risk._
 
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
 
-Use [PowerShell Core 7+](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.2):
-
-```powershell
-    pwsh script\bootstrap.ps1
-    pwsh script\setup.ps1
-    pwsh script\server.ps1
-    pwsh script\test.ps1
+Uses latest LTS [node](https://nodejs.org/) with recent [pnpm](https://pnpm.io/):
+```shell
+corepack enable
+pnpm install
+pnpm run bootstrap
+pnpm run setup
+pnpm run server
+pnpm run test
 ```
 
-(also on linux or mac)
-
-The bootstrap script will check for presence of [docker cli](https://github.com/docker/cli), a recent LTS version of [nodejs](https://nodejs.org/en/download/), try to enable and use [pnpm](https://pnpm.io/), then use those tools to install the remaining dependencies.
+Needs [docker cli](https://github.com/docker/cli).
 
 ## Code
 
