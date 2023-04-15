@@ -1,25 +1,6 @@
 import { Pool } from "pg";
-import { mockClientQuery, mockClientRelease } from "../../__mocks__/pg";
+import { emptyResult, mockClientQuery, mockClientRelease, rowsResults } from "../../__mocks__/pg";
 import { OidGenerator } from "../../src/modeler/oid";
-
-function emptyResult(command: string = "") {
-  return Promise.resolve({
-    command,
-    rowCount: 0,
-    oid: 0,
-    fields: [],
-  });
-}
-
-function rowsResults(command: string, rows: any[]) {
-  return Promise.resolve({
-    command,
-    rows,
-    rowCount: 0,
-    oid: 0,
-    fields: [],
-  });
-}
 
 describe("OidGenerator", () => {
   beforeEach(() => {

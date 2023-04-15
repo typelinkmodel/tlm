@@ -20,3 +20,22 @@ export const mockPoolConstructor = jest.fn(() => {
 
 // tslint:disable-next-line:variable-name
 export const Pool = mockPoolConstructor;
+
+export function emptyResult(command: string = "") {
+  return Promise.resolve({
+    command,
+    rowCount: 0,
+    oid: 0,
+    fields: []
+  });
+}
+
+export function rowsResults(command: string, rows: any[]) {
+  return Promise.resolve({
+    command,
+    rows,
+    rowCount: 0,
+    oid: 0,
+    fields: []
+  });
+}
