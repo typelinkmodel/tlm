@@ -16,9 +16,9 @@ describe("OidGenerator", () => {
       .mockReturnValueOnce(rowsResults("SELECT ...", [{ oid }]))
       .mockReturnValueOnce(emptyResult("COMMIT"));
 
-    const pool: Pool = new Pool();
-    const oidGenerator: OidGenerator = new OidGenerator(pool);
-    oidGenerator.initialize();
+    const pool = new Pool();
+    const oidGenerator = new OidGenerator(pool);
+    await oidGenerator.initialize();
     const result = await oidGenerator.nextOid();
     expect(result).toBe(oid);
     expect(mockClientRelease).toHaveBeenCalled();
@@ -29,9 +29,9 @@ describe("OidGenerator", () => {
       throw new Error("mock error");
     });
 
-    const pool: Pool = new Pool();
-    const oidGenerator: OidGenerator = new OidGenerator(pool);
-    oidGenerator.initialize();
+    const pool = new Pool();
+    const oidGenerator = new OidGenerator(pool);
+    await oidGenerator.initialize();
     await expect(async () => {
       await oidGenerator.nextOid();
     }).rejects.toThrowError(/mock error/);

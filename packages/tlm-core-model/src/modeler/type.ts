@@ -38,15 +38,15 @@ export class TypeModel {
     return this._types;
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     if (this._initialized) {
       return;
     }
     this._initialized = true;
     loadCoreSchema();
 
-    this._oidGenerator.initialize();
-    this._namespaceModel.initialize();
+    await this._oidGenerator.initialize();
+    await this._namespaceModel.initialize();
 
     this._types = TLM_CORE_TYPES.concat([]);
   }
@@ -71,7 +71,6 @@ export class TypeModel {
         }
       }
     }
-    this.initialize();
     for (const t of this._types) {
       if (
         t.name === name &&

@@ -5,7 +5,7 @@ import { OidGenerator } from "./oid";
 export class NamespaceModel {
   private _namespaces: TlmNamespace[] = [];
   private _namespaceMapCache?: ITlmNamespaceMap = undefined;
-  private _initialized = false;
+  protected _initialized = false;
   private _tlmNamespace: TlmNamespace | undefined = undefined;
   private _xsNamespace: TlmNamespace | undefined = undefined;
   private _activeNamespace?: TlmNamespace;
@@ -32,13 +32,11 @@ export class NamespaceModel {
   }
 
   public get tlm(): TlmNamespace {
-    this.initialize();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this._tlmNamespace!;
   }
 
   public get xs(): TlmNamespace {
-    this.initialize();
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this._xsNamespace!;
   }
@@ -71,14 +69,14 @@ export class NamespaceModel {
     this._activeNamespace = this.findNamespaceByPrefix(value);
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     if (this._initialized) {
       return;
     }
     this._initialized = true;
     loadCoreSchema();
 
-    this._oidGenerator.initialize();
+    await this._oidGenerator.initialize();
 
     this._namespaces = TLM_CORE_NAMESPACES.concat([]);
     this._tlmNamespace = this.namespaceMap.tlm;
@@ -88,25 +86,43 @@ export class NamespaceModel {
   public async addNamespace(
     prefix: string,
     uri: string,
-    description?: string
+    description?: string,
+    oid?: number
   ): Promise<TlmNamespace> {
+    const oidGiven = oid !== undefined;
+
     for (const existingNamespace of this._namespaces) {
-      if (existingNamespace.prefix === prefix) {
-        if (existingNamespace.uri === uri) {
-          return existingNamespace;
-        } else {
+      const prefixMatches = existingNamespace.prefix === prefix;
+      const uriMatches = existingNamespace.uri === uri;
+      const oidMatches = existingNamespace.oid === oid;
+
+      if (prefixMatches) {
+        if (!uriMatches) {
           throw new Error(
             `Namespace with prefix ${prefix} already exists with URI ${existingNamespace.uri}, cannot change to URI ${uri}`
           );
         }
-      } else if (existingNamespace.uri === uri) {
+        if (oidGiven && !oidMatches) {
+          throw new Error(
+            `Namespace with prefix ${prefix} already exists with oid ${existingNamespace.oid}, cannot change to oid ${oid}`
+          );
+        }
+        return existingNamespace;
+      } else if (uriMatches) {
         throw new Error(
           `Namespace with uri ${uri} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`
         );
+      } else if (oidGiven && oidMatches) {
+        throw new Error(
+          `Namespace with oid ${oid} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`
+        );
       }
     }
+
+    const newOid = oid !== undefined ? oid : await this._oidGenerator.nextOid();
+
     const newNamespace = new TlmNamespace(
-      await this._oidGenerator.nextOid(),
+      newOid,
       prefix,
       uri,
       description

@@ -4,9 +4,9 @@ import { NamespaceModel } from "../../src/modeler/namespace";
 
 test("initialize(): can safely be called more than once", async () => {
   const model: NamespaceModel = new NamespaceModel();
-  model.initialize();
-  model.initialize();
-  model.initialize();
+  await model.initialize();
+  await model.initialize();
+  await model.initialize();
 });
 
 test("findNamespaceByOid: error on unknown oid", () => {
@@ -29,4 +29,31 @@ test("activeNamespacePrefix: cannot unset", () => {
     // @ts-ignore
     model.activeNamespacePrefix = undefined as string;
   }).toThrowError(/Cannot deactivate/);
+});
+
+test("addNamespace: cannot redefine invariants", async () => {
+  const model = new NamespaceModel();
+  await model.initialize();
+  const prefix = "foo";
+  const uri = "https://example.com/ns";
+  const description = "Sample ns.";
+  const oid = 4242;
+
+  await model.addNamespace(prefix, uri, description, oid);
+  await model.addNamespace(prefix, uri, description);
+  await model.addNamespace(prefix, uri);
+  await model.addNamespace(prefix, uri, "Sample namespace.", oid);
+  await model.addNamespace(prefix, uri, "Sample namespace.");
+
+  await expect(async () => {
+    await model.addNamespace(prefix, "https://example.com/illegal", description, oid);
+  }).rejects.toThrowError(/uri/i);
+
+  await expect(async () => {
+    await model.addNamespace("bar", uri, description, oid);
+  }).rejects.toThrowError(/prefix/i);
+
+  await expect(async () => {
+    await model.addNamespace(prefix, uri, description, 424242);
+  }).rejects.toThrowError(/oid/i);
 });

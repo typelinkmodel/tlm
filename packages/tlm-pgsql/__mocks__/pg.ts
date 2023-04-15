@@ -24,6 +24,7 @@ export const Pool = mockPoolConstructor;
 export function emptyResult(command: string = "") {
   return Promise.resolve({
     command,
+    rows: [],
     rowCount: 0,
     oid: 0,
     fields: []

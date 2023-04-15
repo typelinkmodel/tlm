@@ -7,9 +7,9 @@ import { TypeModel } from "../../src/modeler/type";
 
 test("initialize(): can safely be called more than once", async () => {
   const model: LinkModel = new LinkModel();
-  model.initialize();
-  model.initialize();
-  model.initialize();
+  await model.initialize();
+  await model.initialize();
+  await model.initialize();
 });
 
 test("addReverseMandatoryLink(): reject link rewiring", async () => {
@@ -17,7 +17,7 @@ test("addReverseMandatoryLink(): reject link rewiring", async () => {
   const namespaceModel = new NamespaceModel(oidGenerator);
   const typeModel = new TypeModel(oidGenerator, namespaceModel);
   const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
-  linkModel.initialize();
+  await linkModel.initialize();
 
   await namespaceModel.addNamespace("foo", "example://foo");
   namespaceModel.activeNamespacePrefix = "foo";

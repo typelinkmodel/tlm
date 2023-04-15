@@ -20,7 +20,7 @@ export interface IModeler {
   readonly links: ITlmLinkMap;
   activeNamespace?: string;
 
-  initialize(): void;
+  initialize(): Promise<void>;
 
   addNamespace(
     prefix: string,

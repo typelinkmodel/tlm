@@ -79,17 +79,17 @@ export class Modeler implements IModeler {
     }
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     if (this._initialized) {
       return;
     }
     this._initialized = true;
     loadCoreSchema();
 
-    this._oidGenerator.initialize();
-    this._namespaceModel.initialize();
-    this._typeModel.initialize();
-    this._linkModel.initialize();
+    await this._oidGenerator.initialize();
+    await this._namespaceModel.initialize();
+    await this._typeModel.initialize();
+    await this._linkModel.initialize();
   }
 
   public async addNamespace(
