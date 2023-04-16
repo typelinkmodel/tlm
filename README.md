@@ -4,22 +4,21 @@ TLM is a simple modelling technique inspired by [Object Role Modelling](https://
 
 This is an unfinished hobby project. _Use at your own risk._
 
+## Prerequisites
+
+* latest LTS [node](https://nodejs.org/)
+* recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
+* [docker cli](https://github.com/docker/cli) installed and connected
+
 ## Build
 
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
 
-Use [PowerShell Core 7+](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.2):
-
-```powershell
-    pwsh script\bootstrap.ps1
-    pwsh script\setup.ps1
-    pwsh script\server.ps1
-    pwsh script\test.ps1
+```shell
+pnpm install
+pnpm run setup
+pnpm run test
 ```
-
-(also on linux or mac)
-
-The bootstrap script will check for presence of [docker cli](https://github.com/docker/cli), a recent LTS version of [nodejs](https://nodejs.org/en/download/), try to enable and use [pnpm](https://pnpm.io/), then use those tools to install the remaining dependencies.
 
 ## Code
 
