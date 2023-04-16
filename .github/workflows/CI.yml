@@ -8,19 +8,29 @@ on:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
+env:
+  ENV: ci
+
 jobs:
   CI:
     name: CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-      - uses: actions/checkout@v2
+      - name: Clone Repo
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of sonar analysis
-      - run: ./script/cibuild.ps1
-        shell: pwsh
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: |
+            - recursive: false
+      - name: Run CI
+        run: pnpm run ci
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:

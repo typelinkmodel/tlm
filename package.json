@@ -14,9 +14,9 @@
     "test": "pnpm recursive run test",
     "lint": "pnpm recursive run lint",
     "prettier": "prettier -w .",
-    "bootstrap": "zx zx/x.mjs bootstrap",
     "setup": "zx zx/x.mjs setup",
-    "ci": "zx zx/x.mjs bootstrap setup",
+    "destroy": "zx zx/x.mjs destroy ",
+    "ci": "zx zx/x.mjs clean lint setup test destroy",
     "x": "zx zx/x.mjs"
   },
   "devDependencies": {

@@ -2,6 +2,8 @@
 
 import { sectionEnd, sectionStart } from "./common.mjs";
 
-sectionStart("bootstrap");
-await import('./bootstrap-requirements.mjs');
+sectionStart("lint");
+
+await $`pnpm recursive run lint`;
+
 sectionEnd();

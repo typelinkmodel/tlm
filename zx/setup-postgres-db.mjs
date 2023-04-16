@@ -1,66 +1,56 @@
 #!/usr/bin/env zx
 
-/*
-Write-Notice "Setting up database schema ${PostgresContainer}/${PostgresDatabase}…"
+import { info, notice, quiet, waitFor, waitForSocket } from "./common.mjs";
+import settings from "./settings.mjs";
 
-function Wait-For-PSQL
-{
-  Write-InformationColored "Waiting for psql to be available..." -NoNewline
-  $Waited = 0
-  $oldErrorActionPreference = $ErrorActionPreference
-  $ErrorActionPreference = "SilentlyContinue"
-  while (!$( docker exec -i `
-            $PostgresContainer `
-            psql `
-            -b `
-            -v ON_ERROR_STOP=1 `
-            -U $PostgresUser `
-            -h localhost `
-            -p 5432 `
-            -c "SELECT TRUE;" > $null 2> $null
-  ; $? ))
-  {
-    Write-InformationColored "." -NoNewline
-    Start-Sleep -ms 100
-    $Waited = $Waited + 1
-    if ($Waited -ge 10)
-    {
-      Write-Nost "X" -NoNewline
-      break
-    }
-  }
-  Write-InformationColored ""
-  $ErrorActionPreference = $oldErrorActionPreference
+async function waitForPsql() {
+  process.stdout.write(`wait for psql on ${settings.PostgresContainer}`);
+  await quiet(async () => {
+    await waitFor(() => new Promise((resolve, reject) => {
+      $`docker exec -i \
+"${settings.PostgresContainer}" \
+psql \
+-b \
+-v ON_ERROR_STOP=1 \
+-U "${settings.PostgresUser}" \
+-h localhost \
+-p 5432 \
+-c "SELECT TRUE;" >/dev/null 2>/dev/null`
+        .then(() => resolve())
+        .catch(() => reject());
+    }));
+  });
 }
 
-function Invoke-SQL([string]$Database, [Object]$File)
-{
-  Write-Notice "Running SQL script $( $File.Name ) on ${PostgresContainer}/${Database}…"
-  docker cp $( $File.FullName ) ${PostgresContainer}:/tmp/$( $File.Name )
-  docker exec -i `
-        $PostgresContainer `
-        psql `
-        -b `
-        -v ON_ERROR_STOP=1 `
-        -U $PostgresUser `
-        -h localhost `
-        -p 5432 `
-        -d $Database `
-        -f /tmp/$( $File.Name ) > $null
+async function invokeSQL(database, file) {
+  notice(`Running SQL script ${file} on ${settings.PostgresContainer}/${database}…`);
+  const absPath = path.resolve(file);
+  const fileName = path.basename(file);
+  await $`docker cp ${absPath} ${settings.PostgresContainer}:/tmp/${fileName}`;
+  await $`docker exec -i \
+"${settings.PostgresContainer}" \
+psql \
+-b \
+-v ON_ERROR_STOP=1 \
+-U "${settings.PostgresUser}" \
+-h localhost \
+-p 5432 \
+-d "${database}" \
+-f /tmp/${fileName} >/dev/null`;
 }
 
-Wait-For-TCP localhost $PostgresPort
-Wait-For-PSQL
+info(`Setting up database schema ${settings.PostgresContainer}/${settings.PostgresDatabase}…`);
+await waitForSocket(settings.PostgresHost, settings.PostgresPort);
+await waitForPsql();
 
-$SqlScriptDir = Join-Path $WorkDir $PostgresScriptsDir
-Get-ChildItem $SqlScriptDir -Filter *.pgsql | Foreach-Object {
-  if ($_.Name -match 'db\.pgsql$')
-  {
-    Invoke-SQL -Database postgres -File $_
-  }
-  else
-  {
-    Invoke-SQL -Database $PostgresDatabase -File $_
+const sqlScripts = settings.PostgresScriptsDir.replaceAll("\\", "/");
+const pattern = `${sqlScripts}/*.pgsql`;
+const scripts = (await glob(pattern)).sort();
+
+for (const script of scripts) {
+  if (/db\.pgsql$/g.test(script)) {
+    await quiet(() => invokeSQL("postgres", script));
+  } else {
+    await quiet(() => invokeSQL(settings.PostgresDatabase, script));
   }
 }
-*/

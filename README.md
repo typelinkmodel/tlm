@@ -4,21 +4,21 @@ TLM is a simple modelling technique inspired by [Object Role Modelling](https://
 
 This is an unfinished hobby project. _Use at your own risk._
 
+## Prerequisites
+
+* latest LTS [node](https://nodejs.org/)
+* recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
+* [docker cli](https://github.com/docker/cli) installed and connected
+
 ## Build
 
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
 
-Uses latest LTS [node](https://nodejs.org/) with recent [pnpm](https://pnpm.io/):
 ```shell
-corepack enable
 pnpm install
-pnpm run bootstrap
 pnpm run setup
-pnpm run server
 pnpm run test
 ```
-
-Needs [docker cli](https://github.com/docker/cli).
 
 ## Code
 
