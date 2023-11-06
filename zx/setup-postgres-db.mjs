@@ -24,9 +24,14 @@ psql \
 
 async function invokeSQL(database, file) {
   notice(`Running SQL script ${file} on ${settings.PostgresContainer}/${database}…`);
-  const absPath = path.resolve(file);
+  // when running on windows, resolve() adds the drive letter
+  // zx then invokes bash, passing the windows path to docker
+  // docker then gets confused about the drive letter
+  // So we use a relative path instead and hope that always works, instead of:
+  //  const absPath = path.resolve(file);
+  //  await $`docker cp ${absPath} ${settings.PostgresContainer}:/tmp/${fileName}`;
   const fileName = path.basename(file);
-  await $`docker cp ${absPath} ${settings.PostgresContainer}:/tmp/${fileName}`;
+  await $`docker cp ${file} ${settings.PostgresContainer}:/tmp/${fileName}`;
   await $`docker exec -i \
 "${settings.PostgresContainer}" \
 psql \
