@@ -199,7 +199,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private err(error: Error | string | unknown): void {
+  private err(error: unknown): void {
     let errorString: string;
     if (error instanceof Error) {
       errorString = error.toString();
