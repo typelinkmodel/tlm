@@ -49,7 +49,7 @@ Then(
     const reader: IReader = this.reader;
     const fact: TlmFact = await reader.readFactUnique(object!, {
       links: [assertLink],
-    })!;
+    });
 
     assert.equal(fact.value, assertValue);
   }
@@ -81,7 +81,7 @@ Then(
     const reader: IReader = this.reader;
     const fact: TlmFact = await reader.readFactUnique(target!, {
       links: [assertValueLink],
-    })!;
+    });
 
     assert.equal(fact.value, assertValue);
   }
