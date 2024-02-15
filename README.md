@@ -10,6 +10,10 @@ This is an unfinished hobby project. _Use at your own risk._
 * recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
 * [docker cli](https://github.com/docker/cli) installed and connected
 
+### Rust version
+
+* latest stable [rust](https://www.rust-lang.org/)
+
 ## Build
 
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
@@ -18,6 +22,13 @@ This is an unfinished hobby project. _Use at your own risk._
 pnpm install
 pnpm run setup
 pnpm run test
+```
+
+### Rust version
+
+```shell
+cargo build
+cargo test
 ```
 
 ## Code
