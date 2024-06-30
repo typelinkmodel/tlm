@@ -1,3 +1,3 @@
 pub mod schema;
 
-pub use self::schema::*;
+pub use schema::*;
