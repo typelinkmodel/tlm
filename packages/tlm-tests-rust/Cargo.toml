@@ -1,0 +1,14 @@
+[package]
+name = "tlm-tests-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+cucumber = "0.21"
+futures = "0.3"
+
+[[test]]
+name = "cucumber"
+harness = false
