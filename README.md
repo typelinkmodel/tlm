@@ -29,11 +29,21 @@ pnpm run test
 ```shell
 cargo build
 cargo test
+cargo clippy -- -D warnings
+```
+
+or run tests with coverage:
+```shell
+cargo llvm-cov
 ```
 
 ## Code
 
+### TypeScript
+
 Code style follows [Prettier](https://prettier.io/).
+
+### Commits
 
 Follow
 

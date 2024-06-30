@@ -5,8 +5,8 @@ const TLM_TYPE_NAMESPACE: TlmOid = 3;
 // const TLM_TYPE_LINK: TlmOid = 53;
 
 pub trait TlmObject : Clone + Eq + Default {
-    fn oid(self: &Self) -> TlmOid;
-    fn tlm_type(self: &Self) -> TlmOid;
+    fn oid(&self) -> TlmOid;
+    fn tlm_type(&self) -> TlmOid;
 }
 
 #[derive(Debug,Clone,Hash,PartialEq,Eq,Default)]
@@ -28,7 +28,7 @@ impl TlmObject for TlmNamespace {
 }
 
 impl TlmNamespace {
-    fn new(oid: TlmOid, prefix: String, uri: String) -> TlmNamespace {
+    pub fn new(oid: TlmOid, prefix: String, uri: String) -> TlmNamespace {
         TlmNamespace {
             oid,
             prefix,
@@ -37,7 +37,7 @@ impl TlmNamespace {
         }
     }
 
-    fn describe(self: Self, description: String) -> TlmNamespace {
+    pub fn describe(self, description: String) -> TlmNamespace {
         TlmNamespace {
             description: Some(description),
             ..self

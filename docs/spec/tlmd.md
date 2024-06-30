@@ -14,7 +14,7 @@ the various warnings about empty value and whitespace handling below.)
 TLMD files are written and processed line by line, with lines split on unix newlines (`\n`). Other common newline
 styles (windows `\r\n` or the old mac `\r`) are also accepted.
 
-TLMD files must be encoded in UTF-8 and should not start with with the unicode BOM.
+TLMD files must be encoded in UTF-8 and should not start with the unicode BOM.
 
 # The start line
 

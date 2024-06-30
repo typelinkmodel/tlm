@@ -29,14 +29,20 @@ jobs:
         with:
           run_install: |
             - recursive: false
-      - name: Run CI
+      - name: Setup Rust
+        run: rustup update stable
+      - name: Setup cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Run TypeScript CI
         run: pnpm run ci
+      - name: Run Rust CI
+        run: pnpm run ci-rust
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
