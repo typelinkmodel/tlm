@@ -17,6 +17,7 @@
     "setup": "zx zx/x.mjs setup",
     "destroy": "zx zx/x.mjs destroy ",
     "ci": "zx zx/x.mjs clean lint setup test destroy",
+    "ci-rust": "zx zx/x.mjs rust-lint rust-test",
     "x": "zx zx/x.mjs"
   },
   "devDependencies": {

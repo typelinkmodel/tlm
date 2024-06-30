@@ -10,3 +10,5 @@ packages/*/lib/
 /pnpm-lock.yaml
 **/package-lock.json
 .DS_Store
+/target/
+codecov.json
