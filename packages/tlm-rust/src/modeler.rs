@@ -1,4 +1,4 @@
-pub mod namespace;
+mod namespace;
 pub use namespace::*;
 
 #[derive(Debug,Clone,Default)]
@@ -14,11 +14,17 @@ impl Modeler {
     }
 
     pub fn initialize(&mut self) {
-        // todo load namespaces from config
+        self.namespace_model.initialize();
     }
 
     pub fn add_namespace(&mut self, prefix: String, uri: String, description: Option<String>) {
         self.namespace_model.add_namespace(prefix, uri, description);
+    }
+
+    pub fn set_active_namespace(&mut self, ns: Option<String>) {
+        if let Some(ns) = ns {
+            self.namespace_model.set_active_namespace(ns);
+        }
     }
 }
 

@@ -205,6 +205,8 @@ dependencies = [
  "pin-project",
  "regex",
  "sealed",
+ "serde",
+ "serde_json",
  "smart-default",
 ]
 
@@ -869,6 +871,9 @@ dependencies = [
 [[package]]
 name = "tlm"
 version = "0.1.0"
+dependencies = [
+ "lazy_static",
+]
 
 [[package]]
 name = "tlm-tests-rust"
