@@ -2,5 +2,6 @@
 resolver = "2"
 
 members = [
-    "packages/tlm-rust"
+    "packages/tlm-rust",
+    "packages/tlm-tests-rust"
 ]
