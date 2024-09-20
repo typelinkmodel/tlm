@@ -50,6 +50,18 @@ test("TlmdLoader test 004-sample-hr-model", async () => {
   expect(coach.toType).toBe(personType.oid);
 });
 
+test("TlmdLoader test 005-edge-case-regex", async () => {
+  const modeler = await loadTest("005-edge-case-regex");
+  expect(modeler.activeNamespace).toBe("hr");
+  expect(modeler.namespaces.hr.uri).toBe("https://type.link.model.tools/ns/tlm-sample-hr/");
+  const personType = modeler.types.hr.Person;
+  expect(personType.superType).toBe(modeler.types.tlm.Type.oid);
+  expect(personType.description).toBe("being regarded as an individual");
+  const link = modeler.links.hr.Person.id;
+  expect(link).toBeDefined();
+  expect(link.isPrimaryId).toBe(true);
+});
+
 async function loadTest(testname: string): Promise<Modeler> {
   const modeler = new Modeler();
   await modeler.initialize();
