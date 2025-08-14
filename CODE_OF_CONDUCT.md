@@ -21,8 +21,8 @@ community include:
 * Focusing on what is best not just for us as individuals, but for the
   overall community
 
-Any conduct which could reasonably considered inappropriate in a professional
-setting is unacceptable.
+Any conduct which could reasonably be considered inappropriate in a
+professional setting is unacceptable.
 
 ## Moderation
 
