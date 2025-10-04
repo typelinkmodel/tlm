@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of sonar analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of sonar analysis
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
