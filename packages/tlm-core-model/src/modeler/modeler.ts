@@ -42,8 +42,8 @@ export class Modeler implements IModeler {
     linkModel: LinkModel = new LinkModel(
       oidGenerator,
       namespaceModel,
-      typeModel
-    )
+      typeModel,
+    ),
   ) {
     this._oidGenerator = oidGenerator;
     this._namespaceModel = namespaceModel;
@@ -95,7 +95,7 @@ export class Modeler implements IModeler {
   public async addNamespace(
     prefix: string,
     uri: string,
-    description?: string
+    description?: string,
   ): Promise<TlmNamespace> {
     return this._namespaceModel.addNamespace(prefix, uri, description);
   }
@@ -104,7 +104,7 @@ export class Modeler implements IModeler {
     for (let i = 0; i < this._statementProcessors.length; i++) {
       const regex = this._statementProcessors[i] as RegExp;
       const processor = this._statementProcessors[++i] as (
-        st: RegExpMatchArray
+        st: RegExpMatchArray,
       ) => Promise<void>;
       const match = statement.match(regex);
       if (match) {
@@ -130,9 +130,8 @@ export class Modeler implements IModeler {
   }
 
   private async processLinkDefinitionStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const groups = match.groups!;
     const rel = groups.rel.replace(/\s+/g, " ").trim();
     const o: Mutable<LinkOptions> = {
@@ -166,7 +165,7 @@ export class Modeler implements IModeler {
   }
 
   private async processReverseLinkDefinitionStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
     const [, type, rel, link, otherType] = match;
     const processedRel = rel.replace(/\s+/g, " ").trim();
@@ -176,7 +175,7 @@ export class Modeler implements IModeler {
           type,
           otherType,
           link,
-          true
+          true,
         );
         break;
       case "must be a":
@@ -184,18 +183,18 @@ export class Modeler implements IModeler {
           type,
           otherType,
           link,
-          false
+          false,
         );
         break;
       default:
         throw new Error(
-          `Cannot process reverse statement relationship '${processedRel}'`
+          `Cannot process reverse statement relationship '${processedRel}'`,
         );
     }
   }
 
   private async processToggleDefinitionStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
     const [, type, toggle] = match;
     await this._typeModel.addType(type);
@@ -203,7 +202,7 @@ export class Modeler implements IModeler {
   }
 
   private async processSuperTypeDefinitionStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
     const [, type, superType] = match;
     const typeObj = await this._typeModel.addType(type);
@@ -213,7 +212,7 @@ export class Modeler implements IModeler {
   }
 
   private async processTypeDescriptionStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
     const [, type, description] = match;
     const typeObj = await this._typeModel.addType(type);
@@ -223,7 +222,7 @@ export class Modeler implements IModeler {
 
   // noinspection JSMethodCanBeStatic
   private async processTypePluralNameStatement(
-    match: RegExpMatchArray
+    match: RegExpMatchArray,
   ): Promise<void> {
     const [, type, plural] = match;
     const typeObj = await this._typeModel.addType(type);

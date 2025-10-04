@@ -32,12 +32,10 @@ export class NamespaceModel {
   }
 
   public get tlm(): TlmNamespace {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this._tlmNamespace!;
   }
 
   public get xs(): TlmNamespace {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this._xsNamespace!;
   }
 
@@ -87,7 +85,7 @@ export class NamespaceModel {
     prefix: string,
     uri: string,
     description?: string,
-    oid?: number
+    oid?: number,
   ): Promise<TlmNamespace> {
     const oidGiven = oid !== undefined;
 
@@ -99,34 +97,29 @@ export class NamespaceModel {
       if (prefixMatches) {
         if (!uriMatches) {
           throw new Error(
-            `Namespace with prefix ${prefix} already exists with URI ${existingNamespace.uri}, cannot change to URI ${uri}`
+            `Namespace with prefix ${prefix} already exists with URI ${existingNamespace.uri}, cannot change to URI ${uri}`,
           );
         }
         if (oidGiven && !oidMatches) {
           throw new Error(
-            `Namespace with prefix ${prefix} already exists with oid ${existingNamespace.oid}, cannot change to oid ${oid}`
+            `Namespace with prefix ${prefix} already exists with oid ${existingNamespace.oid}, cannot change to oid ${oid}`,
           );
         }
         return existingNamespace;
       } else if (uriMatches) {
         throw new Error(
-          `Namespace with uri ${uri} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`
+          `Namespace with uri ${uri} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`,
         );
       } else if (oidGiven && oidMatches) {
         throw new Error(
-          `Namespace with oid ${oid} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`
+          `Namespace with oid ${oid} already exists with prefix ${existingNamespace.prefix}, cannot change to prefix ${prefix}`,
         );
       }
     }
 
     const newOid = oid !== undefined ? oid : await this._oidGenerator.nextOid();
 
-    const newNamespace = new TlmNamespace(
-      newOid,
-      prefix,
-      uri,
-      description
-    );
+    const newNamespace = new TlmNamespace(newOid, prefix, uri, description);
     this._namespaces.push(newNamespace);
     this._namespaceMapCache = undefined;
     return newNamespace;

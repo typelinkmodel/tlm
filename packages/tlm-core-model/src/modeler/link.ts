@@ -24,7 +24,7 @@ export class LinkModel {
   constructor(
     oidGenerator: OidGenerator = new OidGenerator(),
     namespaceModel: NamespaceModel = new NamespaceModel(oidGenerator),
-    typeModel: TypeModel = new TypeModel(oidGenerator, namespaceModel)
+    typeModel: TypeModel = new TypeModel(oidGenerator, namespaceModel),
   ) {
     this._oidGenerator = oidGenerator;
     this._namespaceModel = namespaceModel;
@@ -79,11 +79,11 @@ export class LinkModel {
 
   public findLinkByNameOptional(
     fromType: number,
-    name: string
+    name: string,
   ): TlmLink | undefined {
     try {
       return this.findLinkByName(fromType, name);
-    } catch (e) {
+    } catch {
       return undefined;
     }
   }
@@ -112,15 +112,16 @@ export class LinkModel {
     toType: string,
     fromType: string,
     name: string,
-    isSingularTo = false
+    isSingularTo = false,
   ): Promise<TlmLink> {
+    await Promise.resolve(); // eslint require-await
     const toTypeObj = this._typeModel.findTypeByName(toType);
     const fromTypeObj = this._typeModel.findTypeByName(fromType);
 
     const existingLink = this.findLinkByName(fromTypeObj.oid, name);
     if (toTypeObj.oid !== existingLink.toType) {
       throw new Error(
-        `Existing relationship '${name}' from '${fromType}' goes to '${toTypeObj.name}', not '${toType}'`
+        `Existing relationship '${name}' from '${fromType}' goes to '${toTypeObj.name}', not '${toType}'`,
       );
     }
 

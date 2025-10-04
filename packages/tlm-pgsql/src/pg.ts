@@ -1,4 +1,4 @@
-import { Pool, PoolClient, QueryResult } from "pg";
+import { Pool, PoolClient } from "pg";
 
 type DatabaseAction<T> = (client: PoolClient) => Promise<T>;
 
@@ -12,7 +12,7 @@ export async function tx<T>(pool: Pool, action: DatabaseAction<T>): Promise<T> {
   } catch (e) {
     try {
       await client.query("ROLLBACK");
-    } catch (e2) {
+    } catch {
       // ignored
     }
     throw e;

@@ -11,7 +11,7 @@ test("TlmNamespace", () => {
     99,
     "sample",
     "https://example.com/ns",
-    "Test namespace"
+    "Test namespace",
   );
   expect(ns.oid).toBe(99);
   expect(ns.type).toBe(TlmNamespace.NAMESPACE_TYPE);
@@ -38,6 +38,7 @@ test("TlmType", () => {
   expect(t.plural).toBe("SampleTypes");
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const nameLink: any = {
   oid: 101,
   fromType: 100,
@@ -76,10 +77,12 @@ function testBooleanLinkProperty(prop: keyof TlmLink, defaultValue = false) {
   expect(l[prop]).toBe(!defaultValue);
 }
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is singular", () => {
   testBooleanLinkProperty("isSingular", false);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is mandatory", () => {
   testBooleanLinkProperty("isMandatory", false);
 });
@@ -89,21 +92,23 @@ test("TlmLink: that is a primary id", () => {
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isSingular: false });
-  }).toThrowError(/Primary ID links must be singular/);
+  }).toThrow(/Primary ID links must be singular/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isMandatory: false });
-  }).toThrowError(/Primary ID links must be mandatory/);
+  }).toThrow(/Primary ID links must be mandatory/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isValue: false });
-  }).toThrowError(/Primary ID links must be to a value/);
+  }).toThrow(/Primary ID links must be to a value/);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is singular to the target", () => {
   testBooleanLinkProperty("isSingularTo", false);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is mandatory to the target", () => {
   testBooleanLinkProperty("isMandatoryTo", false);
 });
@@ -113,17 +118,18 @@ test("TlmLink: that is a toggle", () => {
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isSingular: false });
-  }).toThrowError(/Toggle links must be singular/);
+  }).toThrow(/Toggle links must be singular/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isMandatory: false });
-  }).toThrowError(/Toggle links must be mandatory/);
+  }).toThrow(/Toggle links must be mandatory/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isValue: false });
-  }).toThrowError(/Toggle links must be to a value/);
+  }).toThrow(/Toggle links must be to a value/);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is a value", () => {
   testBooleanLinkProperty("isValue", false);
 });

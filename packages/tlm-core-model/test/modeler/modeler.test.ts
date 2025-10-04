@@ -17,7 +17,7 @@ test("initialize(): Modeler initialization loads the core model", async () => {
   expect(modeler.types.tlm.Namespace.name).toBe("Namespace");
   expect(modeler.types.tlm.Type.namespace).toBe(modeler.namespaces.tlm.oid);
   expect(modeler.links.tlm.Link["is singular"].fromType).toBe(
-    modeler.types.tlm.Link.oid
+    modeler.types.tlm.Link.oid,
   );
 });
 
@@ -26,6 +26,7 @@ test("initialize(): can safely be called more than once", async () => {
   await modeler.initialize();
   await modeler.initialize();
   await modeler.initialize();
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("activeNamespace: basic usage", async () => {
@@ -42,13 +43,14 @@ test("activeNamespace: Initially no namespace is active", async () => {
 
 test("activeNamespace: Can't activate an unknown namespace", async () => {
   const modeler: Modeler = new Modeler();
-  expect(() => (modeler.activeNamespace = "foo")).toThrowError(/foo/);
+  expect(() => (modeler.activeNamespace = "foo")).toThrow(/foo/);
 });
 
 test("activeNamespace: Namespace deactivation ignored", async () => {
   const modeler: Modeler = new Modeler();
   await modeler.addNamespace("foo", "https://example.com/ns/foo");
   modeler.activeNamespace = "foo";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const untypedModeler = modeler as any;
   untypedModeler.activeNamespace = undefined;
   expect(modeler.activeNamespace).toBeDefined();
@@ -58,11 +60,11 @@ test("activeNamespace: Namespace deactivation ignored", async () => {
 
 test("activeNamespace: Can't activate built-in namespaces", async () => {
   const modeler: Modeler = new Modeler();
-  expect(() => (modeler.activeNamespace = "tlm")).toThrowError(
-    /You should not modify/
+  expect(() => (modeler.activeNamespace = "tlm")).toThrow(
+    /You should not modify/,
   );
-  expect(() => (modeler.activeNamespace = "xs")).toThrowError(
-    /You should not modify/
+  expect(() => (modeler.activeNamespace = "xs")).toThrow(
+    /You should not modify/,
   );
 });
 
@@ -72,7 +74,7 @@ test("addNamespace: basic usage", async () => {
   await modeler.addNamespace(
     "bar",
     "https://example.com/ns/bar",
-    "It may be about drinking."
+    "It may be about drinking.",
   );
 
   expect(modeler.namespaces.foo.uri).toBe("https://example.com/ns/foo");
@@ -93,15 +95,15 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
   // can't modify namespace after adding
   await expect(async () => {
     await modeler.addNamespace("foo", "https://example.com/ns/bar");
-  }).rejects.toThrowError(/already exists/);
+  }).rejects.toThrow(/already exists/);
   await expect(async () => {
     await modeler.addNamespace("bar", "https://example.com/ns/foo");
-  }).rejects.toThrowError(/already exists/);
+  }).rejects.toThrow(/already exists/);
 
   // but if the values are the same, ignore the api call
   const resultNs = await modeler.addNamespace(
     "foo",
-    "https://example.com/ns/foo"
+    "https://example.com/ns/foo",
   );
   expect(resultNs.prefix).toBe("foo");
 
@@ -109,7 +111,7 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
   await modeler.addNamespace(
     "foo",
     "https://example.com/ns/foo",
-    "new description"
+    "new description",
   );
   expect(modeler.namespaces.foo.description).toBeUndefined();
 });
@@ -118,17 +120,17 @@ test("addStatement: basic usage with 'has exactly one'", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Person has exactly one name which must be a string."
+    "A Person has exactly one name which must be a string.",
   );
   await modeler.addStatement(
-    "A Person has exactly one coach which must be a Person."
+    "A Person has exactly one coach which must be a Person.",
   );
   await modeler.addStatement(
-    "A Department has exactly one manager which must be a Person."
+    "A Department has exactly one manager which must be a Person.",
   );
 
   expect(modeler.namespaces.hr.uri).toBe(
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
+    "https://type.link.model.tools/ns/tlm-sample-hr/",
   );
   expect(modeler.types.hr.Person).toBeDefined();
   expect(modeler.types.hr.Person.name).toBe("Person");
@@ -137,25 +139,25 @@ test("addStatement: basic usage with 'has exactly one'", async () => {
   expect(modeler.types.hr.Person.superType).toBe(modeler.types.tlm.Type.oid);
 
   expect(modeler.links.hr.Person.name.fromType).toBe(
-    modeler.types.hr.Person.oid
+    modeler.types.hr.Person.oid,
   );
   expect(modeler.links.hr.Person.name.name).toBe("name");
   expect(modeler.links.hr.Person.name.toType).toBe(modeler.types.xs.string.oid);
 
   expect(modeler.links.hr.Person.coach.fromType).toBe(
-    modeler.types.hr.Person.oid
+    modeler.types.hr.Person.oid,
   );
   expect(modeler.links.hr.Person.coach.name).toBe("coach");
   expect(modeler.links.hr.Person.coach.toType).toBe(
-    modeler.types.hr.Person.oid
+    modeler.types.hr.Person.oid,
   );
 
   expect(modeler.links.hr.Department.manager.fromType).toBe(
-    modeler.types.hr.Department.oid
+    modeler.types.hr.Department.oid,
   );
   expect(modeler.links.hr.Department.manager.name).toBe("manager");
   expect(modeler.links.hr.Department.manager.toType).toBe(
-    modeler.types.hr.Person.oid
+    modeler.types.hr.Person.oid,
   );
 });
 
@@ -163,22 +165,22 @@ test("addStatement: can only process certain statements", async () => {
   const modeler: Modeler = new Modeler();
   await expect(async () => {
     await modeler.addStatement(
-      "Thousands of monkeys might write something nice but I don't know how to read it"
+      "Thousands of monkeys might write something nice but I don't know how to read it",
     );
-  }).rejects.toThrowError(/statement/);
+  }).rejects.toThrow(/statement/);
 });
 
 test("addStatement: types are namespaced", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Person has exactly one name which must be a string."
+    "A Person has exactly one name which must be a string.",
   );
 
   await modeler.addNamespace("foo", "https://example.com/ns/foo");
   modeler.activeNamespace = "foo";
   await modeler.addStatement(
-    "A Person has exactly one name which must be a string."
+    "A Person has exactly one name which must be a string.",
   );
 
   expect(modeler.types.hr.Person.oid).toBeDefined();
@@ -190,11 +192,13 @@ test("addStatement: statements can be repeated", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Person has exactly one name which must be a string."
+    "A Person has exactly one name which must be a string.",
   );
   await modeler.addStatement(
-    "A Person has exactly one name which must be a string."
+    "A Person has exactly one name which must be a string.",
   );
+
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("addStatement: active namespace is needed", async () => {
@@ -202,28 +206,30 @@ test("addStatement: active namespace is needed", async () => {
   await modeler.initialize();
   await modeler.addNamespace(
     "hr",
-    "https://type.link.model.tools/ns/tlm-sample-hr/"
+    "https://type.link.model.tools/ns/tlm-sample-hr/",
   );
   await expect(async () => {
     await modeler.addStatement(
-      "A Person has exactly one name which must be a string."
+      "A Person has exactly one name which must be a string.",
     );
-  }).rejects.toThrowError(/Active namespace/i);
+  }).rejects.toThrow(/Active namespace/i);
 });
 
 test("addStatement: 'A' and 'An' are both ok", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "An Individual has exactly one name which must be an integer."
+    "An Individual has exactly one name which must be an integer.",
   );
+
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("addStatement: identifier definitions", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Person is identified by id which must be a URI."
+    "A Person is identified by id which must be a URI.",
   );
   const link = modeler.links.hr.Person.id;
   expect(link).toBeDefined();
@@ -234,7 +240,7 @@ test("addStatement: has at most one", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Team has at most one name which must be a string."
+    "A Team has at most one name which must be a string.",
   );
   const link = modeler.links.hr.Team.name;
   expect(link).toBeDefined();
@@ -247,7 +253,7 @@ test("addStatement: has at least one", async () => {
   const modeler: Modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Team has at least one lead which must be a Person."
+    "A Team has at least one lead which must be a Person.",
   );
   const link = modeler.links.hr.Team.lead;
   expect(link).toBeDefined();
@@ -260,7 +266,7 @@ test("addStatement: can have some", async () => {
   const modeler = await newHrModeler();
 
   await modeler.addStatement(
-    "A Person can have some team each of which must be a Team."
+    "A Person can have some team each of which must be a Team.",
   );
   const link = modeler.links.hr.Person.team;
   expect(link).toBeDefined();
@@ -274,7 +280,7 @@ test("addStatement: is a kind of", async () => {
   await modeler.initialize();
   await modeler.addNamespace(
     "req",
-    "https://type.link.model.tools/ns/tlm-sample-requirements/"
+    "https://type.link.model.tools/ns/tlm-sample-requirements/",
   );
   modeler.activeNamespace = "req";
 
@@ -289,7 +295,7 @@ test("addStatement: is exactly one for", async () => {
   const modeler = await newMediaModeler();
 
   await modeler.addStatement(
-    "An Album has at least one track which must be a Track."
+    "An Album has at least one track which must be a Track.",
   );
   let link = modeler.links.media.Album.track;
   expect(link.isMandatory).toBe(true);
@@ -311,7 +317,7 @@ test("addStatement: must be for", async () => {
   const modeler: Modeler = await newMediaModeler();
 
   await modeler.addStatement(
-    "A Song can have some rendition which must be a Track."
+    "A Song can have some rendition which must be a Track.",
   );
   await modeler.addStatement("A Track must be a rendition for a Song.");
   const link = modeler.links.media.Song.rendition;
@@ -342,7 +348,7 @@ test("addStatement: support extra whitespace", async () => {
 
   expect(modeler.types.hr.Person).toBeDefined();
   expect(modeler.links.hr.Person.name.fromType).toBe(
-    modeler.types.hr.Person.oid
+    modeler.types.hr.Person.oid,
   );
   expect(modeler.links.hr.Person.name.toType).toBe(modeler.types.xs.string.oid);
 });
@@ -372,7 +378,9 @@ test("addStatement: plural", async () => {
 test("addStatement: link from and target names", async () => {
   const modeler: Modeler = await newHrModeler();
 
-  await modeler.addStatement("A Person, the coachee, can have some coach which must be a Person, the coach.");
+  await modeler.addStatement(
+    "A Person, the coachee, can have some coach which must be a Person, the coach.",
+  );
   const link = modeler.links.hr.Person.coach;
   expect(link).toBeDefined();
   expect(link.fromName).toBe("coachee");
@@ -397,7 +405,7 @@ test("getValueTypeForLink: basic usage", async () => {
   const modeler: Modeler = new Modeler();
   await modeler.initialize();
   expect(
-    modeler.getValueTypeForLink(modeler.links.tlm.Type.namespace).name
+    modeler.getValueTypeForLink(modeler.links.tlm.Type.namespace).name,
   ).toBe("Namespace");
 });
 
@@ -412,13 +420,15 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
       link: "things",
       othertype: "Team",
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (modeler as any).processLinkDefinitionStatement(match);
-  }).rejects.toThrowError(/Cannot process statement relationship/);
+  }).rejects.toThrow(/Cannot process statement relationship/);
 });
 
 test("processReverseLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
   await expect(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (modeler as any).processReverseLinkDefinitionStatement([
       "A Track flub-boxes rendition for a Song.",
       "Track",
@@ -426,7 +436,7 @@ test("processReverseLinkDefinitionStatement: cover unreachable default case", as
       "rendition",
       "Song",
     ]);
-  }).rejects.toThrowError(/Cannot process reverse statement relationship/);
+  }).rejects.toThrow(/Cannot process reverse statement relationship/);
 });
 
 test("constructor: inject dependencies", async () => {
@@ -435,7 +445,7 @@ test("constructor: inject dependencies", async () => {
   const typeModel = new TypeModel(oidGenerator, namespaceModel);
   const linkModel = new LinkModel(oidGenerator, namespaceModel, typeModel);
   expect(
-    new Modeler(oidGenerator, namespaceModel, typeModel, linkModel)
+    new Modeler(oidGenerator, namespaceModel, typeModel, linkModel),
   ).toBeDefined();
 });
 
@@ -446,7 +456,7 @@ async function newHrModeler() {
 async function newMediaModeler() {
   return newModeler(
     "media",
-    "https://type.link.model.tools/ns/tlm-sample-media/"
+    "https://type.link.model.tools/ns/tlm-sample-media/",
   );
 }
 

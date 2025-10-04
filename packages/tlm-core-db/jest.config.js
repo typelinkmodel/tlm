@@ -1,7 +1,7 @@
-const baseConfig = require("../../jest.config.base");
+import config from "../../jest.config.base.js";
 
-module.exports = {
-  ...baseConfig,
+export default {
+  ...config,
   coverageThreshold: {
     global: {
       branches: 80,

@@ -18,13 +18,17 @@ test("TlmdLoader test 001-empty", async () => {
 test("TlmdLoader test 002-empty-model", async () => {
   const modeler = await loadTest("002-empty-model");
   expect(modeler.activeNamespace).toBe("hr");
-  expect(modeler.namespaces.hr.uri).toBe("https://type.link.model.tools/ns/tlm-sample-hr/");
+  expect(modeler.namespaces.hr.uri).toBe(
+    "https://type.link.model.tools/ns/tlm-sample-hr/",
+  );
 });
 
 test("TlmdLoader test 003-simple-person-model", async () => {
   const modeler = await loadTest("003-simple-person-model");
   expect(modeler.activeNamespace).toBe("hr");
-  expect(modeler.namespaces.hr.uri).toBe("https://type.link.model.tools/ns/tlm-sample-hr/");
+  expect(modeler.namespaces.hr.uri).toBe(
+    "https://type.link.model.tools/ns/tlm-sample-hr/",
+  );
   const personType = modeler.types.hr.Person;
   expect(personType.superType).toBe(modeler.types.tlm.Type.oid);
   expect(personType.description).toBe("being regarded as an individual");
@@ -53,7 +57,13 @@ test("TlmdLoader test 004-sample-hr-model", async () => {
 async function loadTest(testname: string): Promise<Modeler> {
   const modeler = new Modeler();
   await modeler.initialize();
-  const loader = new TlmdLoader(modeler, new Reader(), new Searcher(), false, true);
+  const loader = new TlmdLoader(
+    modeler,
+    new Reader(),
+    new Searcher(),
+    false,
+    true,
+  );
   const fileName = `${testname}.tlmd`;
   const filePath = join(__dirname, "tlmd", fileName);
   await loader.loadFile(filePath);

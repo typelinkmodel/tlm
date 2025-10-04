@@ -1,1 +1,5 @@
-module.exports = require("../../jest.config.base");
+import config from "../../jest.config.base.js";
+
+export default {
+  ...config,
+}

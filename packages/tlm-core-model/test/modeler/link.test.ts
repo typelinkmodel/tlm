@@ -10,6 +10,7 @@ test("initialize(): can safely be called more than once", async () => {
   await model.initialize();
   await model.initialize();
   await model.initialize();
+  expect(model).toBeInstanceOf(LinkModel);
 });
 
 test("addReverseMandatoryLink(): reject link rewiring", async () => {
@@ -26,6 +27,6 @@ test("addReverseMandatoryLink(): reject link rewiring", async () => {
   await typeModel.addType("Bar2");
   await linkModel.addLink({ fromType: "Foo", toType: "Bar", name: "bar" });
   await expect(
-    (() => linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"))()
-  ).rejects.toThrowError(/Existing relationship/);
+    (() => linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"))(),
+  ).rejects.toThrow(/Existing relationship/);
 });

@@ -25,7 +25,7 @@ export interface IModeler {
   addNamespace(
     prefix: string,
     uri: string,
-    description?: string
+    description?: string,
   ): Promise<TlmNamespace>;
 
   addStatement(statement: string): Promise<void>;

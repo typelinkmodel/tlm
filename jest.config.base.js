@@ -27,4 +27,4 @@ if (!debug) {
   };
 }
 
-module.exports = config;
+export default config;

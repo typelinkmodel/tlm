@@ -1,5 +1,11 @@
+/* eslint-disable jest/no-mocks-import */
 import { Pool } from "pg";
-import { emptyResult, mockClientQuery, mockClientRelease, rowsResults } from "../../__mocks__/pg";
+import {
+  emptyResult,
+  mockClientQuery,
+  mockClientRelease,
+  rowsResults,
+} from "../../__mocks__/pg";
 import { OidGenerator } from "../../src/modeler/oid";
 
 describe("OidGenerator", () => {
@@ -34,7 +40,7 @@ describe("OidGenerator", () => {
     await oidGenerator.initialize();
     await expect(async () => {
       await oidGenerator.nextOid();
-    }).rejects.toThrowError(/mock error/);
+    }).rejects.toThrow(/mock error/);
     expect(mockClientRelease).toHaveBeenCalled();
   });
 });

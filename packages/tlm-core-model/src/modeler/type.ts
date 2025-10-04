@@ -12,7 +12,7 @@ export class TypeModel {
 
   constructor(
     oidGenerator: OidGenerator = new OidGenerator(),
-    namespaceModel: NamespaceModel = new NamespaceModel(oidGenerator)
+    namespaceModel: NamespaceModel = new NamespaceModel(oidGenerator),
   ) {
     this._oidGenerator = oidGenerator;
     this._namespaceModel = namespaceModel;
@@ -86,7 +86,7 @@ export class TypeModel {
       if (t.name === name) {
         const ns = this._namespaceModel.findNamespaceByOid(t.namespace);
         throw new Error(
-          `Found a type ${ns.prefix}:${name}, but ${ns.prefix} is not active`
+          `Found a type ${ns.prefix}:${name}, but ${ns.prefix} is not active`,
         );
       }
     }
@@ -97,7 +97,7 @@ export class TypeModel {
   public findTypeByNameOptional(name: string): TlmType | undefined {
     try {
       return this.findTypeByName(name);
-    } catch (e) {
+    } catch {
       return undefined;
     }
   }
@@ -118,6 +118,7 @@ export class TypeModel {
     return newType;
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async replaceType(type: TlmType): Promise<void> {
     if (type.namespace !== this._namespaceModel.getActiveNamespaceOid()) {
       throw new Error("Can only replace types in the active namespace");
