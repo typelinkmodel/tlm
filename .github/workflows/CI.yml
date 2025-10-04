@@ -20,19 +20,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
           node-version: lts/*
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: |
-            - recursive: false
+          cache: pnpm
       - name: Setup Rust
         run: rustup update stable
       - name: Setup cargo-llvm-cov
         uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Run TypeScript Install
+        run: pnpm install
       - name: Run TypeScript CI
         run: pnpm run ci
       - name: Run Rust CI
