@@ -12,7 +12,7 @@ export class TypeModel {
 
   constructor(
     oidGenerator: OidGenerator = new OidGenerator(),
-    namespaceModel: NamespaceModel = new NamespaceModel(oidGenerator)
+    namespaceModel: NamespaceModel = new NamespaceModel(oidGenerator),
   ) {
     this._oidGenerator = oidGenerator;
     this._namespaceModel = namespaceModel;
@@ -86,7 +86,7 @@ export class TypeModel {
       if (t.name === name) {
         const ns = this._namespaceModel.findNamespaceByOid(t.namespace);
         throw new Error(
-          `Found a type ${ns.prefix}:${name}, but ${ns.prefix} is not active`
+          `Found a type ${ns.prefix}:${name}, but ${ns.prefix} is not active`,
         );
       }
     }

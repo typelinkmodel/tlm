@@ -21,7 +21,9 @@ function mockNamespaceInitializeQueryForNamespaces() {
 function mockNamespaceAddNamespaceQuery() {
   mockClientQuery
     .mockReturnValueOnce(emptyResult("BEGIN"))
-    .mockReturnValueOnce(rowsResults("CALL tlm__insert_namespace ...", [{oid:4242}]))
+    .mockReturnValueOnce(
+      rowsResults("CALL tlm__insert_namespace ...", [{ oid: 4242 }]),
+    )
     .mockReturnValueOnce(emptyResult("COMMIT"));
 }
 
@@ -30,7 +32,7 @@ async function addNamespaceTo(namespaceModel: NamespaceModel) {
   const ns = await namespaceModel.addNamespace(
     "hr",
     "https://type.link.model.tools/ns/tlm-sample-hr/",
-    "HR Example"
+    "HR Example",
   );
   expect(ns.oid).toBeDefined();
   expect(namespaceModel.namespaceMap.hr.oid).toEqual(ns.oid);
@@ -60,7 +62,7 @@ describe("NamespaceModel", () => {
     new NamespaceModel(pool);
   });
 
-    it("should allow initialize() to be called more than once", async () => {
+  it("should allow initialize() to be called more than once", async () => {
     const namespaceModel = await createAndInitializeNamespaceModel();
     await namespaceModel.initialize();
     await namespaceModel.initialize();
@@ -77,26 +79,28 @@ describe("NamespaceModel", () => {
     const prefix = "foo";
     mockClientQuery
       .mockReturnValueOnce(emptyResult("BEGIN"))
-      .mockReturnValueOnce(rowsResults("SELECT ...", [
-        {
-          oid: 1,
-          prefix: "tlm",
-          uri: "https://type.link.model.tools/ns/tlm/",
-          description: "The Core TLM namespace."
-        },
-        {
-          oid: 2,
-          prefix: "xs",
-          uri: "http://www.w3.org/2001/XMLSchema",
-          description: "Namespaces for XML Schema DataTypes."
-        },
-        {
-          oid: 3,
-          prefix,
-          uri: "https://type.link.model.tools/ns/tlm-sample-foo/",
-          description: "Sample namespace."
-        }
-      ]))
+      .mockReturnValueOnce(
+        rowsResults("SELECT ...", [
+          {
+            oid: 1,
+            prefix: "tlm",
+            uri: "https://type.link.model.tools/ns/tlm/",
+            description: "The Core TLM namespace.",
+          },
+          {
+            oid: 2,
+            prefix: "xs",
+            uri: "http://www.w3.org/2001/XMLSchema",
+            description: "Namespaces for XML Schema DataTypes.",
+          },
+          {
+            oid: 3,
+            prefix,
+            uri: "https://type.link.model.tools/ns/tlm-sample-foo/",
+            description: "Sample namespace.",
+          },
+        ]),
+      )
       .mockReturnValueOnce(emptyResult("COMMIT"));
     await namespaceModel.initialize();
     expect(namespaceModel.namespaceMap.foo).toBeDefined();
@@ -113,7 +117,7 @@ describe("NamespaceModel", () => {
     await namespaceModel.addNamespace(
       "hr",
       "https://type.link.model.tools/ns/tlm-sample-hr/",
-      "HR Example"
+      "HR Example",
     );
   });
 
@@ -123,8 +127,9 @@ describe("NamespaceModel", () => {
       await namespaceModel.addNamespace(
         "foo",
         "https://type.link.model.tools/ns/tlm-sample-foo/",
-        "\"Sample namespace.\"",
-        4242)
+        '"Sample namespace."',
+        4242,
+      );
     }).rejects.toThrow(/oid/);
   });
 

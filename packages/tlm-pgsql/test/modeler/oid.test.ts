@@ -1,5 +1,10 @@
 import { Pool } from "pg";
-import { emptyResult, mockClientQuery, mockClientRelease, rowsResults } from "../../__mocks__/pg";
+import {
+  emptyResult,
+  mockClientQuery,
+  mockClientRelease,
+  rowsResults,
+} from "../../__mocks__/pg";
 import { OidGenerator } from "../../src/modeler/oid";
 
 describe("OidGenerator", () => {

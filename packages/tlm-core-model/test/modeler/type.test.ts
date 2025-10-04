@@ -14,7 +14,7 @@ test("initialize(): can safely be called more than once", async () => {
 
 test("findTypeByOid: error on unknown oid", () => {
   const model = new TypeModel();
-    expect(() => model.findTypeByOid(1000000)).toThrow(/oid/);
+  expect(() => model.findTypeByOid(1000000)).toThrow(/oid/);
 });
 
 // weird syntax incoming to deal with expecting errors out of async functions:
@@ -24,9 +24,9 @@ test("replaceType: no active namespace", async () => {
   const model = new TypeModel();
   const newType = new TlmType({ oid: 42, namespace: 42, name: "foo" });
 
-    await expect((() => model.replaceType(newType))()).rejects.toThrow(
-      /Active namespace not set/
-    );
+  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+    /Active namespace not set/,
+  );
 });
 
 test("replaceType: outside active namespace", async () => {
@@ -35,7 +35,7 @@ test("replaceType: outside active namespace", async () => {
   await namespaceModel.addNamespace("foo", "example://foo");
   const otherNamespace = await namespaceModel.addNamespace(
     "bar",
-    "example://bar"
+    "example://bar",
   );
   namespaceModel.activeNamespacePrefix = "foo";
   const model = new TypeModel(oidGenerator, namespaceModel);
@@ -47,9 +47,9 @@ test("replaceType: outside active namespace", async () => {
     name: "Foo",
   });
 
-    await expect((() => model.replaceType(newType))()).rejects.toThrow(
-      /Can only replace types in the active namespace/
-    );
+  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+    /Can only replace types in the active namespace/,
+  );
 });
 
 test("replaceType: wrong namespace", async () => {
@@ -65,7 +65,7 @@ test("replaceType: wrong namespace", async () => {
 
   const otherNamespace = await namespaceModel.addNamespace(
     "bar",
-    "example://bar"
+    "example://bar",
   );
   namespaceModel.activeNamespacePrefix = "bar";
 
@@ -75,7 +75,7 @@ test("replaceType: wrong namespace", async () => {
     name: "Foo",
   });
 
-    await expect((() => model.replaceType(newType))()).rejects.toThrow(
-      /Cannot move types to a new namespace/
-    );
+  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+    /Cannot move types to a new namespace/,
+  );
 });

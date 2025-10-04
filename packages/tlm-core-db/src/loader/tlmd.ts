@@ -35,7 +35,7 @@ export class TlmdLoader implements ILoader {
     reader: IReader = new Reader(),
     searcher: ISearcher = new Searcher(),
     continueOnError = false,
-    debug = false
+    debug = false,
   ) {
     this._modeler = modeler;
     this._reader = reader;
@@ -45,7 +45,11 @@ export class TlmdLoader implements ILoader {
   }
 
   public async loadFile(filename: string): Promise<void> {
-    const handler = new TlmdStreamHandler(this._modeler, this._continueOnError, this._debug);
+    const handler = new TlmdStreamHandler(
+      this._modeler,
+      this._continueOnError,
+      this._debug,
+    );
     const loader = new TlmdFileLoader(filename, handler);
     await loader.loadFile();
   }
@@ -87,7 +91,7 @@ export class TlmdStreamHandler {
 
   public async handleStart(
     type: TLMD_TYPE,
-    title: string | undefined
+    title: string | undefined,
   ): Promise<void> {
     this.debug(`TLMD Document type = '${TLMD_TYPE[type]}', title = '${title}'`);
   }
@@ -116,21 +120,21 @@ export class TlmdStreamHandler {
   public async handleStartExample(
     firstColumnIsValidity: boolean,
     fromLinkPath: string,
-    toLinkPath: string
+    toLinkPath: string,
   ): Promise<void> {
     this.debug(
       `Start example: has invalid examples? ${firstColumnIsValidity},` +
-        ` from = '${fromLinkPath}', 'to = ${toLinkPath}'`
+        ` from = '${fromLinkPath}', 'to = ${toLinkPath}'`,
     );
   }
 
   public async handleExample(
     valid: boolean,
     fromLinkPath: string | undefined,
-    toLinkPath: string | undefined
+    toLinkPath: string | undefined,
   ): Promise<void> {
     this.debug(
-      `Example: ok? ${valid}, from = '${fromLinkPath}', to = '${toLinkPath}'`
+      `Example: ok? ${valid}, from = '${fromLinkPath}', to = '${toLinkPath}'`,
     );
   }
 
@@ -203,7 +207,7 @@ export class TlmdFileLoader {
     let errorString: string;
     if (error instanceof Error) {
       errorString = error.toString();
-    } else if (typeof(error) === 'string') {
+    } else if (typeof error === "string") {
       errorString = error;
     } else {
       errorString = "unknown";
@@ -239,7 +243,7 @@ export class TlmdFileLoader {
         break;
       case STATE.EXAMPLE_START:
         match = this.line.match(
-          /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i
+          /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i,
         );
         if (!match) {
           this.err("expected example header!");
@@ -351,7 +355,7 @@ export class TlmdFileLoader {
     for (let i = 0; i < this._lineProcessors.length; i++) {
       const regex = this._lineProcessors[i] as RegExp;
       const processor = this._lineProcessors[++i] as (
-        st: RegExpMatchArray
+        st: RegExpMatchArray,
       ) => Promise<void>;
       const match = this.line.match(regex);
       if (match) {
@@ -365,7 +369,7 @@ export class TlmdFileLoader {
   private async processExampleLine(): Promise<void> {
     if (this.exampleFirstColumnIsValidity) {
       const match = this.line.match(
-        /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i
+        /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i,
       );
       if (!match) {
         this.err("should be example with validity!");
@@ -377,7 +381,7 @@ export class TlmdFileLoader {
         await this._handler.handleExample(
           valid,
           trim(fromLinkPath),
-          trim(toLinkPath)
+          trim(toLinkPath),
         );
       } catch (e) {
         this.err(e);
@@ -393,7 +397,7 @@ export class TlmdFileLoader {
         await this._handler.handleExample(
           true,
           trim(fromLinkPath),
-          trim(toLinkPath)
+          trim(toLinkPath),
         );
       } catch (e) {
         this.err(e);
@@ -403,7 +407,7 @@ export class TlmdFileLoader {
 
   private async processObjectLine(): Promise<void> {
     const match = this.line.match(
-      /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i
+      /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i,
     );
     if (!match) {
       this.err("should be valid object!");
@@ -517,7 +521,7 @@ export class TlmdFileLoader {
       await this._handler.handleStartExample(
         this.exampleFirstColumnIsValidity,
         fromLinkPath.trim(),
-        toLinkPath.trim()
+        toLinkPath.trim(),
       );
     } catch (e) {
       this.err(e);

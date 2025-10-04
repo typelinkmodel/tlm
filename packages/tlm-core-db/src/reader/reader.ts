@@ -4,7 +4,7 @@ import { IReader } from "../api";
 export class Reader implements IReader {
   public async readFactUnique(
     subject: TlmObject,
-    select: { links: string[] }
+    select: { links: string[] },
   ): Promise<TlmFact> {
     throw new Error("Not implemented");
   }

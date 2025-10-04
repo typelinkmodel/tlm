@@ -16,8 +16,8 @@ export class Modeler extends CoreModeler {
     linkModel: LinkModel = new LinkModel(
       oidGenerator,
       namespaceModel,
-      typeModel
-    )
+      typeModel,
+    ),
   ) {
     super(oidGenerator, namespaceModel, typeModel, linkModel);
   }

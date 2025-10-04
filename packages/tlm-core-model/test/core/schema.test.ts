@@ -11,7 +11,7 @@ test("TlmNamespace", () => {
     99,
     "sample",
     "https://example.com/ns",
-    "Test namespace"
+    "Test namespace",
   );
   expect(ns.oid).toBe(99);
   expect(ns.type).toBe(TlmNamespace.NAMESPACE_TYPE);

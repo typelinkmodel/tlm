@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment */
 import { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
 import { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
 import { assert } from "chai";
@@ -25,7 +25,7 @@ Then(
       value,
     });
     assert.isDefined(object);
-  }
+  },
 );
 
 Then(
@@ -35,7 +35,7 @@ Then(
     link: string,
     value: string,
     assertLink: string,
-    assertValue: string
+    assertValue: string,
   ) {
     // @ts-ignore
     const searcher: ISearcher = this.searcher;
@@ -52,7 +52,7 @@ Then(
     });
 
     assert.equal(fact.value, assertValue);
-  }
+  },
 );
 
 Then(
@@ -63,7 +63,7 @@ Then(
     value: string,
     assertLink: string,
     assertValueLink: string,
-    assertValue: string
+    assertValue: string,
   ) {
     // @ts-ignore
     const searcher: ISearcher = this.searcher;
@@ -84,5 +84,5 @@ Then(
     });
 
     assert.equal(fact.value, assertValue);
-  }
+  },
 );
