@@ -89,15 +89,15 @@ test("TlmLink: that is a primary id", () => {
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isSingular: false });
-  }).toThrowError(/Primary ID links must be singular/);
+  }).toThrow(/Primary ID links must be singular/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isMandatory: false });
-  }).toThrowError(/Primary ID links must be mandatory/);
+  }).toThrow(/Primary ID links must be mandatory/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isPrimaryId: true, isValue: false });
-  }).toThrowError(/Primary ID links must be to a value/);
+  }).toThrow(/Primary ID links must be to a value/);
 });
 
 test("TlmLink: that is singular to the target", () => {
@@ -113,15 +113,15 @@ test("TlmLink: that is a toggle", () => {
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isSingular: false });
-  }).toThrowError(/Toggle links must be singular/);
+  }).toThrow(/Toggle links must be singular/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isMandatory: false });
-  }).toThrowError(/Toggle links must be mandatory/);
+  }).toThrow(/Toggle links must be mandatory/);
 
   expect(() => {
     return new TlmLink({ ...nameLink, isToggle: true, isValue: false });
-  }).toThrowError(/Toggle links must be to a value/);
+  }).toThrow(/Toggle links must be to a value/);
 });
 
 test("TlmLink: that is a value", () => {

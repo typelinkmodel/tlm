@@ -48,26 +48,26 @@ test("Loader without delegates cannot load files", async () => {
   const loader = new Loader();
   await expect(async () => {
     await loader.loadFile("foo.tlmd");
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 });
 
 test("Loader for file without extension", async () => {
   const loader = new Loader();
   await expect(async () => {
     await loader.loadFile("foo");
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 
   await expect(async () => {
     await loader.loadFile("foo.");
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 
   await expect(async () => {
     await loader.loadFile("");
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 
   await expect(async () => {
     await loader.loadFile(null as unknown as string);
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 });
 
 test("Loader delegates loadFile", async () => {
@@ -75,7 +75,7 @@ test("Loader delegates loadFile", async () => {
   let loader = new Loader([]);
   await expect(async () => {
     await loader.loadFile("foo.tlmd");
-  }).rejects.toThrowError(/file type/);
+  }).rejects.toThrow(/file type/);
 
   // noop, no error
   loader = new Loader([unsupportive, noop, error]);
@@ -85,5 +85,5 @@ test("Loader delegates loadFile", async () => {
   loader = new Loader([unsupportive, error, noop]);
   await expect(async () => {
     await loader.loadFile("foo.tlmd");
-  }).rejects.toThrowError(/test error/);
+  }).rejects.toThrow(/test error/);
 });

@@ -125,7 +125,7 @@ describe("NamespaceModel", () => {
         "https://type.link.model.tools/ns/tlm-sample-foo/",
         "\"Sample namespace.\"",
         4242)
-    }).rejects.toThrowError(/oid/);
+    }).rejects.toThrow(/oid/);
   });
 
   it("should not use OidGenerator", async () => {

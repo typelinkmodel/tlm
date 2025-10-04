@@ -6,5 +6,5 @@ test("reader is a todo", async () => {
   const subject = new TlmObject(1, 2);
   await expect(async () => {
     await reader.readFactUnique(subject, { links: ["foo"] });
-  }).rejects.toThrowError(/Not implemented/);
+  }).rejects.toThrow(/Not implemented/);
 });

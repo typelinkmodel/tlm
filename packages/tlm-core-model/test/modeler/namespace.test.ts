@@ -11,12 +11,12 @@ test("initialize(): can safely be called more than once", async () => {
 
 test("findNamespaceByOid: error on unknown oid", () => {
   const model = new NamespaceModel();
-  expect(() => model.findNamespaceByOid(1000000)).toThrowError(/oid/);
+  expect(() => model.findNamespaceByOid(1000000)).toThrow(/oid/);
 });
 
 test("activeNamespacePrefix: error on inactive namespace", () => {
   const model = new NamespaceModel();
-  expect(() => model.activeNamespacePrefix).toThrowError(/Active namespace/);
+  expect(() => model.activeNamespacePrefix).toThrow(/Active namespace/);
 });
 
 test("activeNamespacePrefix: cannot unset", () => {
@@ -24,11 +24,11 @@ test("activeNamespacePrefix: cannot unset", () => {
   expect(() => {
     // @ts-ignore
     model.activeNamespacePrefix = null as string;
-  }).toThrowError(/Cannot deactivate/);
+  }).toThrow(/Cannot deactivate/);
   expect(() => {
     // @ts-ignore
     model.activeNamespacePrefix = undefined as string;
-  }).toThrowError(/Cannot deactivate/);
+  }).toThrow(/Cannot deactivate/);
 });
 
 test("addNamespace: cannot redefine invariants", async () => {
@@ -47,13 +47,13 @@ test("addNamespace: cannot redefine invariants", async () => {
 
   await expect(async () => {
     await model.addNamespace(prefix, "https://example.com/illegal", description, oid);
-  }).rejects.toThrowError(/uri/i);
+  }).rejects.toThrow(/uri/i);
 
   await expect(async () => {
     await model.addNamespace("bar", uri, description, oid);
-  }).rejects.toThrowError(/prefix/i);
+  }).rejects.toThrow(/prefix/i);
 
   await expect(async () => {
     await model.addNamespace(prefix, uri, description, 424242);
-  }).rejects.toThrowError(/oid/i);
+  }).rejects.toThrow(/oid/i);
 });

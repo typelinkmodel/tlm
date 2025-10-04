@@ -42,7 +42,7 @@ test("activeNamespace: Initially no namespace is active", async () => {
 
 test("activeNamespace: Can't activate an unknown namespace", async () => {
   const modeler: Modeler = new Modeler();
-  expect(() => (modeler.activeNamespace = "foo")).toThrowError(/foo/);
+  expect(() => (modeler.activeNamespace = "foo")).toThrow(/foo/);
 });
 
 test("activeNamespace: Namespace deactivation ignored", async () => {
@@ -58,10 +58,10 @@ test("activeNamespace: Namespace deactivation ignored", async () => {
 
 test("activeNamespace: Can't activate built-in namespaces", async () => {
   const modeler: Modeler = new Modeler();
-  expect(() => (modeler.activeNamespace = "tlm")).toThrowError(
+  expect(() => (modeler.activeNamespace = "tlm")).toThrow(
     /You should not modify/
   );
-  expect(() => (modeler.activeNamespace = "xs")).toThrowError(
+  expect(() => (modeler.activeNamespace = "xs")).toThrow(
     /You should not modify/
   );
 });
@@ -93,10 +93,10 @@ test("addNamespace: cannot modify previously defined namespace", async () => {
   // can't modify namespace after adding
   await expect(async () => {
     await modeler.addNamespace("foo", "https://example.com/ns/bar");
-  }).rejects.toThrowError(/already exists/);
+  }).rejects.toThrow(/already exists/);
   await expect(async () => {
     await modeler.addNamespace("bar", "https://example.com/ns/foo");
-  }).rejects.toThrowError(/already exists/);
+  }).rejects.toThrow(/already exists/);
 
   // but if the values are the same, ignore the api call
   const resultNs = await modeler.addNamespace(
@@ -165,7 +165,7 @@ test("addStatement: can only process certain statements", async () => {
     await modeler.addStatement(
       "Thousands of monkeys might write something nice but I don't know how to read it"
     );
-  }).rejects.toThrowError(/statement/);
+  }).rejects.toThrow(/statement/);
 });
 
 test("addStatement: types are namespaced", async () => {
@@ -208,7 +208,7 @@ test("addStatement: active namespace is needed", async () => {
     await modeler.addStatement(
       "A Person has exactly one name which must be a string."
     );
-  }).rejects.toThrowError(/Active namespace/i);
+  }).rejects.toThrow(/Active namespace/i);
 });
 
 test("addStatement: 'A' and 'An' are both ok", async () => {
@@ -413,7 +413,7 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
       othertype: "Team",
     };
     await (modeler as any).processLinkDefinitionStatement(match);
-  }).rejects.toThrowError(/Cannot process statement relationship/);
+  }).rejects.toThrow(/Cannot process statement relationship/);
 });
 
 test("processReverseLinkDefinitionStatement: cover unreachable default case", async () => {
@@ -426,7 +426,7 @@ test("processReverseLinkDefinitionStatement: cover unreachable default case", as
       "rendition",
       "Song",
     ]);
-  }).rejects.toThrowError(/Cannot process reverse statement relationship/);
+  }).rejects.toThrow(/Cannot process reverse statement relationship/);
 });
 
 test("constructor: inject dependencies", async () => {

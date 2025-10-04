@@ -34,7 +34,7 @@ describe("OidGenerator", () => {
     await oidGenerator.initialize();
     await expect(async () => {
       await oidGenerator.nextOid();
-    }).rejects.toThrowError(/mock error/);
+    }).rejects.toThrow(/mock error/);
     expect(mockClientRelease).toHaveBeenCalled();
   });
 });
