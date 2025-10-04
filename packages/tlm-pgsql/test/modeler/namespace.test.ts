@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-mocks-import */
 import { beforeEach } from "node:test";
 import { emptyResult, mockClientQuery, rowsResults } from "../../__mocks__/pg";
 import { Pool } from "pg";
@@ -59,13 +60,15 @@ describe("NamespaceModel", () => {
 
   it("can be constructed with a default OidGenerator", async () => {
     const pool = new Pool();
-    new NamespaceModel(pool);
+    const namespaceModel = new NamespaceModel(pool);
+    expect(namespaceModel).toBeInstanceOf(NamespaceModel);
   });
 
   it("should allow initialize() to be called more than once", async () => {
     const namespaceModel = await createAndInitializeNamespaceModel();
     await namespaceModel.initialize();
     await namespaceModel.initialize();
+    expect(namespaceModel).toBeInstanceOf(NamespaceModel);
   });
 
   it("should contain the tlm namespace on empty db", async () => {
@@ -109,6 +112,7 @@ describe("NamespaceModel", () => {
   it("should allow adding a namespace", async () => {
     const namespaceModel = await createAndInitializeNamespaceModel();
     await addNamespaceTo(namespaceModel);
+    expect(namespaceModel).toBeInstanceOf(NamespaceModel);
   });
 
   it("should allow adding a namespace twice", async () => {
@@ -119,6 +123,7 @@ describe("NamespaceModel", () => {
       "https://type.link.model.tools/ns/tlm-sample-hr/",
       "HR Example",
     );
+    expect(namespaceModel).toBeInstanceOf(NamespaceModel);
   });
 
   it("should not allow adding a namespace with an oid", async () => {
@@ -140,5 +145,6 @@ describe("NamespaceModel", () => {
     mockNamespaceInitializeQueryForNamespaces();
     await namespaceModel.initialize();
     await addNamespaceTo(namespaceModel);
+    expect(namespaceModel).toBeInstanceOf(NamespaceModel);
   });
 });

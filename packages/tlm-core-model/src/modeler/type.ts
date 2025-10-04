@@ -97,7 +97,7 @@ export class TypeModel {
   public findTypeByNameOptional(name: string): TlmType | undefined {
     try {
       return this.findTypeByName(name);
-    } catch (e) {
+    } catch {
       return undefined;
     }
   }
@@ -118,6 +118,7 @@ export class TypeModel {
     return newType;
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async replaceType(type: TlmType): Promise<void> {
     if (type.namespace !== this._namespaceModel.getActiveNamespaceOid()) {
       throw new Error("Can only replace types in the active namespace");

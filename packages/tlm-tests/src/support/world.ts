@@ -76,6 +76,7 @@ export class World {
 
   private loadAssembly(): void {
     const assembly: string = this.chooseAssembly();
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     this._assembly = require(`./assemblies/${assembly}`);
   }
 }

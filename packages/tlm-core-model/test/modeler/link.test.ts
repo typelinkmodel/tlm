@@ -10,6 +10,7 @@ test("initialize(): can safely be called more than once", async () => {
   await model.initialize();
   await model.initialize();
   await model.initialize();
+  expect(model).toBeInstanceOf(LinkModel);
 });
 
 test("addReverseMandatoryLink(): reject link rewiring", async () => {

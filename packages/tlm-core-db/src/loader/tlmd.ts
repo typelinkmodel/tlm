@@ -32,7 +32,9 @@ export class TlmdLoader implements ILoader {
 
   constructor(
     modeler: IModeler = new Modeler(),
+
     reader: IReader = new Reader(),
+
     searcher: ISearcher = new Searcher(),
     continueOnError = false,
     debug = false,
@@ -66,7 +68,9 @@ export class TlmdStreamHandler {
 
   constructor(modeler: IModeler, continueOnError = false, debug = false) {
     this._modeler = modeler;
+
     this._continueOnError = continueOnError;
+
     this._debug = debug;
   }
 
@@ -76,6 +80,7 @@ export class TlmdStreamHandler {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleNextLine(lineno: number, line: string): Promise<void> {
     this.debug(`${String(lineno).padStart(4)}: ${line}`);
   }
@@ -89,6 +94,7 @@ export class TlmdStreamHandler {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleStart(
     type: TLMD_TYPE,
     title: string | undefined,
@@ -104,10 +110,12 @@ export class TlmdStreamHandler {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleComment(comment: string): Promise<void> {
     this.debug(`Comment: ${comment}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleSection(section: string): Promise<void> {
     this.debug(`Section: ${section}`);
   }
@@ -117,6 +125,7 @@ export class TlmdStreamHandler {
     await this._modeler.addStatement(statement);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleStartExample(
     firstColumnIsValidity: boolean,
     fromLinkPath: string,
@@ -128,6 +137,7 @@ export class TlmdStreamHandler {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleExample(
     valid: boolean,
     fromLinkPath: string | undefined,
@@ -138,22 +148,27 @@ export class TlmdStreamHandler {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleObject(type: string, id: string): Promise<void> {
     this.debug(`Object: type = '${type}', id = '${id}'`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleFact(link: string, value: string): Promise<void> {
     this.debug(`- fact: link = '${link}', value = '${value}'`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleToggle(link: string): Promise<void> {
     this.debug(`- toggle fact: link = '${link}'`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleMultiFactStart(link: string): Promise<void> {
     this.debug(`- multi fact: link = '${link}'`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async handleMultiFact(value: string): Promise<void> {
     this.debug(`  - multi fact value: value = '${value}'`);
   }
@@ -315,6 +330,7 @@ export class TlmdFileLoader {
         }
         break;
       default:
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.err(`unknown parser state ${this.state}!`);
     }
   }
@@ -363,6 +379,7 @@ export class TlmdFileLoader {
         return;
       }
     }
+
     this.err(`no way to process this line!`);
   }
 

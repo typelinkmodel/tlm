@@ -26,6 +26,7 @@ test("initialize(): can safely be called more than once", async () => {
   await modeler.initialize();
   await modeler.initialize();
   await modeler.initialize();
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("activeNamespace: basic usage", async () => {
@@ -49,6 +50,7 @@ test("activeNamespace: Namespace deactivation ignored", async () => {
   const modeler: Modeler = new Modeler();
   await modeler.addNamespace("foo", "https://example.com/ns/foo");
   modeler.activeNamespace = "foo";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const untypedModeler = modeler as any;
   untypedModeler.activeNamespace = undefined;
   expect(modeler.activeNamespace).toBeDefined();
@@ -195,6 +197,8 @@ test("addStatement: statements can be repeated", async () => {
   await modeler.addStatement(
     "A Person has exactly one name which must be a string.",
   );
+
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("addStatement: active namespace is needed", async () => {
@@ -217,6 +221,8 @@ test("addStatement: 'A' and 'An' are both ok", async () => {
   await modeler.addStatement(
     "An Individual has exactly one name which must be an integer.",
   );
+
+  expect(modeler).toBeInstanceOf(Modeler);
 });
 
 test("addStatement: identifier definitions", async () => {
@@ -414,6 +420,7 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
       link: "things",
       othertype: "Team",
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (modeler as any).processLinkDefinitionStatement(match);
   }).rejects.toThrow(/Cannot process statement relationship/);
 });
@@ -421,6 +428,7 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
 test("processReverseLinkDefinitionStatement: cover unreachable default case", async () => {
   const modeler: Modeler = new Modeler();
   await expect(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (modeler as any).processReverseLinkDefinitionStatement([
       "A Track flub-boxes rendition for a Song.",
       "Track",

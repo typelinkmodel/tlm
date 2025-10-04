@@ -1,12 +1,12 @@
-import { TlmObject } from "@typelinkmodel/tlm-core-model";
-import { IQuery, ISearcher } from "../api";
-
+import { ISearcher, IQuery } from "../api/searcher";
 export class Searcher implements ISearcher {
-  public async getUnique(query: IQuery): Promise<TlmObject> {
+  // eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  public async getUnique(query: IQuery): Promise<any> {
     throw new Error("Not implemented");
   }
 
-  public async findUnique(query: IQuery): Promise<TlmObject | undefined> {
+  // eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  public async findUnique(query: IQuery): Promise<any> {
     throw new Error("Not implemented");
   }
 }

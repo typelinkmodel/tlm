@@ -10,6 +10,8 @@ test("initialize(): can safely be called more than once", async () => {
   await model.initialize();
   await model.initialize();
   await model.initialize();
+
+  expect(model).toBeInstanceOf(TypeModel);
 });
 
 test("findTypeByOid: error on unknown oid", () => {

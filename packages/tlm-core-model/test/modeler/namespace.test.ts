@@ -7,6 +7,8 @@ test("initialize(): can safely be called more than once", async () => {
   await model.initialize();
   await model.initialize();
   await model.initialize();
+
+  expect(model).toBeInstanceOf(NamespaceModel);
 });
 
 test("findNamespaceByOid: error on unknown oid", () => {
@@ -22,11 +24,11 @@ test("activeNamespacePrefix: error on inactive namespace", () => {
 test("activeNamespacePrefix: cannot unset", () => {
   const model = new NamespaceModel();
   expect(() => {
-    // @ts-ignore
+    // @ts-expect-error namespace cannot be deactivated
     model.activeNamespacePrefix = null as string;
   }).toThrow(/Cannot deactivate/);
   expect(() => {
-    // @ts-ignore
+    // @ts-expect-error namespace cannot be deactivated
     model.activeNamespacePrefix = undefined as string;
   }).toThrow(/Cannot deactivate/);
 });

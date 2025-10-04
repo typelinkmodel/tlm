@@ -21,6 +21,7 @@ Given(
 
 Given(
   /^the namespace ([^ ]+) is the active namespace$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (ns: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -39,6 +40,7 @@ When(
 
 Then(
   /^the model should contain the type ([^ ]+)$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -49,6 +51,7 @@ Then(
 
 Then(
   /^the model should contain the link ([^ ]+) from type ([^ ]+)$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -58,6 +61,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be constrained to values of type ([^ ]+)$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string, valueType: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -70,6 +74,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be singular$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -81,6 +86,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be plural$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -92,6 +98,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be optional$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -103,6 +110,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be mandatory$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -114,6 +122,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be a primary id$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -125,6 +134,7 @@ Then(
 
 Then(
   /^the type ([^ ]+) should have the supertype ([^ ]+)$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (type: string, superType: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -136,6 +146,7 @@ Then(
 
 Then(
   /^the description of type ([^ ]+) should be (.*)$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (type: string, description: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -146,6 +157,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be singular for the target type$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -157,6 +169,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be plural for the target type$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -168,6 +181,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be mandatory for the target type$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;
@@ -179,6 +193,7 @@ Then(
 
 Then(
   /^the link ([^ ]+) from type ([^ ]+) should be optional for the target type$/,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async function (link: string, type: string) {
     // @ts-ignore
     const modeler: IModeler = this.modeler;

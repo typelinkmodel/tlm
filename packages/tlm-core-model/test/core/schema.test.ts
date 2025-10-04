@@ -38,6 +38,7 @@ test("TlmType", () => {
   expect(t.plural).toBe("SampleTypes");
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const nameLink: any = {
   oid: 101,
   fromType: 100,
@@ -76,10 +77,12 @@ function testBooleanLinkProperty(prop: keyof TlmLink, defaultValue = false) {
   expect(l[prop]).toBe(!defaultValue);
 }
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is singular", () => {
   testBooleanLinkProperty("isSingular", false);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is mandatory", () => {
   testBooleanLinkProperty("isMandatory", false);
 });
@@ -100,10 +103,12 @@ test("TlmLink: that is a primary id", () => {
   }).toThrow(/Primary ID links must be to a value/);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is singular to the target", () => {
   testBooleanLinkProperty("isSingularTo", false);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is mandatory to the target", () => {
   testBooleanLinkProperty("isMandatoryTo", false);
 });
@@ -124,6 +129,7 @@ test("TlmLink: that is a toggle", () => {
   }).toThrow(/Toggle links must be to a value/);
 });
 
+// eslint-disable-next-line jest/expect-expect
 test("TlmLink: that is a value", () => {
   testBooleanLinkProperty("isValue", false);
 });

@@ -83,7 +83,7 @@ export class LinkModel {
   ): TlmLink | undefined {
     try {
       return this.findLinkByName(fromType, name);
-    } catch (e) {
+    } catch {
       return undefined;
     }
   }
@@ -114,6 +114,7 @@ export class LinkModel {
     name: string,
     isSingularTo = false,
   ): Promise<TlmLink> {
+    await Promise.resolve(); // eslint require-await
     const toTypeObj = this._typeModel.findTypeByName(toType);
     const fromTypeObj = this._typeModel.findTypeByName(fromType);
 

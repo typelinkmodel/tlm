@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-mocks-import */
 import { Pool } from "pg";
 import {
   emptyResult,

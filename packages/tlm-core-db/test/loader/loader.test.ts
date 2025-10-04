@@ -1,16 +1,19 @@
 import { ILoader, Loader } from "../../src";
 
 class UnsupportiveDelegate implements ILoader {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadFile(_filename: string): Promise<void> {
     throw new Error("not called");
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   supportsExtension(_extension: string): boolean {
     return false;
   }
 }
 
 class NoopDelegate implements ILoader {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadFile(_filename: string): Promise<void> {
     return Promise.resolve();
   }
@@ -21,10 +24,12 @@ class NoopDelegate implements ILoader {
 }
 
 class ErrorDelegate implements ILoader {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadFile(_filename: string): Promise<void> {
     throw new Error("test error");
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   supportsExtension(_extension: string): boolean {
     return true;
   }
