@@ -1,7 +1,0 @@
-node_modules/
-coverage/
-lib/
-*.log
-*.js
-test/
-__mocks__/
