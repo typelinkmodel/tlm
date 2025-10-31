@@ -39,6 +39,7 @@
   },
   "pnpm": {
     "overrides": {
+      "test-exclude": "^7.0.1",
       "glob": "^11.0.3",
       "'@cucumber/gherkin": "^34.0.0'",
       "'@cucumber/messages": "^28.1.0'",
