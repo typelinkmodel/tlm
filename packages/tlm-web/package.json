@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "pnpm exec rimraf .next",
     "dev": "next dev",
+    "compile": "pnpm exec build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -29,6 +31,7 @@
     "eslint-config-next": "16.0.1",
     "jest": "^30.2.0",
     "prettier": "^3.6.2",
+    "rimraf": "^6.1.0",
     "tailwindcss": "^4.1.16",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
