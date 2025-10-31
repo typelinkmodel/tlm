@@ -37,6 +37,11 @@
     "typescript": "^5.9.3",
     "zx": "^8.8.5"
   },
+  "pnpm": {
+    "overrides": {
+      "glob": "^11.0.3"
+    }
+  },
   "workspaces": [
     "packages/*"
   ]
