@@ -66,6 +66,12 @@ with types:
 
 (based on angular conventions https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
 
+### Dependency management
+
+* Run `pnpm update -r` to do minor dependency updates
+* Run `pnpm up -L -r` to do major dependency updates
+* Run `pnpm run x dedupe-deps` to add overrides to `package.json` to try and pin transitive dependencies to later versions
+
 ## More info
 
 See [docs/](docs/).
