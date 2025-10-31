@@ -104,7 +104,7 @@ Each package supports:
    └── package.json  # Package configuration
    ```
 
-2. **Dependencies**: 
+2. **Dependencies**:
    - Use workspace dependencies with `@typelinkmodel/` namespace
    - All packages are currently private (`"private": true`)
    - Prefer minimal external dependencies
@@ -180,16 +180,10 @@ Each package supports:
 ## Environment and Dependencies
 
 ### Required Tools
-- **Node.js**: LTS version (>=22.20.0)
-- **pnpm**: >=10.18.0 (use `corepack enable`)
+- **Node.js**: LTS version
+- **pnpm**: Latest stable version
 - **Docker**: For PostgreSQL development database
 - **Rust**: Latest stable version
-
-### Package Versions
-- **TypeScript**: ^5.9.3
-- **Jest**: ^30.2.0
-- **ESLint**: ^9.37.0
-- **Prettier**: ^3.6.2
 
 ### Configuration Files
 
@@ -204,13 +198,13 @@ Key configuration files to respect:
 The GitHub Actions workflow runs:
 
 1. **Setup**: Install dependencies, setup Rust toolchain
-2. **TypeScript CI**: 
+2. **TypeScript CI**:
    - Clean build artifacts
    - Lint all packages
    - Setup test environment (PostgreSQL)
    - Run all tests
    - Destroy test environment
-3. **Rust CI**: 
+3. **Rust CI**:
    - Lint with clippy
    - Run tests
 4. **Quality Gates**:
@@ -255,7 +249,7 @@ cd packages/[package-name] && pnpm test
    ```typescript
    // test/feature.test.ts
    import { newFeature } from '../src/feature';
-   
+
    describe('newFeature', () => {
      it('should handle input correctly', () => {
        expect(newFeature('input')).toBe('expected');
@@ -291,7 +285,7 @@ cd packages/[package-name] && pnpm test
    #[cfg(test)]
    mod tests {
        use super::*;
-       
+
        #[test]
        fn test_new_function() {
            assert_eq!(new_function("input"), "expected");
