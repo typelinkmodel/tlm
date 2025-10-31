@@ -34,6 +34,7 @@ cargo clippy -- -D warnings
 
 or run tests with coverage:
 ```shell
+brew install cargo-llvm-cov
 cargo llvm-cov
 ```
 
