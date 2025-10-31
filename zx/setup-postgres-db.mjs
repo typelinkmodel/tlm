@@ -6,8 +6,10 @@ import settings from "./settings.mjs";
 async function waitForPsql() {
   process.stdout.write(`wait for psql on ${settings.PostgresContainer}`);
   await quiet(async () => {
-    await waitFor(() => new Promise((resolve, reject) => {
-      $`docker exec -i \
+    await waitFor(
+      () =>
+        new Promise((resolve, reject) => {
+          $`docker exec -i \
 "${settings.PostgresContainer}" \
 psql \
 -b \
@@ -16,14 +18,17 @@ psql \
 -h localhost \
 -p 5432 \
 -c "SELECT TRUE;" >/dev/null 2>/dev/null`
-        .then(() => resolve())
-        .catch(() => reject());
-    }));
+            .then(() => resolve())
+            .catch(() => reject());
+        }),
+    );
   });
 }
 
 async function invokeSQL(database, file) {
-  notice(`Running SQL script ${file} on ${settings.PostgresContainer}/${database}…`);
+  notice(
+    `Running SQL script ${file} on ${settings.PostgresContainer}/${database}…`,
+  );
   // when running on windows, resolve() adds the drive letter
   // zx then invokes bash, passing the windows path to docker
   // docker then gets confused about the drive letter
@@ -44,7 +49,9 @@ psql \
 -f /tmp/${fileName} >/dev/null`;
 }
 
-info(`Setting up database schema ${settings.PostgresContainer}/${settings.PostgresDatabase}…`);
+info(
+  `Setting up database schema ${settings.PostgresContainer}/${settings.PostgresDatabase}…`,
+);
 await waitForSocket(settings.PostgresHost, settings.PostgresPort);
 await waitForPsql();
 

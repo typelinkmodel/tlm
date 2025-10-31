@@ -15,6 +15,7 @@ if (!debug) {
   config = {
     ...config,
     collectCoverage: true,
+    coverageProvider: "v8",
     coverageDirectory: "coverage",
     coverageThreshold: {
       global: {

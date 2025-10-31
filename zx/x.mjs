@@ -7,11 +7,11 @@ const actions = argv._;
 
 if (actions.length === 0) {
   warn`missing action(s)`;
-  echo`Usage: pnpm run x <action> [action ...]`
+  echo`Usage: pnpm run x <action> [action ...]`;
   process.exit(1);
 }
 
-info('Executing actions:', ...actions);
+info("Executing actions:", ...actions);
 
 for (const action of actions) {
   const module = `./${action}.mjs`;

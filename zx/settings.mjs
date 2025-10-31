@@ -25,8 +25,8 @@ const d = {
 
   SectionStartPrefix: "==> ",
   SectionEndMessage: "",
-  ErrorPrefix: "ERROR: "
-}
+  ErrorPrefix: "ERROR: ",
+};
 
 const s = {};
 for (const k in d) {
@@ -53,8 +53,10 @@ if (s.ENV === "ci") {
 
 // psql client connection settings
 process.env.POSTGRES_USER = process.env.POSTGRES_USER || s.PostgresUser;
-process.env.POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD || s.PostgresPassword;
-process.env.POSTGRES_DATABASE = process.env.POSTGRES_DATABASE || s.PostgresDatabase;
+process.env.POSTGRES_PASSWORD =
+  process.env.POSTGRES_PASSWORD || s.PostgresPassword;
+process.env.POSTGRES_DATABASE =
+  process.env.POSTGRES_DATABASE || s.PostgresDatabase;
 process.env.POSTGRES_HOST = process.env.POSTGRES_HOST || s.PostgresHost;
 process.env.POSTGRES_PORT = process.env.POSTGRES_PORT || s.PostgresPort;
 

@@ -5,13 +5,7 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 export default [
   {
-    ignores: [
-      "node_modules/",
-      "**/lib/",
-      "coverage/",
-      "**/dist/",
-      "*.d.ts"
-    ],
+    ignores: ["node_modules/", "**/lib/", "coverage/", "**/dist/", "*.d.ts"],
   },
   {
     files: ["**/*.js"],
@@ -31,16 +25,13 @@ export default [
       ecmaVersion: 2021,
       sourceType: "module",
       parserOptions: {
-        project: [
-          "./tsconfig.json",
-          "./packages/*/tsconfig.json"
-        ],
+        project: ["./tsconfig.json", "./packages/*/tsconfig.json"],
         tsconfigRootDir: process.cwd(),
       },
     },
     plugins: {
       "@typescript-eslint": tseslint,
-      "prettier": prettierPlugin,
+      prettier: prettierPlugin,
     },
     rules: {
       ...tseslint.configs.recommended.rules,
@@ -57,7 +48,7 @@ export default [
     },
     plugins: {
       "@typescript-eslint": tseslint,
-      "prettier": prettierPlugin,
+      prettier: prettierPlugin,
     },
     rules: {
       ...tseslint.configs.recommended.rules,
@@ -65,7 +56,11 @@ export default [
     },
   },
   {
-    files: ["**/test/**/*.{js,ts,tsx}", "**/__tests__/**/*.{js,ts,tsx}", "**/*.test.{js,ts,tsx}"],
+    files: [
+      "**/test/**/*.{js,ts,tsx}",
+      "**/__tests__/**/*.{js,ts,tsx}",
+      "**/*.test.{js,ts,tsx}",
+    ],
     plugins: {
       jest: jestPlugin,
     },
@@ -78,7 +73,7 @@ export default [
       "jest/no-mocks-import": "warn",
       "jest/no-test-prefixes": "warn",
       "jest/prefer-to-have-length": "warn",
-      "jest/valid-expect": "error"
+      "jest/valid-expect": "error",
     },
   },
 ];

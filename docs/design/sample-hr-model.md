@@ -14,7 +14,6 @@ A Person is a "being regarded as an individual".
 - A Person has exactly one name which must be a Name.
 - A Person has toggle coaches.
 - A Person, the coachee, can have some coach which must be a Person, the coach.
-
   - Examples:
 
     | coachee/name    | coach/name     |
@@ -32,7 +31,6 @@ A Department is a "division of an organization".
 - A Department is identified by id which must be a URI.
 - A Department has exactly one name which must be a Name.
 - A Department has exactly one manager which must be a Person.
-
   - Examples:
 
     | department/name | manager/name   |
@@ -41,7 +39,6 @@ A Department is a "division of an organization".
     | ~~Engineering~~ | ~~Simon Lucy~~ |
 
 - A Person has at most one department which must be a Department.
-
   - Examples:
 
     | name           | department/name |

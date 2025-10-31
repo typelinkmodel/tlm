@@ -27,6 +27,6 @@ test("addReverseMandatoryLink(): reject link rewiring", async () => {
   await typeModel.addType("Bar2");
   await linkModel.addLink({ fromType: "Foo", toType: "Bar", name: "bar" });
   await expect(
-    (() => linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"))(),
+    linkModel.addReverseMandatoryLink("Bar2", "Foo", "bar"),
   ).rejects.toThrow(/Existing relationship/);
 });

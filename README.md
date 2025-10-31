@@ -6,13 +6,13 @@ This is an unfinished hobby project. _Use at your own risk._
 
 ## Prerequisites
 
-* latest LTS [node](https://nodejs.org/)
-* recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
-* [docker cli](https://github.com/docker/cli) installed and connected
+- latest LTS [node](https://nodejs.org/)
+- recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
+- [docker cli](https://github.com/docker/cli) installed and connected
 
 ### Rust version
 
-* latest stable [rust](https://www.rust-lang.org/)
+- latest stable [rust](https://www.rust-lang.org/)
 
 ## Build
 
@@ -33,7 +33,9 @@ cargo clippy -- -D warnings
 ```
 
 or run tests with coverage:
+
 ```shell
+brew install cargo-llvm-cov
 cargo llvm-cov
 ```
 
@@ -65,6 +67,12 @@ with types:
 - chore: Changes that take care of some other kind of chore that doesn't impact the main code
 
 (based on angular conventions https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
+
+### Dependency management
+
+- Run `pnpm update -r` to do minor dependency updates
+- Run `pnpm up -L -r` to do major dependency updates
+- Run `pnpm run x dedupe-deps` to add overrides to `package.json` to try and pin transitive dependencies to later versions
 
 ## More info
 

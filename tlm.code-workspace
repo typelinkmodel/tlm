@@ -1,31 +1,28 @@
 {
-	"folders": [
-		{
-			"name": "tlm",
-			"path": "."
-		},
-		{
-			"name": "tlm-core-model",
-			"path": "packages/tlm-core-model"
-		},
-		{
-			"name": "tlm-tests",
-			"path": "packages/tlm-tests"
-		},
-		{
-			"name": "tlm-pgsql",
-			"path": "packages/tlm-pgsql"
-		},
-		{
-			"name": "tlm-core-db",
-			"path": "packages/tlm-core-db"
-		}
-	],
-	"settings": {
-		"jest.disabledWorkspaceFolders": [
-			"tlm",
-			"tlm-tests"
-		],
-		"editor.tabSize": 2
-	}
+  "folders": [
+    {
+      "name": "tlm",
+      "path": ".",
+    },
+    {
+      "name": "tlm-core-model",
+      "path": "packages/tlm-core-model",
+    },
+    {
+      "name": "tlm-tests",
+      "path": "packages/tlm-tests",
+    },
+    {
+      "name": "tlm-pgsql",
+      "path": "packages/tlm-pgsql",
+    },
+    {
+      "name": "tlm-core-db",
+      "path": "packages/tlm-core-db",
+    },
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["tlm", "tlm-tests"],
+    "editor.tabSize": 2,
+  },
 }
