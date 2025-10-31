@@ -27,7 +27,7 @@ export function emptyResult(command: string = "") {
     rows: [],
     rowCount: 0,
     oid: 0,
-    fields: []
+    fields: [],
   });
 }
 
@@ -37,6 +37,6 @@ export function rowsResults(command: string, rows: any[]) {
     rows,
     rowCount: 0,
     oid: 0,
-    fields: []
+    fields: [],
   });
 }

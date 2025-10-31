@@ -3,7 +3,7 @@
 import { info, notice, testDockerIsRunning } from "./common.mjs";
 import settings from "./settings.mjs";
 
-info('Testing SQL database…');
+info("Testing SQL database…");
 
 if (await testDockerIsRunning(settings.PgTapContainer)) {
   notice(`Docker container ${settings.PgTapContainer} is already running`);

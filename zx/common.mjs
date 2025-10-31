@@ -33,7 +33,9 @@ export async function quiet(func) {
 
 export async function testDockerIsRunning(containerName) {
   try {
-    let container = (await $`docker ps -q -f name=${containerName}`).stdout.trim();
+    let container = (
+      await $`docker ps -q -f name=${containerName}`
+    ).stdout.trim();
     return container !== "";
   } catch (err) {
     return false;
@@ -58,21 +60,28 @@ export async function waitFor(poll, wait = 5000) {
 
 export async function waitForSocket(host, port, wait = 5000) {
   process.stdout.write(`wait for connection to ${host}:${port}`);
-  await waitFor(() => new Promise((resolve, reject) => {
-    const socket = new Socket();
-    socket.setTimeout(10);
-    socket.once("connect", () => {
-      socket.end();
-      resolve();
-    });
-    socket.once("error", () => {
-      socket.destroy();
-      reject("connection error");
-    });
-    socket.once("timeout", () => {
-      socket.destroy();
-      reject("timeout");
-    }, wait);
-    socket.connect(port, host);
-  }));
+  await waitFor(
+    () =>
+      new Promise((resolve, reject) => {
+        const socket = new Socket();
+        socket.setTimeout(10);
+        socket.once("connect", () => {
+          socket.end();
+          resolve();
+        });
+        socket.once("error", () => {
+          socket.destroy();
+          reject("connection error");
+        });
+        socket.once(
+          "timeout",
+          () => {
+            socket.destroy();
+            reject("timeout");
+          },
+          wait,
+        );
+        socket.connect(port, host);
+      }),
+  );
 }

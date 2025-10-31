@@ -61,12 +61,14 @@ Follow [Conventional Commits](https://conventionalcommits.org/) with these types
 ## Building and Testing
 
 ### Initial Setup
+
 ```bash
 pnpm install
 pnpm run setup      # Sets up development environment including PostgreSQL
 ```
 
 ### Development Commands
+
 ```bash
 # TypeScript development
 pnpm run test       # Run all tests
@@ -85,7 +87,9 @@ pnpm run ci-rust    # Rust CI: lint and test
 ```
 
 ### Package-Level Commands
+
 Each package supports:
+
 - `pnpm run clean` - Remove build artifacts
 - `pnpm run compile` - Compile TypeScript
 - `pnpm run test` - Run package tests
@@ -96,6 +100,7 @@ Each package supports:
 ### TypeScript Packages
 
 1. **Structure**: Each package follows the pattern:
+
    ```
    package/
    ├── src/          # Source code
@@ -135,16 +140,19 @@ Each package supports:
 ### Code Changes
 
 1. **Always run tests** after making changes:
+
    ```bash
    pnpm run test
    ```
 
 2. **Lint before committing**:
+
    ```bash
    pnpm run lint
    ```
 
 3. **Format code consistently**:
+
    ```bash
    pnpm run prettier
    ```
@@ -180,6 +188,7 @@ Each package supports:
 ## Environment and Dependencies
 
 ### Required Tools
+
 - **Node.js**: LTS version
 - **pnpm**: Latest stable version
 - **Docker**: For PostgreSQL development database
@@ -188,6 +197,7 @@ Each package supports:
 ### Configuration Files
 
 Key configuration files to respect:
+
 - `tsconfig.base.json` - TypeScript base configuration
 - `eslint.config.js` - ESLint rules (using flat config)
 - `jest.config.base.js` - Jest base configuration
@@ -212,6 +222,7 @@ The GitHub Actions workflow runs:
    - Codecov coverage reporting
 
 ### Coverage Requirements
+
 - **Global target**: 85% (as configured in codecov.yml)
 - **Jest threshold**: 80% minimum for branches, functions, lines, statements
 - **Rust coverage**: Tracked via `cargo llvm-cov`
@@ -227,6 +238,7 @@ The GitHub Actions workflow runs:
 5. **Rust clippy warnings**: Address all warnings - project uses `-D warnings`
 
 ### Debug Commands
+
 ```bash
 # Check PostgreSQL status
 docker ps | grep tlm
@@ -246,30 +258,33 @@ cd packages/[package-name] && pnpm test
 ### Adding a New TypeScript Package Feature
 
 1. **Write the test first**:
+
    ```typescript
    // test/feature.test.ts
-   import { newFeature } from '../src/feature';
+   import { newFeature } from "../src/feature";
 
-   describe('newFeature', () => {
-     it('should handle input correctly', () => {
-       expect(newFeature('input')).toBe('expected');
+   describe("newFeature", () => {
+     it("should handle input correctly", () => {
+       expect(newFeature("input")).toBe("expected");
      });
    });
    ```
 
 2. **Implement the feature**:
+
    ```typescript
    // src/feature.ts
    export function newFeature(input: string): string {
      // Implementation
-     return 'expected';
+     return "expected";
    }
    ```
 
 3. **Update exports**:
+
    ```typescript
    // src/index.ts
-   export { newFeature } from './feature';
+   export { newFeature } from "./feature";
    ```
 
 4. **Verify**:
@@ -281,6 +296,7 @@ cd packages/[package-name] && pnpm test
 ### Adding Rust Functionality
 
 1. **Write test**:
+
    ```rust
    #[cfg(test)]
    mod tests {
@@ -294,6 +310,7 @@ cd packages/[package-name] && pnpm test
    ```
 
 2. **Implement**:
+
    ```rust
    pub fn new_function(input: &str) -> String {
        // Implementation
