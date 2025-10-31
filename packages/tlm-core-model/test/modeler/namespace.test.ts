@@ -47,20 +47,15 @@ test("addNamespace: cannot redefine invariants", async () => {
   await model.addNamespace(prefix, uri, "Sample namespace.", oid);
   await model.addNamespace(prefix, uri, "Sample namespace.");
 
-  await expect(async () => {
-    await model.addNamespace(
-      prefix,
-      "https://example.com/illegal",
-      description,
-      oid,
-    );
-  }).rejects.toThrow(/uri/i);
+  await expect(
+    model.addNamespace(prefix, "https://example.com/illegal", description, oid),
+  ).rejects.toThrow(/uri/i);
 
-  await expect(async () => {
-    await model.addNamespace("bar", uri, description, oid);
-  }).rejects.toThrow(/prefix/i);
+  await expect(
+    model.addNamespace("bar", uri, description, oid),
+  ).rejects.toThrow(/prefix/i);
 
-  await expect(async () => {
-    await model.addNamespace(prefix, uri, description, 424242);
-  }).rejects.toThrow(/oid/i);
+  await expect(
+    model.addNamespace(prefix, uri, description, 424242),
+  ).rejects.toThrow(/oid/i);
 });

@@ -26,7 +26,7 @@ test("replaceType: no active namespace", async () => {
   const model = new TypeModel();
   const newType = new TlmType({ oid: 42, namespace: 42, name: "foo" });
 
-  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+  await expect(model.replaceType(newType)).rejects.toThrow(
     /Active namespace not set/,
   );
 });
@@ -49,7 +49,7 @@ test("replaceType: outside active namespace", async () => {
     name: "Foo",
   });
 
-  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+  await expect(model.replaceType(newType)).rejects.toThrow(
     /Can only replace types in the active namespace/,
   );
 });
@@ -77,7 +77,7 @@ test("replaceType: wrong namespace", async () => {
     name: "Foo",
   });
 
-  await expect((() => model.replaceType(newType))()).rejects.toThrow(
+  await expect(model.replaceType(newType)).rejects.toThrow(
     /Cannot move types to a new namespace/,
   );
 });
