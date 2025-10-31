@@ -6,6 +6,19 @@ This directory contains Playwright integration tests for the tlm-web application
 
 The e2e tests verify that the Next.js web application behaves correctly from a user's perspective by automating browser interactions.
 
+## Coverage Collection
+
+The Playwright tests automatically collect V8 coverage data from the application during test execution. This coverage data is stored in the `.nyc_output` directory and represents actual code execution during integration tests.
+
+### How It Works
+
+- **Automatic Collection**: The `fixtures.ts` file extends Playwright's test fixture to automatically start and stop JavaScript coverage collection for each test
+- **Coverage Storage**: Raw V8 coverage data is saved to `.nyc_output/coverage-*.json` files
+- **Filtering**: Only application code served from `localhost:3000` is included; build artifacts, hot-reloader, and node_modules are excluded
+- **SonarCloud**: The e2e test code itself is excluded from coverage statistics via `sonar.exclusions` configuration
+
+This approach ensures that integration test coverage supplements unit test coverage, providing a complete picture of code execution.
+
 ## Running Tests
 
 ### Run all tests (headless)
@@ -77,8 +90,19 @@ After running tests, view the HTML report:
 pnpm exec playwright show-report
 ```
 
+## Coverage Notes
+
+The V8 coverage format collected by Playwright differs from Istanbul/NYC coverage format. The raw coverage data is primarily useful for:
+
+- Verifying that tests are exercising application code
+- Integration with tools that support V8 coverage format
+- Future conversion to lcov format if needed
+
+For now, coverage collection is enabled but not actively converted to lcov reports. This can be extended in the future if detailed coverage metrics from Playwright tests are required.
+
 ## Documentation
 
 - [Playwright Documentation](https://playwright.dev)
 - [Playwright Test API](https://playwright.dev/docs/api/class-test)
 - [Best Practices](https://playwright.dev/docs/best-practices)
+- [Playwright Coverage](https://playwright.dev/docs/api/class-coverage)
