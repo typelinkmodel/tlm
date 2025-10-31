@@ -32,7 +32,17 @@ Run tests in headed mode (see the browser):
 pnpm test:headed
 ```
 
-See [e2e/README.md](./e2e/README.md) for more details on end-to-end testing.
+### Coverage
+
+Generate coverage reports from Playwright tests:
+
+```bash
+pnpm run coverage
+```
+
+This converts the V8 coverage collected during test execution to lcov format for SonarCloud integration. The coverage report is available at `coverage/lcov-report/index.html`.
+
+See [e2e/README.md](./e2e/README.md) for more details on end-to-end testing and coverage.
 
 ## Building
 

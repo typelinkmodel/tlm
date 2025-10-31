@@ -8,14 +8,30 @@ The e2e tests verify that the Next.js web application behaves correctly from a u
 
 ## Coverage Collection
 
-The Playwright tests automatically collect V8 coverage data from the application during test execution. This coverage data is stored in the `.nyc_output` directory and represents actual code execution during integration tests.
+The Playwright tests automatically collect V8 coverage data from the application during test execution. This coverage is then converted to Istanbul/lcov format for consumption by SonarCloud and other coverage tools.
 
 ### How It Works
 
-- **Automatic Collection**: The `fixtures.ts` file extends Playwright's test fixture to automatically start and stop JavaScript coverage collection for each test
-- **Coverage Storage**: Raw V8 coverage data is saved to `.nyc_output/coverage-*.json` files
-- **Filtering**: Only application code served from `localhost:3000` is included; build artifacts, hot-reloader, and node_modules are excluded
-- **SonarCloud**: The e2e test code itself is excluded from coverage statistics via `sonar.exclusions` configuration
+1. **Automatic Collection**: The `fixtures.ts` file extends Playwright's test fixture to automatically start and stop JavaScript coverage collection for each test
+2. **Coverage Storage**: Raw V8 coverage data is saved to `.nyc_output/coverage-*.json` files
+3. **Filtering**: Only application code served from `localhost:3000` is included; build artifacts, hot-reloader, and node_modules are excluded
+4. **Conversion**: Run `pnpm run coverage` to convert V8 coverage to Istanbul format and generate lcov reports
+5. **SonarCloud Integration**: The generated `coverage/lcov.info` file is picked up by SonarCloud via `sonar.javascript.lcov.reportPaths`
+
+**Important**: The e2e test code itself is excluded from coverage statistics via `sonar.exclusions` configuration, so only application code is measured.
+
+### Coverage Workflow
+
+```bash
+# 1. Run Playwright tests (collects V8 coverage)
+pnpm run test
+
+# 2. Convert coverage to lcov format
+pnpm run coverage
+
+# 3. View coverage report
+open coverage/lcov-report/index.html
+```
 
 This approach ensures that integration test coverage supplements unit test coverage, providing a complete picture of code execution.
 
@@ -90,15 +106,24 @@ After running tests, view the HTML report:
 pnpm exec playwright show-report
 ```
 
-## Coverage Notes
+## Coverage Technical Details
 
-The V8 coverage format collected by Playwright differs from Istanbul/NYC coverage format. The raw coverage data is primarily useful for:
+The coverage conversion process uses:
 
-- Verifying that tests are exercising application code
-- Integration with tools that support V8 coverage format
-- Future conversion to lcov format if needed
+- **v8-to-istanbul**: Converts V8 coverage format to Istanbul format
+- **istanbul-lib-coverage**: Creates coverage maps from Istanbul data
+- **istanbul-lib-report** & **istanbul-reports**: Generates lcov and HTML reports
 
-For now, coverage collection is enabled but not actively converted to lcov reports. This can be extended in the future if detailed coverage metrics from Playwright tests are required.
+The conversion script (`zx/convert-coverage.mjs`) processes each V8 coverage entry and applies the Playwright documentation example pattern:
+
+```javascript
+const converter = v8toIstanbul(virtualPath, 0, { source: entry.source });
+await converter.load();
+converter.applyCoverage(entry.functions);
+const istanbulCoverage = converter.toIstanbul();
+```
+
+Coverage entries that cannot be converted (typically build artifacts or external code) are skipped with optional verbose logging available via `VERBOSE=1` environment variable.
 
 ## Documentation
 
