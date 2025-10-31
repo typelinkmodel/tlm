@@ -6,38 +6,6 @@ This directory contains Playwright integration tests for the tlm-web application
 
 The e2e tests verify that the Next.js web application behaves correctly from a user's perspective by automating browser interactions.
 
-## Coverage Collection
-
-The Playwright tests automatically collect V8 coverage data from the application during test execution. This coverage is then converted to lcov format using **monocart-coverage-reports** for consumption by SonarCloud and other coverage tools.
-
-**⚠️ Important**: E2E coverage for Next.js applications with React Server Components (RSC) will naturally be low, as most code runs server-side. E2E tests measure browser-side JavaScript only. See [COVERAGE.md](./COVERAGE.md) for details.
-
-### Quick Coverage Workflow
-
-```bash
-# 1. Run Playwright tests (collects V8 coverage)
-pnpm run test
-
-# 2. Convert coverage to lcov format with source mapping
-pnpm run coverage
-
-# 3. View coverage report
-open coverage/html/index.html
-```
-
-### Understanding E2E Coverage
-
-E2E tests collect coverage from JavaScript that **actually runs in the browser**:
-
-- ✅ **Covers**: Client components, browser interactions, client-side state management
-- ❌ **Does NOT cover**: Server Components (most Next.js 16 apps), server-side rendering
-- 📖 **See**: [COVERAGE.md](./COVERAGE.md) for comprehensive documentation on:
-  - Source mapping challenges and solutions
-  - Why coverage numbers are low for RSC apps
-  - Hybrid coverage strategy (unit tests + e2e tests)
-  - Troubleshooting source map resolution
-  - Production build vs development mode
-
 ## Running Tests
 
 ### Run all tests (headless)
@@ -109,24 +77,8 @@ After running tests, view the HTML report:
 pnpm exec playwright show-report
 ```
 
-## Coverage Technical Details
-
-For comprehensive information about coverage implementation, source mapping, and troubleshooting, see **[COVERAGE.md](./COVERAGE.md)**.
-
-### Summary
-
-- **Collection**: Playwright's `page.coverage` API collects V8 coverage from the browser
-- **Conversion**: `monocart-coverage-reports` converts V8 coverage to lcov with source map resolution
-- **Source Mapping**: Maps bundled JavaScript URLs to original TypeScript/JSX source files
-- **Filtering**: Includes only application code from `src/`, excludes node_modules and Next.js internals
-- **Output**: lcov for SonarCloud, HTML for developers, JSON for tools
-
-**Note**: Source mapping from production builds works better than dev mode due to how Turbopack generates source maps. See [COVERAGE.md](./COVERAGE.md) for details.
-
 ## Documentation
 
 - [Playwright Documentation](https://playwright.dev)
 - [Playwright Test API](https://playwright.dev/docs/api/class-test)
 - [Best Practices](https://playwright.dev/docs/best-practices)
-- [Playwright Coverage](https://playwright.dev/docs/api/class-coverage)
-- [E2E Coverage Details](./COVERAGE.md) - Comprehensive coverage documentation

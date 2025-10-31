@@ -6,3 +6,6 @@ coverage:
     patch:
       default:
         target: 85%
+
+ignore:
+  - "packages/tlm-web/**"
