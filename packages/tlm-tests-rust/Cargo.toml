@@ -1,0 +1,15 @@
+[package]
+name = "tlm-tests-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tlm = { path = "../tlm-rust" }
+
+[dev-dependencies]
+cucumber = {  version = "0.21", features = ["libtest"] }
+futures = "0.3"
+
+[[test]]
+name = "cucumber"
+harness = false
