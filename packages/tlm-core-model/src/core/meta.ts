@@ -9,7 +9,7 @@ export function csv_cast(value: string, context: { [key: string]: any }): any {
     case "super_type":
     case "from_type":
     case "to_type":
-      return parseInt(value, 10);
+      return Number.parseInt(value, 10);
     // case /^is_/.test(context.column):
     case "is_singular_from":
     case "is_singular_to":

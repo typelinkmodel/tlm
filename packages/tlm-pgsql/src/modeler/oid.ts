@@ -16,7 +16,7 @@ export class OidGenerator extends CoreGenerator {
   }
 
   public async nextOid(): Promise<number> {
-    // todo this is creating 'broken' tlm__object entries
+    // Known issue: this currently creates 'broken' tlm__object entries.
     return tx(this._pool, async (client) => {
       await client.query("CALL tlm__insert_object($1);", [TlmType.TYPE_TYPE]);
       const result: QueryResult<IOidResultRow> = await client.query<
