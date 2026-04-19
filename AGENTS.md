@@ -2,11 +2,11 @@
 
 > This file (`AGENTS.md`) is the canonical agent configuration. `CLAUDE.md` is a symlink to this file.
 
-Type Link Model (TLM) — polyglot monorepo with TypeScript + Rust. Each
-language uses its native workspace (pnpm, Cargo). [`mise`](https://mise.jdx.dev/)
-is the top-level entry point: it pins every toolchain version and exposes
-every repo command as a task (see `.mise.toml`). Tasks are namespaced
-`<lang>:<verb>` so you can fan out at any granularity.
+Type Link Model (TLM) — TypeScript monorepo managed with pnpm.
+[`mise`](https://mise.jdx.dev/) is the top-level entry point: it pins
+every toolchain version and exposes every repo command as a task (see
+`.mise.toml`). Tasks are namespaced `<lang>:<verb>` so you can fan out
+at any granularity.
 
 ## Quick Reference
 
@@ -14,20 +14,19 @@ First time in a fresh clone: `mise install` (downloads + pins the
 toolchain), then `mise run install` (pnpm install).
 
 - **Install all deps**: `mise run install`
-- **Lint all**: `mise run lint` (or `ts:lint` / `rs:lint` per language)
+- **Lint all**: `mise run lint` (or `ts:lint`)
 - **Format all**: `mise run format`
 - **Test (unit)**: `mise run test`
 - **Postgres lifecycle** (for integration/SQL tests): `mise run sql:setup` / `sql:destroy`
-- **CI per language**: `mise run ci:ts` / `mise run ci:rust`
+- **CI**: `mise run ci:ts`
 - **Full CI gate**: `mise run ci`
 - **Watch PR CI**: `mise run ci-watch`
 
 Per-language native commands still work when mise isn't in the way:
 
-| Language   | Install         | Lint                                                                                              | Test                 |
-|------------|-----------------|---------------------------------------------------------------------------------------------------|----------------------|
-| TypeScript | `pnpm install`  | `pnpm lint` (from repo root)                                                                      | `pnpm -r run test`   |
-| Rust       | (none)          | `cargo fmt --all --check && cargo clippy --workspace --all-targets --all-features -- -D warnings` | `cargo test --workspace --all-targets` |
+| Language   | Install         | Lint                         | Test                 |
+|------------|-----------------|------------------------------|----------------------|
+| TypeScript | `pnpm install`  | `pnpm lint` (from repo root) | `pnpm -r run test`   |
 
 ## Structure
 
@@ -37,7 +36,6 @@ tlm/
 │   ├── tlm-core-db/       # Database abstractions
 │   ├── tlm-core-model/    # Core modeling types
 │   ├── tlm-pgsql/         # PostgreSQL implementation
-│   ├── tlm-rust/          # Rust implementation
 │   ├── tlm-tests/         # Cucumber integration tests
 │   └── tlm-web/           # Next.js web app + Playwright e2e
 ├── zx/                    # Docker/Postgres orchestration scripts
@@ -51,12 +49,6 @@ tlm/
 - Strict TypeScript
 - Jest testing, minimum 80% coverage
 - Test files: `*.test.ts` or `*.spec.ts`
-
-**Rust:**
-- Workspace-level clippy pedantic + `unsafe_code = "forbid"`
-- `cargo fmt --check`: zero diffs
-- `cargo clippy -- -D warnings`: zero warnings
-- `cargo llvm-cov` produces `codecov.json` for Codecov upload
 
 **Database:** PostgreSQL via Docker. SQL tests use pgTAP.
 

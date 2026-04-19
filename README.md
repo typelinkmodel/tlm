@@ -10,10 +10,6 @@ This is an unfinished hobby project. _Use at your own risk._
 - recent [pnpm](https://pnpm.io/), if you have node, try `corepack enable`
 - [docker cli](https://github.com/docker/cli) installed and connected
 
-### Rust version
-
-- latest stable [rust](https://www.rust-lang.org/)
-
 ## Build
 
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
@@ -24,14 +20,6 @@ mise run install    # pnpm install
 mise run sql:setup  # start Postgres in Docker
 mise run test       # run all unit tests
 mise run sql:destroy
-```
-
-### Rust version
-
-```shell
-mise run rs:build
-mise run rs:test    # runs cargo llvm-cov and writes codecov.json
-mise run rs:lint    # cargo fmt --check + clippy -D warnings
 ```
 
 ## Code

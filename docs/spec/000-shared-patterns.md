@@ -50,19 +50,3 @@ describe("featureName", () => {
   });
 });
 ```
-
-### Rust Module Structure
-
-Located in `packages/tlm-rust/`:
-
-```rust
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_feature() {
-        assert_eq!(feature("input"), "expected");
-    }
-}
-```
