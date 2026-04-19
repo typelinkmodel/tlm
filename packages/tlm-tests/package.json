@@ -20,18 +20,18 @@
     "test:pgsql": "pnpm exec cucumber-js -p pgsql"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^12.2.0",
+    "@cucumber/cucumber": "^12.8.1",
     "@types/chai": "^5.2.3",
-    "@types/node": "^24.9.2",
-    "chai": "^6.2.0",
+    "@types/node": "^24.12.2",
+    "chai": "^6.2.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "@typelinkmodel/tlm-core-db": "workspace:^",
     "@typelinkmodel/tlm-core-model": "workspace:^",
     "@typelinkmodel/tlm-pgsql": "workspace:^",
-    "@types/pg": "^8.15.6",
-    "pg": "^8.16.3"
+    "@types/pg": "^8.20.0",
+    "pg": "^8.20.0"
   }
 }
