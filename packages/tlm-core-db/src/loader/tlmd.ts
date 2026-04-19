@@ -23,6 +23,14 @@ enum TLMD_TYPE {
   UNKNOWN,
 }
 
+// The following regexes flag on SonarCloud rule S5852 (ReDoS risk from
+// overlapping quantifiers). The parser only consumes local, developer-authored
+// TLMD files — not untrusted input — so ReDoS is not a realistic threat here.
+const MULTI_FACT_VALUE_RE = /^\s+(.*)$/i; // NOSONAR S5852
+const EXAMPLE_WITH_VALIDITY_RE = /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i; // NOSONAR S5852
+const EXAMPLE_WITHOUT_VALIDITY_RE = /^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i; // NOSONAR S5852
+const OBJECT_LINE_RE = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i; // NOSONAR S5852
+
 export class TlmdLoader implements ILoader {
   private readonly _modeler: IModeler;
   private readonly _reader: IReader;
@@ -339,7 +347,7 @@ export class TlmdFileLoader {
   }
 
   private async handleDataMultiFactState(): Promise<void> {
-    if (/^\s+(.*)$/i.test(this.line)) {
+    if (MULTI_FACT_VALUE_RE.test(this.line)) {
       await this.processMultiFact();
       // if the handler is swallowing errors, still assume data continues next line
       this.state = STATE.DATA_MULTI_FACT;
@@ -402,9 +410,7 @@ export class TlmdFileLoader {
 
   private async processExampleLine(): Promise<void> {
     if (this.exampleFirstColumnIsValidity) {
-      const match = /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i.exec(
-        this.line,
-      );
+      const match = EXAMPLE_WITH_VALIDITY_RE.exec(this.line);
       if (!match) {
         this.err("should be example with validity!");
         return;
@@ -421,7 +427,7 @@ export class TlmdFileLoader {
         this.err(e);
       }
     } else {
-      const match = /^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i.exec(this.line);
+      const match = EXAMPLE_WITHOUT_VALIDITY_RE.exec(this.line);
       if (!match) {
         this.err("should be example without validity!");
         return;
@@ -440,9 +446,7 @@ export class TlmdFileLoader {
   }
 
   private async processObjectLine(): Promise<void> {
-    const match = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i.exec(
-      this.line,
-    );
+    const match = OBJECT_LINE_RE.exec(this.line);
     if (!match) {
       this.err("should be valid object!");
       return;
