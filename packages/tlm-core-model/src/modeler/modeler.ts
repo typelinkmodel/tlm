@@ -29,19 +29,18 @@ export class Modeler implements IModeler {
   // START-NO-SONAR
   private readonly _statementProcessors = [
     /\s*An?\s+(?<fromType>[a-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[a-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[a-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[a-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[a-z0-9_-]+)\s*)?\.?\s*/i,
-    async (st: RegExpMatchArray) => this.processLinkDefinitionStatement(st),
+    async (st: RegExpExecArray) => this.processLinkDefinitionStatement(st),
     /\s*An?\s+([a-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([a-z0-9_-]+)\s+for\s+an?\s+([a-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) =>
+    async (st: RegExpExecArray) =>
       this.processReverseLinkDefinitionStatement(st),
     /\s*An?\s+([a-z0-9_-]+)\s+has\s+toggle\s+([a-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) => this.processToggleDefinitionStatement(st),
+    async (st: RegExpExecArray) => this.processToggleDefinitionStatement(st),
     /\s*An?\s+([a-z0-9_-]+)\s+is\s+a\s+kind\s+of\s+([a-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) =>
-      this.processSuperTypeDefinitionStatement(st),
+    async (st: RegExpExecArray) => this.processSuperTypeDefinitionStatement(st),
     /\s*An?\s+([a-z0-9_-]+)\s+is\s+a\s+(?:"([^"]+)"|([^.])+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) => this.processTypeDescriptionStatement(st),
+    async (st: RegExpExecArray) => this.processTypeDescriptionStatement(st),
     /\s*A\s+plural\s+of\s+([a-z0-9_-]+)\s+is\s+([a-z0-9_-]+)\s*\.?\s*/i,
-    async (st: RegExpMatchArray) => this.processTypePluralNameStatement(st),
+    async (st: RegExpExecArray) => this.processTypePluralNameStatement(st),
   ];
   // END-NO-SONAR
 
@@ -114,9 +113,9 @@ export class Modeler implements IModeler {
     for (let i = 0; i < this._statementProcessors.length; i++) {
       const regex = this._statementProcessors[i] as RegExp;
       const processor = this._statementProcessors[++i] as (
-        st: RegExpMatchArray,
+        st: RegExpExecArray,
       ) => Promise<void>;
-      const match = statement.match(regex);
+      const match = regex.exec(statement);
       if (match) {
         await processor(match);
         return;
@@ -140,7 +139,7 @@ export class Modeler implements IModeler {
   }
 
   private async processLinkDefinitionStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const groups = match.groups!;
     const rel = groups.rel.replace(/\s+/g, " ").trim();
@@ -175,7 +174,7 @@ export class Modeler implements IModeler {
   }
 
   private async processReverseLinkDefinitionStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const [, type, rel, link, otherType] = match;
     const processedRel = rel.replace(/\s+/g, " ").trim();
@@ -204,7 +203,7 @@ export class Modeler implements IModeler {
   }
 
   private async processToggleDefinitionStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const [, type, toggle] = match;
     await this._typeModel.addType(type);
@@ -212,7 +211,7 @@ export class Modeler implements IModeler {
   }
 
   private async processSuperTypeDefinitionStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const [, type, superType] = match;
     const typeObj = await this._typeModel.addType(type);
@@ -222,7 +221,7 @@ export class Modeler implements IModeler {
   }
 
   private async processTypeDescriptionStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const [, type, description] = match;
     const typeObj = await this._typeModel.addType(type);
@@ -232,7 +231,7 @@ export class Modeler implements IModeler {
 
   // noinspection JSMethodCanBeStatic
   private async processTypePluralNameStatement(
-    match: RegExpMatchArray,
+    match: RegExpExecArray,
   ): Promise<void> {
     const [, type, plural] = match;
     const typeObj = await this._typeModel.addType(type);

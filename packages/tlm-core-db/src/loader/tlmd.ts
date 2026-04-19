@@ -185,13 +185,13 @@ export class TlmdFileLoader {
 
   private readonly _lineProcessors = [
     /Namespace\s+([^:]+):\s*(.*)/i,
-    async (st: RegExpMatchArray) => this.processNamespaceLine(st),
+    async (st: RegExpExecArray) => this.processNamespaceLine(st),
     /\/\/\s*(.*)/i,
-    async (st: RegExpMatchArray) => this.processCommentLine(st),
+    async (st: RegExpExecArray) => this.processCommentLine(st),
     /---\s*(.*)/i,
-    async (st: RegExpMatchArray) => this.processSectionLine(st),
+    async (st: RegExpExecArray) => this.processSectionLine(st),
     /^(An?\s+.*\.)$/i,
-    async (st: RegExpMatchArray) => this.processStatement(st),
+    async (st: RegExpExecArray) => this.processStatement(st),
   ];
 
   constructor(filename: string, handler: TlmdStreamHandler) {
@@ -234,22 +234,22 @@ export class TlmdFileLoader {
   private async processLine(): Promise<void> {
     await this._handler.handleNextLine(this.lineno, this.line);
 
-    if (this.line.match(/^\s*$/i)) {
+    if (/^\s*$/i.test(this.line)) {
       // empty line resets to main
       this.state = STATE.MAIN;
       return;
     }
 
-    let match: RegExpMatchArray | null;
+    let match: RegExpExecArray | null;
     switch (this.state) {
       case STATE.INITIAL:
         this.state = STATE.MAIN;
         await this.processStartLine();
         break;
       case STATE.MAIN:
-        if (this.line.match(/^\s+Examples:\s*$/i)) {
+        if (/^\s+Examples:\s*$/i.test(this.line)) {
           this.state = STATE.EXAMPLE_START;
-        } else if (this.line.match(/^The\s/i)) {
+        } else if (/^The\s/i.test(this.line)) {
           this.state = STATE.DATA;
           await this.processObjectLine();
         } else {
@@ -257,9 +257,10 @@ export class TlmdFileLoader {
         }
         break;
       case STATE.EXAMPLE_START:
-        match = this.line.match(
-          /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i,
-        );
+        match =
+          /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i.exec(
+            this.line,
+          );
         if (!match) {
           this.err("expected example header!");
         } else {
@@ -268,7 +269,7 @@ export class TlmdFileLoader {
         }
         break;
       case STATE.EXAMPLE_HEADER:
-        match = this.line.match(/^\s+[=|-]+\s*$/i);
+        match = /^\s+[=|-]+\s*$/i.exec(this.line);
         if (!match) {
           // assume no divider and instead look for example
           this.state = STATE.EXAMPLE;
@@ -282,7 +283,7 @@ export class TlmdFileLoader {
         this.state = STATE.EXAMPLE;
         break;
       case STATE.EXAMPLE:
-        if (this.line.match(/^\s+/i)) {
+        if (/^\s+/i.test(this.line)) {
           // did not match first regex so line contains some non-whitespace
           await this.processExampleLine();
           // if the handler is swallowing errors, still assume examples continue next line
@@ -293,20 +294,20 @@ export class TlmdFileLoader {
         }
         break;
       case STATE.DATA:
-        if (this.line.match(/^The\s/i)) {
+        if (/^The\s/i.test(this.line)) {
           await this.processObjectLine();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA;
-        } else if (this.line.match(/^\s+has\s+[a-z0-9_-]+\s*:\s*$/i)) {
+        } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*$/i.test(this.line)) {
           this.state = STATE.DATA_MULTI_FACT;
           await this.processMultiFactStart();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA_MULTI_FACT;
-        } else if (this.line.match(/^\s+has\s+[a-z0-9_-]+\s*:\s*[^\s].*$/i)) {
+        } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*[^\s].*$/i.test(this.line)) {
           await this.processFactLine();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA;
-        } else if (this.line.match(/^\s+[a-z0-9_-]+\s*$/i)) {
+        } else if (/^\s+[a-z0-9_-]+\s*$/i.test(this.line)) {
           await this.processToggleFactLine();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA;
@@ -316,12 +317,12 @@ export class TlmdFileLoader {
         }
         break;
       case STATE.DATA_MULTI_FACT:
-        match = this.line.match(/^\s+(.*)$/i);
+        match = /^\s+(.*)$/i.exec(this.line);
         if (match) {
           await this.processMultiFact();
           // if the handler is swallowing errors, still assume data continues next line
           this.state = STATE.DATA_MULTI_FACT;
-        } else if (this.line.match(/^The\s/i)) {
+        } else if (/^The\s/i.test(this.line)) {
           this.state = STATE.DATA;
           await this.processObjectLine();
         } else {
@@ -340,7 +341,7 @@ export class TlmdFileLoader {
       this.err("expected a '# TLM' start line!");
       return;
     }
-    const match = this.line.match(/# TLM\s+([A-Z]+)\s*(?::(.*))?/i);
+    const match = /# TLM\s+([A-Z]+)\s*(?::(.*))?/i.exec(this.line);
     if (!match) {
       this.err("missing TLMD type!");
       return;
@@ -348,11 +349,11 @@ export class TlmdFileLoader {
     const [, tlmdTypeString, titleString] = match;
 
     let tlmdType: TLMD_TYPE;
-    if (tlmdTypeString.match(/^Model$/i)) {
+    if (/^Model$/i.test(tlmdTypeString)) {
       tlmdType = TLMD_TYPE.MODEL;
-    } else if (tlmdTypeString.match(/^Data$/i)) {
+    } else if (/^Data$/i.test(tlmdTypeString)) {
       tlmdType = TLMD_TYPE.DATA;
-    } else if (tlmdTypeString.match(/^Message$/i)) {
+    } else if (/^Message$/i.test(tlmdTypeString)) {
       tlmdType = TLMD_TYPE.MESSAGE;
     } else {
       this.err(`unrecognized TLMD type '${tlmdTypeString}'!`);
@@ -371,9 +372,9 @@ export class TlmdFileLoader {
     for (let i = 0; i < this._lineProcessors.length; i++) {
       const regex = this._lineProcessors[i] as RegExp;
       const processor = this._lineProcessors[++i] as (
-        st: RegExpMatchArray,
+        st: RegExpExecArray,
       ) => Promise<void>;
-      const match = this.line.match(regex);
+      const match = regex.exec(this.line);
       if (match) {
         await processor(match);
         return;
@@ -385,8 +386,8 @@ export class TlmdFileLoader {
 
   private async processExampleLine(): Promise<void> {
     if (this.exampleFirstColumnIsValidity) {
-      const match = this.line.match(
-        /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i,
+      const match = /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i.exec(
+        this.line,
       );
       if (!match) {
         this.err("should be example with validity!");
@@ -404,7 +405,7 @@ export class TlmdFileLoader {
         this.err(e);
       }
     } else {
-      const match = this.line.match(/^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i);
+      const match = /^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i.exec(this.line);
       if (!match) {
         this.err("should be example without validity!");
         return;
@@ -423,8 +424,8 @@ export class TlmdFileLoader {
   }
 
   private async processObjectLine(): Promise<void> {
-    const match = this.line.match(
-      /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i,
+    const match = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i.exec(
+      this.line,
     );
     if (!match) {
       this.err("should be valid object!");
@@ -439,7 +440,7 @@ export class TlmdFileLoader {
   }
 
   private async processFactLine(): Promise<void> {
-    const match = this.line.match(/^\s+has\s+([a-z0-9_-]+)\s*:\s*([^\s].*)$/i);
+    const match = /^\s+has\s+([a-z0-9_-]+)\s*:\s*([^\s].*)$/i.exec(this.line);
     if (!match) {
       // note: already matched above
       this.err("should be valid link fact!");
@@ -454,7 +455,7 @@ export class TlmdFileLoader {
   }
 
   private async processToggleFactLine(): Promise<void> {
-    const match = this.line.match(/^\s+([a-z0-9_-]+)$/i);
+    const match = /^\s+([a-z0-9_-]+)$/i.exec(this.line);
     if (!match) {
       // note: already matched above
       this.err("should be valid toggle fact!");
@@ -469,7 +470,7 @@ export class TlmdFileLoader {
   }
 
   private async processMultiFactStart(): Promise<void> {
-    const match = this.line.match(/^\s+has\s+([a-z0-9_-]+)\s*:\s*$/i);
+    const match = /^\s+has\s+([a-z0-9_-]+)\s*:\s*$/i.exec(this.line);
     if (!match) {
       // note: already matched above
       this.err("should be valid multi value fact!");
@@ -492,7 +493,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private async processNamespaceLine(match: RegExpMatchArray): Promise<void> {
+  private async processNamespaceLine(match: RegExpExecArray): Promise<void> {
     const [, prefix, uri] = match;
     try {
       await this._handler.handleNamespace(prefix, uri);
@@ -501,7 +502,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private async processCommentLine(match: RegExpMatchArray): Promise<void> {
+  private async processCommentLine(match: RegExpExecArray): Promise<void> {
     const [, comment] = match;
     const trimmedComment = comment.trim();
     try {
@@ -511,7 +512,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private async processSectionLine(match: RegExpMatchArray): Promise<void> {
+  private async processSectionLine(match: RegExpExecArray): Promise<void> {
     const [, section] = match;
     const trimmedSection = section.trim();
     try {
@@ -521,7 +522,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private async processStatement(match: RegExpMatchArray): Promise<void> {
+  private async processStatement(match: RegExpExecArray): Promise<void> {
     const [, statement] = match;
     const trimmedStatement = statement.trim();
     try {
@@ -531,7 +532,7 @@ export class TlmdFileLoader {
     }
   }
 
-  private async processStartExample(match: RegExpMatchArray): Promise<void> {
+  private async processStartExample(match: RegExpExecArray): Promise<void> {
     const [, validColumn, fromLinkPath, toLinkPath] = match;
     this.exampleFirstColumnIsValidity = !!validColumn;
     try {
@@ -555,8 +556,8 @@ function trim(str: string | undefined): string | undefined {
 
 function deserialize(value: string): string {
   let result = value;
-  if (result.match(/^\\\s/) || result.match(/\\r/) || result.match(/\\n/)) {
-    if (result.match(/^\\\s/)) {
+  if (/^\\\s/.test(result) || /\\r/.test(result) || /\\n/.test(result)) {
+    if (/^\\\s/.test(result)) {
       result = result.substring(1);
     }
     result = result
