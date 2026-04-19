@@ -1,7 +1,7 @@
 import { Modeler as CoreModeler } from "@typelinkmodel/tlm-core-model";
 import { LinkModel } from "@typelinkmodel/tlm-core-model/lib/modeler/link";
 import { TypeModel } from "@typelinkmodel/tlm-core-model/lib/modeler/type";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";
 

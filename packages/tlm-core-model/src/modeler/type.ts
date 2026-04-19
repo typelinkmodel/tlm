@@ -1,4 +1,4 @@
-import { ITlmTypeMap } from "../api";
+import type { ITlmTypeMap } from "../api";
 import { loadCoreSchema, TLM_CORE_TYPES, TlmType } from "../core";
 import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";

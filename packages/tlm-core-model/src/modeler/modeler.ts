@@ -1,6 +1,16 @@
-import { IModeler, ITlmLinkMap, ITlmNamespaceMap, ITlmTypeMap } from "../api";
-import { loadCoreSchema, TlmLink, TlmNamespace, TlmType } from "../core";
-import { LinkModel, LinkOptions } from "./link";
+import type {
+  IModeler,
+  ITlmLinkMap,
+  ITlmNamespaceMap,
+  ITlmTypeMap,
+} from "../api";
+import {
+  loadCoreSchema,
+  type TlmLink,
+  type TlmNamespace,
+  type TlmType,
+} from "../core";
+import { LinkModel, type LinkOptions } from "./link";
 import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";
 import { TypeModel } from "./type";

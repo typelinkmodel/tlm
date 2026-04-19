@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any */
-import { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
-import { IModeler } from "@typelinkmodel/tlm-core-model";
+
 import { setWorldConstructor } from "@cucumber/cucumber";
+import type { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
+import type { IModeler } from "@typelinkmodel/tlm-core-model";
 
 const DEFAULT_ASSEMBLY = "memory";
 

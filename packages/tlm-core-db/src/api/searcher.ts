@@ -1,4 +1,4 @@
-import { TlmObject } from "@typelinkmodel/tlm-core-model";
+import type { TlmObject } from "@typelinkmodel/tlm-core-model";
 
 export interface IQuery {
   object?: TlmObject;

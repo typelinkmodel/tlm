@@ -1,4 +1,4 @@
-import { ITlmNamespaceMap } from "../api";
+import type { ITlmNamespaceMap } from "../api";
 import { loadCoreSchema, TLM_CORE_NAMESPACES, TlmNamespace } from "../core";
 import { OidGenerator } from "./oid";
 

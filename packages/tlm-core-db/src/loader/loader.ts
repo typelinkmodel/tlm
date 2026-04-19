@@ -1,4 +1,4 @@
-import { ILoader } from "../api";
+import type { ILoader } from "../api";
 
 function getExtension(filename: string): string {
   const re = /\.(?<ext>[^.]+)?$/;

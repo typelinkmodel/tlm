@@ -1,6 +1,6 @@
 import { TlmType } from "@typelinkmodel/tlm-core-model";
 import { OidGenerator as CoreGenerator } from "@typelinkmodel/tlm-core-model/lib/modeler/oid";
-import { Pool, QueryResult, QueryResultRow } from "pg";
+import type { Pool, QueryResult, QueryResultRow } from "pg";
 import { tx } from "../pg";
 
 export interface IOidResultRow extends QueryResultRow {

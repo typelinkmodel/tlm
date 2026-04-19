@@ -1,4 +1,4 @@
-import { TlmLink, TlmNamespace, TlmType } from "../core";
+import type { TlmLink, TlmNamespace, TlmType } from "../core";
 
 export interface ITlmNamespaceMap {
   [prefix: string]: TlmNamespace;

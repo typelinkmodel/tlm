@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-return */
-import { Loader as CoreLoader } from "./memory";
-import { Reader as CoreReader } from "@typelinkmodel/tlm-core-db";
-import { Searcher as CoreSearcher } from "@typelinkmodel/tlm-core-db";
-import { Modeler as PgSqlModeler } from "@typelinkmodel/tlm-pgsql";
-import { Pool } from "pg";
-import { World } from "../world";
-import { OidGenerator } from "@typelinkmodel/tlm-pgsql/lib/modeler/oid";
-import { NamespaceModel } from "@typelinkmodel/tlm-pgsql/lib/modeler/namespace";
-import { TypeModel } from "@typelinkmodel/tlm-core-model/lib/modeler/type";
+
+import {
+  Reader as CoreReader,
+  Searcher as CoreSearcher,
+} from "@typelinkmodel/tlm-core-db";
 import { LinkModel } from "@typelinkmodel/tlm-core-model/lib/modeler/link";
+import { TypeModel } from "@typelinkmodel/tlm-core-model/lib/modeler/type";
+import { Modeler as PgSqlModeler } from "@typelinkmodel/tlm-pgsql";
+import { NamespaceModel } from "@typelinkmodel/tlm-pgsql/lib/modeler/namespace";
+import { OidGenerator } from "@typelinkmodel/tlm-pgsql/lib/modeler/oid";
+import { Pool } from "pg";
+import type { World } from "../world";
+import { Loader as CoreLoader } from "./memory";
 
 function getPool(world: World): Pool {
+  // biome-ignore lint/suspicious/noPrototypeBuiltins: tsconfig target is ES2018, Object.hasOwn is ES2022
   if (world.hasOwnProperty("pool")) {
     // @ts-ignore
     return world.pool;

@@ -1,4 +1,4 @@
-import { IModeler, TlmType } from "@typelinkmodel/tlm-core-model";
+import type { IModeler, TlmType } from "@typelinkmodel/tlm-core-model";
 
 export function findType(modeler: IModeler, type: string): TlmType {
   if (type.includes(":")) {

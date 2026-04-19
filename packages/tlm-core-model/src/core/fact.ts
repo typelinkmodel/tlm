@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-assignment */
-import { TlmLink, TlmObject } from "./schema";
+import type { TlmLink, TlmObject } from "./schema";
 
 export class TlmFact {
   private readonly _subject: TlmObject;

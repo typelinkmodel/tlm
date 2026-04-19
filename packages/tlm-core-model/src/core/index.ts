@@ -1,8 +1,8 @@
-export * from "./schema";
 export * from "./fact";
 export {
+  loadCoreSchema,
+  TLM_CORE_LINKS,
   TLM_CORE_NAMESPACES,
   TLM_CORE_TYPES,
-  TLM_CORE_LINKS,
-  loadCoreSchema,
 } from "./meta";
+export * from "./schema";

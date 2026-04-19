@@ -1,5 +1,5 @@
-import { ITlmLinkMap } from "../api";
-import { loadCoreSchema, TLM_CORE_LINKS, TlmLink, TlmType } from "../core";
+import type { ITlmLinkMap } from "../api";
+import { loadCoreSchema, TLM_CORE_LINKS, TlmLink, type TlmType } from "../core";
 import { NamespaceModel } from "./namespace";
 import { OidGenerator } from "./oid";
 import { TypeModel } from "./type";

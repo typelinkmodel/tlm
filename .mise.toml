@@ -1,9 +1,9 @@
 # mise: https://mise.jdx.dev/
 #
-# Polyglot (TS + Rust) monorepo. mise pins toolchains; the existing zx
-# orchestration (zx/x.mjs) and pnpm scripts stay as the implementation —
-# mise tasks just thin-wrap them so `mise run ci` reaches the same gate
-# as the CI workflow.
+# Polyglot (TS + Rust + SQL/pgTAP) monorepo. mise pins toolchains and owns
+# the top-level task orchestration. Per-language tasks dispatch to the
+# native toolchain (pnpm for TS, cargo for Rust) or to zx scripts when
+# Docker/Postgres orchestration is needed.
 
 [tools]
 node = "24"
@@ -14,34 +14,112 @@ rust = "latest"
 [env]
 _.file = { path = ".env", optional = true }
 
+# ---------- Top-level fan-outs ----------
 [tasks.install]
-description = "pnpm install"
-run = "pnpm install"
+description = "Install all dependencies"
+depends = ["ts:install"]
 
 [tasks.lint]
-description = "pnpm recursive run lint"
-run = "pnpm lint"
+description = "Run all linters"
+depends = ["ts:lint", "rs:lint"]
+
+[tasks.format]
+description = "Auto-format all languages"
+depends = ["ts:format", "rs:format"]
 
 [tasks.test]
-description = "pnpm recursive run test"
-run = "pnpm test"
+description = "Run unit tests (TS + Rust; does not start Postgres)"
+depends = ["ts:test", "rs:test"]
 
-[tasks.prettier]
-description = "prettier -w ."
-run = "pnpm prettier"
+[tasks.build]
+description = "Build all buildable targets"
+depends = ["ts:build", "rs:build"]
 
 [tasks.clean]
-description = "pnpm recursive run clean"
-run = "pnpm clean"
-
-[tasks."ci:ts"]
-description = "Full TS CI gate (clean + lint + setup + test + destroy)"
-run = "pnpm ci"
-
-[tasks."ci:rust"]
-description = "Rust CI gate (lint + test via zx)"
-run = "pnpm ci-rust"
+description = "Remove build output"
+depends = ["ts:clean"]
 
 [tasks.ci]
 description = "Full CI gate (TS + Rust)"
 depends = ["ci:ts", "ci:rust"]
+
+# ---------- TypeScript ----------
+[tasks."ts:install"]
+description = "pnpm install"
+run = "pnpm install"
+
+[tasks."ts:lint"]
+description = "Biome check across the workspace"
+run = "pnpm lint"
+
+[tasks."ts:format"]
+description = "Biome format --write"
+run = "pnpm format"
+
+[tasks."ts:test"]
+description = "Jest across all packages (requires Postgres for tlm-tests)"
+run = "pnpm recursive run test"
+
+[tasks."ts:build"]
+description = "tsc across all packages"
+run = "pnpm recursive run compile"
+
+[tasks."ts:clean"]
+description = "Remove per-package build output and reinstall"
+run = ["pnpm recursive run clean", "pnpm recursive install"]
+
+[tasks."ci:ts"]
+description = "TS CI gate (clean + lint + Postgres setup + tests + teardown)"
+run = """
+set -e
+pnpm recursive run clean
+pnpm recursive install
+pnpm lint
+pnpm exec zx zx/setup.mjs
+trap 'pnpm exec zx zx/destroy.mjs' EXIT
+pnpm exec zx zx/test-sql.mjs
+pnpm recursive run test
+"""
+
+# ---------- Rust ----------
+[tasks."rs:lint"]
+description = "cargo fmt --check + clippy"
+run = [
+    "cargo fmt --all --check",
+    "cargo clippy --workspace --all-targets --all-features -- -D warnings",
+]
+
+[tasks."rs:format"]
+description = "cargo fmt"
+run = "cargo fmt --all"
+
+[tasks."rs:test"]
+description = "cargo llvm-cov (produces codecov.json)"
+run = [
+    "cargo llvm-cov --all-features --workspace",
+    "cargo llvm-cov report --codecov --output-path codecov.json",
+]
+
+[tasks."rs:build"]
+description = "cargo build"
+run = "cargo build --workspace --all-targets"
+
+[tasks."ci:rust"]
+description = "Rust CI gate (lint + test with coverage)"
+depends = ["rs:lint", "rs:test"]
+
+# ---------- SQL (pgTAP) ----------
+# The Postgres container setup is needed for both SQL tests (pgTAP) and
+# the TS integration tests in tlm-tests; today ci:ts wraps both. These
+# tasks exist so you can drive the DB lifecycle by hand.
+[tasks."sql:setup"]
+description = "Start Postgres container + apply schema + load pgTAP"
+run = "pnpm exec zx zx/setup.mjs"
+
+[tasks."sql:test"]
+description = "Run pgTAP tests (requires sql:setup)"
+run = "pnpm exec zx zx/test-sql.mjs"
+
+[tasks."sql:destroy"]
+description = "Stop Postgres container"
+run = "pnpm exec zx zx/destroy.mjs"

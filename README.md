@@ -19,24 +19,19 @@ This is an unfinished hobby project. _Use at your own risk._
 ![CI](https://github.com/lsimons/tlm/workflows/CI/badge.svg)
 
 ```shell
-pnpm install
-pnpm run setup
-pnpm run test
+mise install        # one-time: install pinned toolchains
+mise run install    # pnpm install
+mise run sql:setup  # start Postgres in Docker
+mise run test       # run all unit tests
+mise run sql:destroy
 ```
 
 ### Rust version
 
 ```shell
-cargo build
-cargo test
-cargo clippy -- -D warnings
-```
-
-or run tests with coverage:
-
-```shell
-brew install cargo-llvm-cov
-cargo llvm-cov
+mise run rs:build
+mise run rs:test    # runs cargo llvm-cov and writes codecov.json
+mise run rs:lint    # cargo fmt --check + clippy -D warnings
 ```
 
 ## Code

@@ -1,9 +1,9 @@
+import type { TlmNamespace } from "@typelinkmodel/tlm-core-model";
 import { NamespaceModel as CoreNamespaceModel } from "@typelinkmodel/tlm-core-model/lib/modeler/namespace";
-import { OidGenerator as CoreGenerator } from "@typelinkmodel/tlm-core-model/lib/modeler/oid";
-import { IOidResultRow, OidGenerator } from "./oid";
-import { Pool, QueryResult } from "pg";
-import { TlmNamespace } from "@typelinkmodel/tlm-core-model";
+import type { OidGenerator as CoreGenerator } from "@typelinkmodel/tlm-core-model/lib/modeler/oid";
+import type { Pool, QueryResult } from "pg";
 import { tx } from "../pg";
+import { type IOidResultRow, OidGenerator } from "./oid";
 
 interface ITmlNamespaceResultRow {
   oid: number;

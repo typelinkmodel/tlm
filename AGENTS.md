@@ -5,11 +5,11 @@ Type Link Model (TLM) - multi-language monorepo with TypeScript and Rust.
 ## Quick Reference
 
 - **One-time**: `mise install`
-- **Setup**: `mise run install && pnpm run setup`
-- **Test (TS)**: `mise run test` (or `pnpm run test`)
-- **Test (Rust)**: `mise run ci:rust` (wraps `pnpm run ci-rust`)
-- **Lint (TS)**: `mise run lint` (or `pnpm run lint`)
-- **Format**: `mise run prettier`
+- **Install deps**: `mise run install`
+- **Lint**: `mise run lint` (or `ts:lint` / `rs:lint` per language)
+- **Format**: `mise run format`
+- **Test (unit)**: `mise run test`
+- **Postgres lifecycle** (for integration/SQL tests): `mise run sql:setup` / `sql:destroy`
 - **CI (TS)**: `mise run ci:ts`
 - **CI (Rust)**: `mise run ci:rust`
 - **Full CI gate**: `mise run ci`
@@ -23,23 +23,25 @@ tlm/
 │   ├── tlm-core-model/    # Core modeling types
 │   ├── tlm-pgsql/         # PostgreSQL implementation
 │   ├── tlm-rust/          # Rust implementation
-│   └── tlm-tests/         # Integration tests
-├── zx/                    # Build automation scripts
+│   ├── tlm-tests/         # Cucumber integration tests
+│   └── tlm-web/           # Next.js web app + Playwright e2e
+├── zx/                    # Docker/Postgres orchestration scripts
 └── docs/                  # Documentation
 ```
 
 ## Guidelines
 
 **TypeScript:**
-- ESLint + Prettier: zero warnings/errors
-- Strict TypeScript, no `any` types
+- Biome for lint + format: zero errors (warnings allowed during migration)
+- Strict TypeScript
 - Jest testing, minimum 80% coverage
 - Test files: `*.test.ts` or `*.spec.ts`
 
 **Rust:**
+- Workspace-level clippy pedantic + `unsafe_code = "forbid"`
+- `cargo fmt --check`: zero diffs
 - `cargo clippy -- -D warnings`: zero warnings
-- `cargo test`: all tests pass
-- `cargo llvm-cov` for coverage
+- `cargo llvm-cov` produces `codecov.json` for Codecov upload
 
 **Database:** PostgreSQL via Docker. SQL tests use pgTAP.
 

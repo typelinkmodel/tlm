@@ -64,7 +64,7 @@ test("TlmLink: basic usage", () => {
 });
 
 function testBooleanLinkProperty(prop: keyof TlmLink, defaultValue = false) {
-  let o = { ...nameLink };
+  const o = { ...nameLink };
   let l = new TlmLink(o);
   expect(l[prop]).toBe(defaultValue);
 

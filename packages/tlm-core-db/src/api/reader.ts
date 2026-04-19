@@ -1,4 +1,4 @@
-import { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
+import type { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
 
 export interface IReader {
   readFactUnique(

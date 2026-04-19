@@ -1,4 +1,4 @@
-import { ILoader, Loader } from "../../src";
+import { type ILoader, Loader } from "../../src";
 
 class UnsupportiveDelegate implements ILoader {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

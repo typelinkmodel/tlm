@@ -1,10 +1,10 @@
 /* eslint-disable jest/no-mocks-import */
 import { beforeEach } from "node:test";
-import { emptyResult, mockClientQuery, rowsResults } from "../../__mocks__/pg";
-import { Pool } from "pg";
 import { OidGenerator as CoreGenerator } from "@typelinkmodel/tlm-core-model/lib/modeler/oid";
-import { OidGenerator } from "../../src/modeler/oid";
+import { Pool } from "pg";
+import { emptyResult, mockClientQuery, rowsResults } from "../../__mocks__/pg";
 import { NamespaceModel } from "../../src/modeler/namespace";
+import { OidGenerator } from "../../src/modeler/oid";
 
 class ErrorOidGenerator extends CoreGenerator {
   async nextOid(): Promise<number> {

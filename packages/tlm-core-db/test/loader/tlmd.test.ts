@@ -1,8 +1,8 @@
+import { join } from "node:path";
 import { Modeler } from "@typelinkmodel/tlm-core-model";
 import { TlmdLoader } from "../../src/loader/tlmd";
 import { Reader } from "../../src/reader";
 import { Searcher } from "../../src/searcher";
-import { join } from "path";
 
 test("TlmdLoader supports only tlmd files", () => {
   const loader = new TlmdLoader();

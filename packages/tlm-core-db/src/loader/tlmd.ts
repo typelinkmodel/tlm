@@ -1,7 +1,7 @@
-import { IModeler, Modeler } from "@typelinkmodel/tlm-core-model";
-import { createReadStream, ReadStream } from "fs";
-import { createInterface } from "readline";
-import { ILoader, IReader, ISearcher } from "../api";
+import { createReadStream, type ReadStream } from "node:fs";
+import { createInterface } from "node:readline";
+import { type IModeler, Modeler } from "@typelinkmodel/tlm-core-model";
+import type { ILoader, IReader, ISearcher } from "../api";
 import { Reader } from "../reader";
 import { Searcher } from "../searcher";
 
@@ -240,7 +240,7 @@ export class TlmdFileLoader {
       return;
     }
 
-    let match;
+    let match: RegExpMatchArray | null;
     switch (this.state) {
       case STATE.INITIAL:
         this.state = STATE.MAIN;
@@ -347,7 +347,7 @@ export class TlmdFileLoader {
     }
     const [, tlmdTypeString, titleString] = match;
 
-    let tlmdType;
+    let tlmdType: TLMD_TYPE;
     if (tlmdTypeString.match(/^Model$/i)) {
       tlmdType = TLMD_TYPE.MODEL;
     } else if (tlmdTypeString.match(/^Data$/i)) {

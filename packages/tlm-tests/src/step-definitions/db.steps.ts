@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment */
-import { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
-import { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
+
+import { type DataTable, Given, Then } from "@cucumber/cucumber";
+import type { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
+import type { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
 import { assert } from "chai";
-import { Given, DataTable, Then } from "@cucumber/cucumber";
 
 Given(/^this file is loaded:$/, async function (statements: DataTable) {
   // @ts-ignore
@@ -61,7 +62,7 @@ Then(
     type: string,
     link: string,
     value: string,
-    assertLink: string,
+    _assertLink: string,
     assertValueLink: string,
     assertValue: string,
   ) {

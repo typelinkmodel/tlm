@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment */
-import { IModeler, TlmLink, TlmType } from "@typelinkmodel/tlm-core-model";
+
+import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
+import type { IModeler, TlmLink, TlmType } from "@typelinkmodel/tlm-core-model";
 import { assert } from "chai";
-import { Given, DataTable, Then, When } from "@cucumber/cucumber";
 import { findType } from "../support/util";
 
 Given(/^an empty type-link model is set up$/, async function () {

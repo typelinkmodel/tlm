@@ -1,4 +1,4 @@
-import { IModeler, Modeler, TlmNamespace } from "../../src";
+import { type IModeler, Modeler, TlmNamespace } from "../../src";
 import { LinkModel } from "../../src/modeler/link";
 import { NamespaceModel } from "../../src/modeler/namespace";
 import { OidGenerator } from "../../src/modeler/oid";
@@ -413,7 +413,7 @@ test("processLinkDefinitionStatement: cover unreachable default case", async () 
   const modeler: Modeler = new Modeler();
 
   const result = (async () => {
-    let match: RegExpMatchArray = "a".match(/(a)/)!;
+    const match: RegExpMatchArray = "a".match(/(a)/)!;
     match.groups = {
       fromType: "Person",
       rel: "flub-boxes",

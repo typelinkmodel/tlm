@@ -16,19 +16,12 @@
     "clean": "pnpm exec rimraf lib coverage",
     "prepare": "pnpm run compile",
     "compile": "pnpm exec tsc",
-    "test": "pnpm exec jest",
-    "lint": "pnpm exec eslint"
+    "test": "pnpm exec jest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.9.2",
-    "@typescript-eslint/eslint-plugin": "^8.46.2",
-    "@typescript-eslint/parser": "^8.46.2",
-    "eslint": "^9.38.0",
-    "eslint-plugin-jest": "^29.0.1",
-    "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.2.0",
-    "prettier": "^3.6.2",
     "rimraf": "^6.1.0",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
