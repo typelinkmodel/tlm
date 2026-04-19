@@ -366,6 +366,7 @@ Modeler {
       },
     ],
     "_namespaceModel": NamespaceModel {
+      "_activeNamespace": undefined,
       "_initialized": true,
       "_namespaceMapCache": {
         "tlm": TlmNamespace {
@@ -425,6 +426,7 @@ Modeler {
     "_typeModel": TypeModel {
       "_initialized": true,
       "_namespaceModel": NamespaceModel {
+        "_activeNamespace": undefined,
         "_initialized": true,
         "_namespaceMapCache": {
           "tlm": TlmNamespace {
@@ -982,6 +984,7 @@ Modeler {
     },
   },
   "_namespaceModel": NamespaceModel {
+    "_activeNamespace": undefined,
     "_initialized": true,
     "_namespaceMapCache": {
       "tlm": TlmNamespace {
@@ -1055,6 +1058,7 @@ Modeler {
   "_typeModel": TypeModel {
     "_initialized": true,
     "_namespaceModel": NamespaceModel {
+      "_activeNamespace": undefined,
       "_initialized": true,
       "_namespaceMapCache": {
         "tlm": TlmNamespace {
