@@ -99,7 +99,7 @@ The TLMD (Type Link Model Data) format emerged as a key innovation, providing:
 
 The most recent phase has emphasized engineering best practices:
 
-- **Comprehensive CI/CD**: GitHub Actions with SonarQube analysis and Codecov integration
+- **Comprehensive CI/CD**: GitHub Actions with SonarQube analysis
 - **Code Quality Standards**: Strict linting rules, 80% test coverage requirements, and zero-tolerance for warnings
 - **Documentation as Code**: Introduction of comprehensive AI agent guidelines (`AGENTS.md`) reflecting the project's embrace of modern development workflows
 
