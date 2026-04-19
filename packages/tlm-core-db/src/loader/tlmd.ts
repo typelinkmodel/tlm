@@ -240,99 +240,115 @@ export class TlmdFileLoader {
       return;
     }
 
-    let match: RegExpExecArray | null;
     switch (this.state) {
       case STATE.INITIAL:
         this.state = STATE.MAIN;
         await this.processStartLine();
-        break;
+        return;
       case STATE.MAIN:
-        if (/^\s+Examples:\s*$/i.test(this.line)) {
-          this.state = STATE.EXAMPLE_START;
-        } else if (/^The\s/i.test(this.line)) {
-          this.state = STATE.DATA;
-          await this.processObjectLine();
-        } else {
-          await this.processBodyLine();
-        }
-        break;
+        return this.handleMainState();
       case STATE.EXAMPLE_START:
-        match =
-          /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i.exec(
-            this.line,
-          );
-        if (!match) {
-          this.err("expected example header!");
-        } else {
-          await this.processStartExample(match);
-          this.state = STATE.EXAMPLE_HEADER;
-        }
-        break;
+        return this.handleExampleStartState();
       case STATE.EXAMPLE_HEADER:
-        match = /^\s+[=|-]+\s*$/i.exec(this.line);
-        if (!match) {
-          // assume no divider and instead look for example
-          this.state = STATE.EXAMPLE;
-          await this.processExampleLine();
-        } else {
-          this.state = STATE.EXAMPLE_DIVIDER;
-        }
-        break;
+        return this.handleExampleHeaderState();
       case STATE.EXAMPLE_DIVIDER:
         await this.processExampleLine();
         this.state = STATE.EXAMPLE;
-        break;
+        return;
       case STATE.EXAMPLE:
-        if (/^\s+/i.test(this.line)) {
-          // did not match first regex so line contains some non-whitespace
-          await this.processExampleLine();
-          // if the handler is swallowing errors, still assume examples continue next line
-          this.state = STATE.EXAMPLE;
-        } else {
-          this.state = STATE.MAIN;
-          await this.processBodyLine();
-        }
-        break;
+        return this.handleExampleState();
       case STATE.DATA:
-        if (/^The\s/i.test(this.line)) {
-          await this.processObjectLine();
-          // if the handler is swallowing errors, still assume data continues next line
-          this.state = STATE.DATA;
-        } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*$/i.test(this.line)) {
-          this.state = STATE.DATA_MULTI_FACT;
-          await this.processMultiFactStart();
-          // if the handler is swallowing errors, still assume data continues next line
-          this.state = STATE.DATA_MULTI_FACT;
-        } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*[^\s].*$/i.test(this.line)) {
-          await this.processFactLine();
-          // if the handler is swallowing errors, still assume data continues next line
-          this.state = STATE.DATA;
-        } else if (/^\s+[a-z0-9_-]+\s*$/i.test(this.line)) {
-          await this.processToggleFactLine();
-          // if the handler is swallowing errors, still assume data continues next line
-          this.state = STATE.DATA;
-        } else {
-          this.state = STATE.MAIN;
-          await this.processBodyLine();
-        }
-        break;
+        return this.handleDataState();
       case STATE.DATA_MULTI_FACT:
-        match = /^\s+(.*)$/i.exec(this.line);
-        if (match) {
-          await this.processMultiFact();
-          // if the handler is swallowing errors, still assume data continues next line
-          this.state = STATE.DATA_MULTI_FACT;
-        } else if (/^The\s/i.test(this.line)) {
-          this.state = STATE.DATA;
-          await this.processObjectLine();
-        } else {
-          this.state = STATE.MAIN;
-          await this.processBodyLine();
-        }
-        break;
+        return this.handleDataMultiFactState();
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.err(`unknown parser state ${this.state}!`);
+    }
+  }
+
+  private async handleMainState(): Promise<void> {
+    if (/^\s+Examples:\s*$/i.test(this.line)) {
+      this.state = STATE.EXAMPLE_START;
+    } else if (/^The\s/i.test(this.line)) {
+      this.state = STATE.DATA;
+      await this.processObjectLine();
+    } else {
+      await this.processBodyLine();
+    }
+  }
+
+  private async handleExampleStartState(): Promise<void> {
+    const match =
+      /^\s+(ok\s*\|\s*)?([A-Z0-9_/-]+)\s*\|\s*([A-Z0-9_/-]+)\s*$/i.exec(
+        this.line,
+      );
+    if (match) {
+      await this.processStartExample(match);
+      this.state = STATE.EXAMPLE_HEADER;
+    } else {
+      this.err("expected example header!");
+    }
+  }
+
+  private async handleExampleHeaderState(): Promise<void> {
+    const match = /^\s+[=|-]+\s*$/i.exec(this.line);
+    if (match) {
+      this.state = STATE.EXAMPLE_DIVIDER;
+    } else {
+      // assume no divider and instead look for example
+      this.state = STATE.EXAMPLE;
+      await this.processExampleLine();
+    }
+  }
+
+  private async handleExampleState(): Promise<void> {
+    if (/^\s+/i.test(this.line)) {
+      // did not match first regex so line contains some non-whitespace
+      await this.processExampleLine();
+      // if the handler is swallowing errors, still assume examples continue next line
+      this.state = STATE.EXAMPLE;
+    } else {
+      this.state = STATE.MAIN;
+      await this.processBodyLine();
+    }
+  }
+
+  private async handleDataState(): Promise<void> {
+    if (/^The\s/i.test(this.line)) {
+      await this.processObjectLine();
+      // if the handler is swallowing errors, still assume data continues next line
+      this.state = STATE.DATA;
+    } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*$/i.test(this.line)) {
+      this.state = STATE.DATA_MULTI_FACT;
+      await this.processMultiFactStart();
+      // if the handler is swallowing errors, still assume data continues next line
+      this.state = STATE.DATA_MULTI_FACT;
+    } else if (/^\s+has\s+[a-z0-9_-]+\s*:\s*[^\s].*$/i.test(this.line)) {
+      await this.processFactLine();
+      // if the handler is swallowing errors, still assume data continues next line
+      this.state = STATE.DATA;
+    } else if (/^\s+[a-z0-9_-]+\s*$/i.test(this.line)) {
+      await this.processToggleFactLine();
+      // if the handler is swallowing errors, still assume data continues next line
+      this.state = STATE.DATA;
+    } else {
+      this.state = STATE.MAIN;
+      await this.processBodyLine();
+    }
+  }
+
+  private async handleDataMultiFactState(): Promise<void> {
+    if (/^\s+(.*)$/i.test(this.line)) {
+      await this.processMultiFact();
+      // if the handler is swallowing errors, still assume data continues next line
+      this.state = STATE.DATA_MULTI_FACT;
+    } else if (/^The\s/i.test(this.line)) {
+      this.state = STATE.DATA;
+      await this.processObjectLine();
+    } else {
+      this.state = STATE.MAIN;
+      await this.processBodyLine();
     }
   }
 
