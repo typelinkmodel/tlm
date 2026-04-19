@@ -1,0 +1,47 @@
+# mise: https://mise.jdx.dev/
+#
+# Polyglot (TS + Rust) monorepo. mise pins toolchains; the existing zx
+# orchestration (zx/x.mjs) and pnpm scripts stay as the implementation —
+# mise tasks just thin-wrap them so `mise run ci` reaches the same gate
+# as the CI workflow.
+
+[tools]
+node = "24"
+pnpm = "10"
+rust = "latest"
+"cargo:cargo-llvm-cov" = "latest"
+
+[env]
+_.file = { path = ".env", optional = true }
+
+[tasks.install]
+description = "pnpm install"
+run = "pnpm install"
+
+[tasks.lint]
+description = "pnpm recursive run lint"
+run = "pnpm lint"
+
+[tasks.test]
+description = "pnpm recursive run test"
+run = "pnpm test"
+
+[tasks.prettier]
+description = "prettier -w ."
+run = "pnpm prettier"
+
+[tasks.clean]
+description = "pnpm recursive run clean"
+run = "pnpm clean"
+
+[tasks."ci:ts"]
+description = "Full TS CI gate (clean + lint + setup + test + destroy)"
+run = "pnpm ci"
+
+[tasks."ci:rust"]
+description = "Rust CI gate (lint + test via zx)"
+run = "pnpm ci-rust"
+
+[tasks.ci]
+description = "Full CI gate (TS + Rust)"
+depends = ["ci:ts", "ci:rust"]

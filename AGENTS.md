@@ -4,11 +4,15 @@ Type Link Model (TLM) - multi-language monorepo with TypeScript and Rust.
 
 ## Quick Reference
 
-- **Setup**: `pnpm install && pnpm run setup`
-- **Test**: `pnpm run test` (TS) / `cargo test` (Rust)
-- **Lint**: `pnpm run lint` (TS) / `cargo clippy -- -D warnings` (Rust)
-- **Format**: `pnpm run prettier`
-- **CI**: `pnpm run ci` (TS) / `pnpm run ci-rust` (Rust)
+- **One-time**: `mise install`
+- **Setup**: `mise run install && pnpm run setup`
+- **Test (TS)**: `mise run test` (or `pnpm run test`)
+- **Test (Rust)**: `mise run ci:rust` (wraps `pnpm run ci-rust`)
+- **Lint (TS)**: `mise run lint` (or `pnpm run lint`)
+- **Format**: `mise run prettier`
+- **CI (TS)**: `mise run ci:ts`
+- **CI (Rust)**: `mise run ci:rust`
+- **Full CI gate**: `mise run ci`
 
 ## Structure
 
@@ -55,8 +59,7 @@ Work is NOT complete until `git push` succeeds.
 
 1. **Quality gates** (if code changed):
    ```bash
-   pnpm run lint && pnpm run test
-   cargo clippy -- -D warnings && cargo test
+   mise run ci
    ```
 
 2. **Push**:
