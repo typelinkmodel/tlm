@@ -41,7 +41,6 @@ export class NamespaceModel extends CoreNamespaceModel {
       throw new Error(`PgSQL NamespaceModel does not allow providing oid`);
     }
 
-    // todo make method out of this lookup
     const ns = super.namespaceMap[prefix];
     if (ns !== undefined) {
       return ns;

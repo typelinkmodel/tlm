@@ -117,7 +117,7 @@ export class NamespaceModel {
       }
     }
 
-    const newOid = oid !== undefined ? oid : await this._oidGenerator.nextOid();
+    const newOid = oid === undefined ? await this._oidGenerator.nextOid() : oid;
 
     const newNamespace = new TlmNamespace(newOid, prefix, uri, description);
     this._namespaces.push(newNamespace);
