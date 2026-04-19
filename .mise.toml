@@ -43,6 +43,25 @@ depends = ["ts:clean"]
 description = "Full CI gate (TS + Rust)"
 depends = ["ci:ts", "ci:rust"]
 
+[tasks.ci-watch]
+description = "Watch PR checks (or the latest run) for the current branch; exits non-zero on failure"
+run = """
+set -e
+branch=$(git branch --show-current)
+if [ -z "$branch" ]; then echo "Detached HEAD — no branch to watch" >&2; exit 1; fi
+sleep 3
+pr=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+if [ -n "$pr" ]; then
+  echo "Watching checks on PR #$pr ($branch)..."
+  gh pr checks "$pr" --watch
+else
+  run_id=$(gh run list --branch "$branch" --limit 1 --json databaseId --jq '.[0].databaseId' 2>/dev/null || true)
+  if [ -z "$run_id" ]; then echo "No open PR or recent run found for $branch" >&2; exit 1; fi
+  echo "No open PR for $branch; watching run $run_id..."
+  gh run watch --exit-status "$run_id"
+fi
+"""
+
 # ---------- TypeScript ----------
 [tasks."ts:install"]
 description = "pnpm install"
