@@ -10,6 +10,15 @@ on:
 
 env:
   ENV: ci
+  # In CI mode zx/settings.mjs picks an alternate Postgres port to avoid
+  # clashing with local dev. Export the connection settings so cucumber
+  # (spawned in a separate process from the zx setup step) can find the
+  # container started by mise run sql:setup / the ci:ts task.
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: "5433"
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DATABASE: tlm
 
 permissions:
   contents: read

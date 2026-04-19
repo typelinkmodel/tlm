@@ -39,7 +39,6 @@ overrides:
   semver: ^7.7.3
   signal-exit: ^4.1.0
   source-map-support: ^0.5.21
-  string-width: ^5.1.2
   strip-bom: ^4.0.0
   supports-color: ^8.1.1
   type-fest: ^4.41.0
@@ -5258,7 +5257,7 @@ snapshots:
 
   cli-table3@0.6.5:
     dependencies:
-      string-width: 5.1.2
+      string-width: 4.2.3
     optionalDependencies:
       '@colors/colors': 1.5.0
 
@@ -5266,7 +5265,7 @@ snapshots:
 
   cliui@8.0.1:
     dependencies:
-      string-width: 5.1.2
+      string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 8.1.0
 
@@ -6568,7 +6567,7 @@ snapshots:
   wrap-ansi@7.0.0:
     dependencies:
       ansi-styles: 4.3.0
-      string-width: 5.1.2
+      string-width: 4.2.3
       strip-ansi: 6.0.1
 
   wrap-ansi@8.1.0:
@@ -6598,7 +6597,7 @@ snapshots:
       escalade: 3.2.0
       get-caller-file: 2.0.5
       require-directory: 2.1.1
-      string-width: 5.1.2
+      string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
 
