@@ -95,16 +95,6 @@ The TLMD (Type Link Model Data) format emerged as a key innovation, providing:
 
 ## Modern Era and Expansion (2024-2025)
 
-### The Rust Experiment (2024)
-
-A pivotal moment came in January 2024 with the introduction of Rust to the TLM ecosystem:
-
-- **Rust Implementation**: Beginning of a parallel Rust implementation, showing the project's commitment to performance and systems programming applications
-- **Cargo Workspace**: Proper integration of Rust into the existing monorepo structure
-- **Dual-Language CI**: Extension of continuous integration to cover both TypeScript and Rust codebases
-
-This expansion demonstrated TLM's evolution from a web-focused tool to a more broadly applicable modeling framework.
-
 ### Engineering Excellence (2024-2025)
 
 The most recent phase has emphasized engineering best practices:
@@ -115,10 +105,9 @@ The most recent phase has emphasized engineering best practices:
 
 ### Current State (2025)
 
-As of October 2025, TLM represents a mature, multi-language modeling toolkit:
+As of October 2025, TLM represents a mature TypeScript modeling toolkit:
 
 - **220+ commits** spanning seven years of continuous development
-- **Dual-language implementation** in TypeScript and Rust
 - **Comprehensive tooling** including PostgreSQL integration, file format loaders, and extensive testing
 - **Modern development practices** with strict quality gates and comprehensive documentation
 
@@ -134,7 +123,6 @@ The project's architecture has evolved through several distinct phases:
 2. **Package Separation** (2019): Clear separation between core model and database concerns
 3. **Testing Integration** (2020-2021): Comprehensive testing infrastructure with Cucumber
 4. **Format Innovation** (2023): Introduction of TLMD format and loaders
-5. **Multi-language Support** (2024+): Parallel Rust implementation
 
 ### Key Technical Decisions
 
@@ -170,7 +158,6 @@ The project has demonstrated thoughtful community building:
 
 Key decisions show forward-thinking approaches:
 
-- **Multi-language Strategy**: Rust implementation positions TLM for performance-critical applications
 - **AI-Friendly Development**: Comprehensive AI agent guidelines prepare for LLM-assisted development
 - **Extensible Architecture**: Plugin-based format support and modular design enable future growth
 
@@ -186,7 +173,6 @@ The seven-year journey of TLM offers several insights into successful open sourc
 2. **Quality is Cumulative**: Early investments in testing and code quality pay long-term dividends
 3. **Evolution Over Revolution**: Gradual improvement often succeeds where complete rewrites fail
 4. **Documentation as Investment**: Comprehensive documentation enables both human and AI-assisted development
-5. **Multi-language Strategy**: Supporting multiple implementation languages increases applicability and longevity
 
 ### The Hobby Project Model
 
@@ -201,9 +187,9 @@ TLM demonstrates that "hobby projects" can achieve remarkable sophistication:
 
 ## Looking Forward
 
-As TLM enters its eighth year, the project stands as a testament to the power of consistent effort, thoughtful architecture, and commitment to quality. From its humble beginnings as a Node.js experiment to its current status as a sophisticated multi-language modeling toolkit, TLM has continuously evolved while maintaining its core mission: making data modeling accessible and practical for web developers.
+As TLM enters its eighth year, the project stands as a testament to the power of consistent effort, thoughtful architecture, and commitment to quality. From its humble beginnings as a Node.js experiment to its current status as a sophisticated TypeScript modeling toolkit, TLM has continuously evolved while maintaining its core mission: making data modeling accessible and practical for web developers.
 
-The addition of Rust implementation, comprehensive AI development guidelines, and modern engineering practices positions TLM for continued relevance in an rapidly evolving technology landscape. Whether used for API design, database modeling, or as a learning tool for understanding data relationships, TLM represents the successful evolution of a focused, well-executed vision.
+Comprehensive AI development guidelines and modern engineering practices position TLM for continued relevance in an rapidly evolving technology landscape. Whether used for API design, database modeling, or as a learning tool for understanding data relationships, TLM represents the successful evolution of a focused, well-executed vision.
 
 The project's history demonstrates that with dedication, clear vision, and commitment to quality, even personal projects can achieve remarkable depth and sophistication. As TLM moves forward, it carries with it the lessons of seven years of thoughtful development and the promise of continued innovation in the modeling space.
 

@@ -1,15 +1,13 @@
 # mise: https://mise.jdx.dev/
 #
-# Polyglot (TS + Rust + SQL/pgTAP) monorepo. mise pins toolchains and owns
-# the top-level task orchestration. Per-language tasks dispatch to the
-# native toolchain (pnpm for TS, cargo for Rust) or to zx scripts when
-# Docker/Postgres orchestration is needed.
+# TypeScript + SQL/pgTAP monorepo. mise pins toolchains and owns the
+# top-level task orchestration. Per-language tasks dispatch to the
+# native toolchain (pnpm for TS) or to zx scripts when Docker/Postgres
+# orchestration is needed.
 
 [tools]
 node = "24"
 pnpm = "10"
-rust = "latest"
-"cargo:cargo-llvm-cov" = "latest"
 
 [env]
 _.file = { path = ".env", optional = true }
@@ -21,27 +19,27 @@ depends = ["ts:install"]
 
 [tasks.lint]
 description = "Run all linters"
-depends = ["ts:lint", "rs:lint"]
+depends = ["ts:lint"]
 
 [tasks.format]
 description = "Auto-format all languages"
-depends = ["ts:format", "rs:format"]
+depends = ["ts:format"]
 
 [tasks.test]
-description = "Run unit tests (TS + Rust; does not start Postgres)"
-depends = ["ts:test", "rs:test"]
+description = "Run unit tests (does not start Postgres)"
+depends = ["ts:test"]
 
 [tasks.build]
 description = "Build all buildable targets"
-depends = ["ts:build", "rs:build"]
+depends = ["ts:build"]
 
 [tasks.clean]
 description = "Remove build output"
 depends = ["ts:clean"]
 
 [tasks.ci]
-description = "Full CI gate (TS + Rust)"
-depends = ["ci:ts", "ci:rust"]
+description = "Full CI gate"
+depends = ["ci:ts"]
 
 [tasks.ci-watch]
 description = "Watch PR checks (or the latest run) for the current branch; exits non-zero on failure"
@@ -99,33 +97,6 @@ trap 'pnpm exec zx zx/destroy.mjs' EXIT
 pnpm exec zx zx/test-sql.mjs
 pnpm recursive run test
 """
-
-# ---------- Rust ----------
-[tasks."rs:lint"]
-description = "cargo fmt --check + clippy"
-run = [
-    "cargo fmt --all --check",
-    "cargo clippy --workspace --all-targets --all-features -- -D warnings",
-]
-
-[tasks."rs:format"]
-description = "cargo fmt"
-run = "cargo fmt --all"
-
-[tasks."rs:test"]
-description = "cargo llvm-cov (produces codecov.json)"
-run = [
-    "cargo llvm-cov --all-features --workspace",
-    "cargo llvm-cov report --codecov --output-path codecov.json",
-]
-
-[tasks."rs:build"]
-description = "cargo build"
-run = "cargo build --workspace --all-targets"
-
-[tasks."ci:rust"]
-description = "Rust CI gate (lint + test with coverage)"
-depends = ["rs:lint", "rs:test"]
 
 # ---------- SQL (pgTAP) ----------
 # The Postgres container setup is needed for both SQL tests (pgTAP) and
