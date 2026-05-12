@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@radix-ui/themes": "^3.3.0",
-    "next": "16.2.4",
+    "next": "16.2.6",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-hook-form": "^7.72.1",
