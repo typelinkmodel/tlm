@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-assignment */
 
-import { type DataTable, Given, Then } from "@cucumber/cucumber";
-import type { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
-import type { TlmFact, TlmObject } from "@typelinkmodel/tlm-core-model";
-import { assert } from "chai";
+import { type DataTable, Given } from "@cucumber/cucumber";
+import type { ILoader } from "@typelinkmodel/tlm-core-db";
 
 Given(/^this file is loaded:$/, async function (statements: DataTable) {
   // @ts-ignore
@@ -14,76 +12,3 @@ Given(/^this file is loaded:$/, async function (statements: DataTable) {
     }
   }
 });
-
-Then(
-  /^the ([^ ]+) with ([^ ]+) "([^"]*)" should exist$/,
-  async function (type: string, link: string, value: string) {
-    // @ts-ignore
-    const searcher: ISearcher = this.searcher;
-    const object: TlmObject | undefined = await searcher.findUnique({
-      type,
-      link,
-      value,
-    });
-    assert.isDefined(object);
-  },
-);
-
-Then(
-  /^the ([^ ]+) with ([^ ]+) "([^"]*)" should have ([^ ]+) "([^"]*)"$/,
-  async function (
-    type: string,
-    link: string,
-    value: string,
-    assertLink: string,
-    assertValue: string,
-  ) {
-    // @ts-ignore
-    const searcher: ISearcher = this.searcher;
-    const object: TlmObject | undefined = await searcher.findUnique({
-      type,
-      link,
-      value,
-    });
-
-    // @ts-ignore
-    const reader: IReader = this.reader;
-    const fact: TlmFact = await reader.readFactUnique(object!, {
-      links: [assertLink],
-    });
-
-    assert.equal(fact.value, assertValue);
-  },
-);
-
-Then(
-  /^the ([^ ]+) with ([^ ]+) "([^"]*)" should have a ([^ ]+) with ([^ ]+) "([^"]*)"$/,
-  async function (
-    type: string,
-    link: string,
-    value: string,
-    _assertLink: string,
-    assertValueLink: string,
-    assertValue: string,
-  ) {
-    // @ts-ignore
-    const searcher: ISearcher = this.searcher;
-    const object: TlmObject | undefined = await searcher.findUnique({
-      type,
-      link,
-      value,
-    });
-    const target: TlmObject | undefined = await searcher.findUnique({
-      object,
-      link,
-    });
-
-    // @ts-ignore
-    const reader: IReader = this.reader;
-    const fact: TlmFact = await reader.readFactUnique(target!, {
-      links: [assertValueLink],
-    });
-
-    assert.equal(fact.value, assertValue);
-  },
-);

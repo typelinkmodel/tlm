@@ -36,8 +36,7 @@ tlm/
 │   ├── tlm-core-db/       # Database abstractions
 │   ├── tlm-core-model/    # Core modeling types
 │   ├── tlm-pgsql/         # PostgreSQL implementation
-│   ├── tlm-tests/         # Cucumber integration tests
-│   └── tlm-web/           # Next.js web app + Playwright e2e
+│   └── tlm-tests/         # Cucumber integration tests
 ├── zx/                    # Docker/Postgres orchestration scripts
 └── docs/                  # Documentation
 ```

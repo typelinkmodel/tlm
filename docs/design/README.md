@@ -1,1 +1,1 @@
-See drawings/ for initial concepts.
+Sample models in TLMD, plus renderings in various formats.

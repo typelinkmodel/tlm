@@ -13,10 +13,3 @@ Feature: TLMD Data Import
   Scenario: import an HR Model definition from a TLMD file
     When this file is loaded:
       | ../../docs/design/sample-hr-data.tlmd |
-# TODO:
-#    Then the hr:Person with id "mailto:leo@example.com" should exist
-#    And the hr:Person with id "mailto:leo@example.com" should have name "Leo Simons"
-#    And the hr:Person with id "mailto:leo@example.com" should have a department with id "mailto:engineering@example.com"
-#    Then the hr:Department with id "mailto:engineering@example.com" should exist
-#    And the hr:Department with id "mailto:engineering@example.com" should have name "Engineering"
-#    And the hr:Department with id "mailto:engineering@example.com" should have a manager with id "mailto:dirkx@example.com"
