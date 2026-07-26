@@ -21,13 +21,13 @@ enum TLMD_TYPE {
   UNKNOWN,
 }
 
-// The following regexes flag on SonarCloud rule S5852 (ReDoS risk from
-// overlapping quantifiers). The parser only consumes local, developer-authored
-// TLMD files — not untrusted input — so ReDoS is not a realistic threat here.
-const MULTI_FACT_VALUE_RE = /^\s+(.*)$/i; // NOSONAR S5852
-const EXAMPLE_WITH_VALIDITY_RE = /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i; // NOSONAR S5852
-const EXAMPLE_WITHOUT_VALIDITY_RE = /^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i; // NOSONAR S5852
-const OBJECT_LINE_RE = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i; // NOSONAR S5852
+// These regexes use overlapping quantifiers (a ReDoS risk in the general
+// case). The parser only consumes local, developer-authored TLMD files —
+// not untrusted input — so ReDoS is not a realistic threat here.
+const MULTI_FACT_VALUE_RE = /^\s+(.*)$/i;
+const EXAMPLE_WITH_VALIDITY_RE = /^\s+(no\s*)?\|\s*([^|]*)\s*\|\s*([^|]*)\s*$/i;
+const EXAMPLE_WITHOUT_VALIDITY_RE = /^\s+([^|]*)\s*\|\s*([^|]*)\s*$/i;
+const OBJECT_LINE_RE = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i;
 
 export class TlmdLoader implements ILoader {
   private readonly _modeler: IModeler;

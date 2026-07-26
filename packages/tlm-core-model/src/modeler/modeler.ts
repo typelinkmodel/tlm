@@ -28,12 +28,11 @@ export class Modeler implements IModeler {
 
   // These regexes define the TLMD statement grammar; they are intentionally
   // complex and broken up only between concrete grammatical constructs.
-  // NOSONAR markers suppress SonarCloud's regex-complexity rule (S5843)
-  // because splitting the grammar further would obscure, not clarify, it.
+  // Splitting the grammar further would obscure, not clarify, it.
   private readonly _statementProcessors = [
-    /\s*An?\s+(?<fromType>[a-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[a-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[a-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[a-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[a-z0-9_-]+)\s*)?\.?\s*/i, // NOSONAR
+    /\s*An?\s+(?<fromType>[a-z0-9_-]+)(?:\s*,\s*the\s+(?<fromName>[a-z0-9_-]+)\s*,)?\s+(?<rel>is\sidentified\sby|has\s+exactly\s+one|has\s+at\s+most\s+one|has\s+at\s+least\s+one|can\s+have\s+some)\s+(?<link>[a-z0-9_-]+)\s+(?:each\s+of\s+)?which\s+must\s+be\s+an?\s+(?<toType>[a-z0-9_-]+)\s*(?:,\s*the\s+(?<toName>[a-z0-9_-]+)\s*)?\.?\s*/i,
     async (st: RegExpExecArray) => this.processLinkDefinitionStatement(st),
-    /\s*An?\s+([a-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([a-z0-9_-]+)\s+for\s+an?\s+([a-z0-9_-]+)\s*\.?\s*/i, // NOSONAR
+    /\s*An?\s+([a-z0-9_-]+)\s+(is\s+exactly\s+one|must\s+be\s+a)\s+([a-z0-9_-]+)\s+for\s+an?\s+([a-z0-9_-]+)\s*\.?\s*/i,
     async (st: RegExpExecArray) =>
       this.processReverseLinkDefinitionStatement(st),
     /\s*An?\s+([a-z0-9_-]+)\s+has\s+toggle\s+([a-z0-9_-]+)\s*\.?\s*/i,
