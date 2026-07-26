@@ -26,7 +26,7 @@ mise run sql:destroy
 
 ### TypeScript
 
-Code style follows [Prettier](https://prettier.io/).
+Code style follows [Biome](https://biomejs.dev/).
 
 ### Commits
 

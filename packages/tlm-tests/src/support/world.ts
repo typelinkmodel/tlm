@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any */
 
 import { setWorldConstructor } from "@cucumber/cucumber";
-import type { ILoader, IReader, ISearcher } from "@typelinkmodel/tlm-core-db";
+import type { ILoader } from "@typelinkmodel/tlm-core-db";
 import type { IModeler } from "@typelinkmodel/tlm-core-model";
 
 const DEFAULT_ASSEMBLY = "memory";
@@ -12,8 +12,6 @@ export class World {
   private _assembly: any;
   private _modeler: any;
   private _loader: any;
-  private _reader: any;
-  private _searcher: any;
 
   constructor(options: { [key: string]: any }) {
     this._attach = options.attach;
@@ -45,22 +43,6 @@ export class World {
     }
     this._loader = new this._assembly.Loader(this);
     return this._loader;
-  }
-
-  public get reader(): IReader {
-    if (this._reader) {
-      return this._reader;
-    }
-    this._reader = new this._assembly.Reader(this);
-    return this._reader;
-  }
-
-  public get searcher(): ISearcher {
-    if (this._searcher) {
-      return this._searcher;
-    }
-    this._searcher = new this._assembly.Searcher(this);
-    return this._searcher;
   }
 
   private chooseAssembly(): string {

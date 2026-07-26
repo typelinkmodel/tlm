@@ -13,5 +13,3 @@ Feature: TLMD Message Import
   Scenario: import an HR Model definition from a TLMD file
     When this file is loaded:
       | ../../docs/design/sample-message.tlmd |
-#    Then the hr:Person with id "mailto:leo@example.com" should exist
-#    And the hr:Person with id "mailto:leo@example.com" should have a coach with id "mailto:simon@example.com"

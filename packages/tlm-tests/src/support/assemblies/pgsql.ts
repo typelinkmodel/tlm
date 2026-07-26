@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment,@typescript-eslint/no-unsafe-return */
 
-import {
-  Reader as CoreReader,
-  Searcher as CoreSearcher,
-} from "@typelinkmodel/tlm-core-db";
 import { LinkModel } from "@typelinkmodel/tlm-core-model/lib/modeler/link";
 import { TypeModel } from "@typelinkmodel/tlm-core-model/lib/modeler/type";
 import { Modeler as PgSqlModeler } from "@typelinkmodel/tlm-pgsql";
@@ -49,9 +45,3 @@ export class Modeler extends PgSqlModeler {
 
 // noinspection JSUnusedGlobalSymbols
 export class Loader extends CoreLoader {}
-
-// noinspection JSUnusedGlobalSymbols
-export class Reader extends CoreReader {}
-
-// noinspection JSUnusedGlobalSymbols
-export class Searcher extends CoreSearcher {}

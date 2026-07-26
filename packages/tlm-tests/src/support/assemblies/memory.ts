@@ -1,8 +1,4 @@
-import {
-  Loader as CoreLoader,
-  Reader as CoreReader,
-  Searcher as CoreSearcher,
-} from "@typelinkmodel/tlm-core-db";
+import { Loader as CoreLoader } from "@typelinkmodel/tlm-core-db";
 import { TlmdLoader } from "@typelinkmodel/tlm-core-db/lib/loader/tlmd";
 import { Modeler as CoreModeler } from "@typelinkmodel/tlm-core-model";
 import type { World } from "../world";
@@ -23,29 +19,7 @@ export class Loader extends CoreLoader {
 
   // noinspection JSUnusedGlobalSymbols
   constructor(world: World) {
-    super([new TlmdLoader(world.modeler, world.reader, world.searcher)]);
-    this._world = world;
-  }
-}
-
-// noinspection JSUnusedGlobalSymbols
-export class Reader extends CoreReader {
-  private _world: World;
-
-  // noinspection JSUnusedGlobalSymbols
-  constructor(world: World) {
-    super();
-    this._world = world;
-  }
-}
-
-// noinspection JSUnusedGlobalSymbols
-export class Searcher extends CoreSearcher {
-  private _world: World;
-
-  // noinspection JSUnusedGlobalSymbols
-  constructor(world: World) {
-    super();
+    super([new TlmdLoader(world.modeler)]);
     this._world = world;
   }
 }

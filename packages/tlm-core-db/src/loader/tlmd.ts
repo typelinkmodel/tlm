@@ -1,9 +1,7 @@
 import { createReadStream, type ReadStream } from "node:fs";
 import { createInterface } from "node:readline";
 import { type IModeler, Modeler } from "@typelinkmodel/tlm-core-model";
-import type { ILoader, IReader, ISearcher } from "../api";
-import { Reader } from "../reader";
-import { Searcher } from "../searcher";
+import type { ILoader } from "../api";
 
 enum STATE {
   INITIAL,
@@ -33,23 +31,15 @@ const OBJECT_LINE_RE = /^The\s+([A-Z0-9_:-]+)\s+with\s+id\s+([^\t]+)\s*$/i; // N
 
 export class TlmdLoader implements ILoader {
   private readonly _modeler: IModeler;
-  private readonly _reader: IReader;
-  private readonly _searcher: ISearcher;
   private readonly _continueOnError: boolean;
   private readonly _debug: boolean;
 
   constructor(
     modeler: IModeler = new Modeler(),
-
-    reader: IReader = new Reader(),
-
-    searcher: ISearcher = new Searcher(),
     continueOnError = false,
     debug = false,
   ) {
     this._modeler = modeler;
-    this._reader = reader;
-    this._searcher = searcher;
     this._continueOnError = continueOnError;
     this._debug = debug;
   }

@@ -17,9 +17,6 @@
       "!**/dist",
       "!**/coverage",
       "!**/target",
-      "!**/.next",
-      "!**/playwright-report",
-      "!**/test-results",
       "!**/*.d.ts",
       "!pnpm-lock.yaml"
     ]

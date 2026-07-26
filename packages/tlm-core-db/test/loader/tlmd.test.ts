@@ -1,8 +1,6 @@
 import { join } from "node:path";
 import { Modeler } from "@typelinkmodel/tlm-core-model";
 import { TlmdLoader } from "../../src/loader/tlmd";
-import { Reader } from "../../src/reader";
-import { Searcher } from "../../src/searcher";
 
 test("TlmdLoader supports only tlmd files", () => {
   const loader = new TlmdLoader();
@@ -57,13 +55,7 @@ test("TlmdLoader test 004-sample-hr-model", async () => {
 async function loadTest(testname: string): Promise<Modeler> {
   const modeler = new Modeler();
   await modeler.initialize();
-  const loader = new TlmdLoader(
-    modeler,
-    new Reader(),
-    new Searcher(),
-    false,
-    true,
-  );
+  const loader = new TlmdLoader(modeler, false, true);
   const fileName = `${testname}.tlmd`;
   const filePath = join(__dirname, "tlmd", fileName);
   await loader.loadFile(filePath);
